@@ -426,38 +426,84 @@ function generateHTMLPage(content: any): string {
         
         // Initialize Swipers
         if (typeof Swiper !== 'undefined') {
-            // Clients Swiper 1
+            // Function to get direction based on screen width
+            function getSwiperDirection() {
+                return window.innerWidth <= 1099 ? 'horizontal' : 'vertical';
+            }
+            
+            // Clients Swiper 1 - moves UP (reverse direction)
             const clientsSwiper = new Swiper('.clients-swiper', {
-                direction: 'vertical',
-                slidesPerView: 3,
+                direction: getSwiperDirection(),
+                slidesPerView: 2,
                 spaceBetween: 10,
                 loop: true,
+                speed: 4000,
                 autoplay: {
-                    delay: 2000,
+                    delay: 1,
                     disableOnInteraction: false,
+                    reverseDirection: true,
                 },
                 breakpoints: {
-                    1024: {
+                    640: {
+                        slidesPerView: 2,
                         spaceBetween: 10,
+                    },
+                    768: {
+                        slidesPerView: 3,
+                        spaceBetween: 20,
+                    },
+                    1024: {
+                        slidesPerView: 4,
+                        spaceBetween: 20,
                     }
                 }
             });
             
-            // Clients Swiper 2
+            // Re-initialize direction on resize
+            window.addEventListener('resize', () => {
+                const newDirection = getSwiperDirection();
+                if (clientsSwiper.params.direction !== newDirection) {
+                    clientsSwiper.changeDirection(newDirection);
+                }
+            });
+            
+            // Function to get direction for swiper 2
+            function getSwiper02Direction() {
+                return window.innerWidth <= 1099 ? 'horizontal' : 'vertical';
+            }
+            
+            // Clients Swiper 2 - moves DOWN (normal direction)
             const clientsSwiper02 = new Swiper('.clients-swiper02', {
-                direction: 'vertical',
-                slidesPerView: 3,
+                direction: getSwiper02Direction(),
+                slidesPerView: 2,
                 spaceBetween: 10,
                 loop: true,
+                speed: 4000,
                 autoplay: {
-                    delay: 2000,
-                    reverseDirection: true,
+                    delay: 1,
                     disableOnInteraction: false,
                 },
                 breakpoints: {
-                    1024: {
+                    640: {
+                        slidesPerView: 2,
                         spaceBetween: 10,
+                    },
+                    768: {
+                        slidesPerView: 3,
+                        spaceBetween: 20,
+                    },
+                    1024: {
+                        slidesPerView: 4,
+                        spaceBetween: 20,
                     }
+                }
+            });
+            
+            // Re-initialize direction on resize
+            window.addEventListener('resize', () => {
+                const newDirection = getSwiper02Direction();
+                if (clientsSwiper02.params.direction !== newDirection) {
+                    clientsSwiper02.changeDirection(newDirection);
                 }
             });
             
@@ -1441,3 +1487,4 @@ CRITICAL REQUIREMENTS:
     )
   }
 }
+
