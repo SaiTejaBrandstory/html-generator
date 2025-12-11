@@ -1,0 +1,355 @@
+/* Remove all the @font-face rules for Larsseit as we'll use Google Fonts instead */
+
+@media (max-width: 768px) {
+  :root {
+    --font-main: "Hanken Grotesk", sans-serif;
+    --font-size-h1: 32px;
+    --font-size-h2: 32px;
+    --font-size-h3: 22px;
+    --font-size-h4: 20px;
+    --font-size-h5: 18px;
+    --font-size-h6: 18px;
+    --line-height-h1: 42px;
+    --line-height-h2: 42px;
+    --line-height-h3: 32px;
+    --line-height-h4: 30px;
+    --line-height-h5: 26px;
+    --line-height-h6: 27px;
+  }
+}
+
+@media (min-width: 768px) {
+  :root {
+    --font-main: "Hanken Grotesk", sans-serif;
+    --font-size-h1: 38px;
+    --font-size-h2: 38px;
+    --font-size-h3: 24px;
+    --font-size-h4: 20px;
+    --font-size-h5: 20px;
+    --font-size-h6: 18px;
+    --line-height-h1: 46px;
+    --line-height-h2: 46px;
+    --line-height-h3: 38px;
+    --line-height-h4: 30.6px;
+    --line-height-h5: 32px;
+    --line-height-h6: 27px;
+  }
+}
+
+@media (min-width: 992px) {
+  :root {
+    --font-main: "Hanken Grotesk", sans-serif;
+    --font-size-h1: 52px;
+    --font-size-h2: 42px;
+    --font-size-h3: 32px;
+    --font-size-h4: 24px;
+    --font-size-h5: 20px;
+    --font-size-h6: 18px;
+    --line-height-h1: 60px;
+    --line-height-h2: 54.6px;
+    --line-height-h3: 42px;
+    --line-height-h4: 33.6px;
+    --line-height-h5: 32px;
+    --line-height-h6: 23.4px;
+  }
+}
+
+/**** heading ***/
+h1 {
+  font-family: var(--font-main);
+  font-size: var(--font-size-h1);
+  line-height: var(--line-height-h1);
+  font-weight: 700;
+  color: #ffffff;
+}
+
+h2 {
+  font-family: var(--font-main);
+  font-size: var(--font-size-h2);
+  line-height: var(--line-height-h2);
+  font-weight: 700;
+}
+
+h3 {
+  font-family: var(--font-main);
+  font-size: var(--font-size-h3);
+  line-height: var(--line-height-h3);
+  font-weight: 700;
+}
+
+h4 {
+  font-family: var(--font-main);
+  font-size: var(--font-size-h4);
+  line-height: var(--line-height-h4);
+  font-weight: 600;
+}
+
+h5 {
+  font-family: var(--font-main);
+  font-size: var(--font-size-h5);
+  line-height: var(--line-height-h5);
+  font-weight: 500;
+}
+
+h6 {
+  font-family: var(--font-main);
+  font-size: var(--font-size-h6);
+  line-height: var(--line-height-h6);
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+body {
+  font-family: "Hanken Grotesk", sans-serif;
+}
+
+/**** paragraph****/
+p,
+li {
+  font-family: "Hanken Grotesk", sans-serif;
+  font-size: 20px;
+  line-height: 30px;
+  font-weight: 400;
+}
+
+.fs-20 {
+  font-size: 20px;
+  line-height: 28px;
+}
+
+@media (min-width: 1200px) {
+  p,
+  li {
+    font-size: 20px;
+    line-height: 30px;
+  }
+  a {
+    font-size: 16px;
+  }
+}
+
+@media (min-width: 1440px) {
+  p,
+  li {
+    font-size: 20px;
+    line-height: 30px;
+  }
+  a {
+    font-size: 16px;
+  }
+}
+
+a {
+  font-family: "Hanken Grotesk", sans-serif;
+  text-decoration: none;
+}
+
+.fs-16 {
+	font-size: 16px;
+	line-height: 24px;
+}
+
+.fs-14 {
+	font-size: 14px;
+}
+
+.fw-600 {
+	font-weight: 600;
+}
+
+.spt-100 {
+	padding-top: 100px;
+}
+.spb-100{padding-bottom: 100px;}
+
+.sp-70 {
+	padding-top: 70px;
+	padding-bottom: 70px;
+}
+
+.spt-70 {
+	padding-top: 70px;
+}
+
+.spb-70 {
+	padding-bottom: 70px;
+}
+
+.spt-90 {
+	padding-top: 90px;
+}
+
+
+@media screen and (min-width:1200px) {
+	.mh-53 {
+		min-height: 53px;
+	}
+
+	.desk-none {
+		display: none;
+	}
+
+	.db {
+		display: block;
+	}
+
+	.max-1000 {
+		max-width: 1000px;
+		margin: auto;
+	}
+
+	.w-80{
+		width: 80%;
+	}
+
+	.max-900 {
+		max-width: 900px;
+		margin: auto;
+	}
+
+	.h-80 {
+		height: 90vh;
+	}
+}
+
+@media screen and (min-width:768px) and (max-width:1080px) {
+	.sp-70 {
+		padding-top: 50px;
+		padding-bottom: 50px;
+	}
+
+	.spt-70 {
+		padding-top: 50px;
+	}
+
+	.spt-90 {
+		padding-top: 80px;
+	}
+
+	.spb-70 {
+		padding-bottom: 50px;
+	}
+
+	p,
+	li {
+		font-size: 18px;
+		line-height: 26px;
+	}
+
+	.fs-20 {
+		font-size: 18px;
+		line-height: 26px;
+	}
+}
+
+
+@media screen and (max-width:500px) {
+	.sp-70 {
+		padding-top: 40px;
+		padding-bottom: 40px;
+	}
+
+	.spt-90 {
+		padding-top: 60px;
+	}
+
+	.spt-60 {
+		padding-top: 40px;
+	}
+
+	.spb-70 {
+		padding-bottom: 40px;
+	}
+}
+
+@media (min-width: 1400px) {
+	.container {
+		max-width: 1200px !important;
+	}
+}
+
+.fs-20 {
+	font-size: 20px;
+	line-height: 32px;
+}
+
+.gradient-green {
+    background: linear-gradient(90deg, rgba(21, 100, 53, 1) 0%, rgba(0, 162, 216, 1) 50%);
+    -webkit-background-clip: text;
+	width: fit-content;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-fill-color: transparent;
+}
+
+span.line-img {
+    background:  linear-gradient(90deg, rgba(255,218,52,1) 0%, rgba(176,149,30,1) 33%, rgba(255,218,52,1) 68%, rgba(176,149,30,1) 100%);
+    width: 80px;
+    height: 5px;
+    display: block;
+    margin-bottom: 18px;
+    margin-top: 18px;
+}
+.bg-grey{background-color: #F6F6F6;}
+.bg-gray{background-color: #EDEDED;}
+.bg-ggrey{background-color: #F9F9F9;}
+
+
+.text-purple{color: #7855BD;}
+.text-green{color: #8AA027;}
+.text-magenta{color: #B231AF;}
+.text-yellow{color: #DBC80C;}
+.text-dgreen{color: #156435;}
+
+@media (min-width: 1200px){
+	.fw-24{font-size: 24px; line-height: 36px;}
+}
+
+@media (max-width: 1200px){
+	.fw-24{font-size: 20px; line-height: 30px;}
+}
+
+.lh-22-68{line-height: 22.68px !important;}
+
+
+.sp-100 {
+  padding-top: 100px;
+  padding-bottom: 100px;
+}
+.spt-100 {
+  padding-top: 100px;
+}
+.spb-100 {
+  padding-bottom: 100px;
+}
+.fs-18 {
+  font-size: 18px;
+  line-height: 28px;
+}
+.fs-24 {
+  font-size: 24px !important;
+  line-height: 34px;
+}
+.fw-700 {
+  font-weight: 700 !important;
+}
+.fs-88 {
+  font-size: 88px;
+}
+.fs-22 {
+  font-size: 22px;
+  line-height: 28px;
+}
+
+.fs-28 {
+  font-size: 28px;
+  line-height: 36px;
+}
+.w-11 {
+    width: 11% !important;
+}
+
+.cus-overflow-x {
+  overflow-x: hidden;
+}
