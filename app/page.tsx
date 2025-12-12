@@ -27,10 +27,10 @@ export default function Home() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="flex flex-col items-center">
           <div className="w-64 bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden border border-gray-200 dark:border-gray-700">
-            <div className="w-full h-48 relative overflow-hidden">
+            <div className="w-full h-48 bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center overflow-hidden">
               <img 
                 src="/assets/images/geo-location/geo-banner.png" 
-                alt="Generative Engine Optimization Services" 
+                alt="Geo Banner" 
                 className="w-full h-full object-cover"
               />
             </div>
