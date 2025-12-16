@@ -87,26 +87,25 @@ function generateHTMLPage(content: any): string {
 <body class="antialiased overflow-x-hidden scroll-smooth">
     <!-- Hero Section -->
     <section class="relative pt-20 pb-20 lg:pt-32 lg:pb-32 bg-gradient-hero overflow-hidden">
-        <div class="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20"></div>
-        <div class="absolute inset-0" style="background-image: linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px); background-size: 50px 50px; mask-image: radial-gradient(circle at center, black, transparent 80%);"></div>
+        <div class="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-80" style="background-image: url('assets/images/template-2/hero-banner.png');"></div>
 
         <div class="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center z-10">
-            <h1 class="text-4xl md:text-6xl lg:text-7xl font-bold text-white leading-tight mb-8">
+            <h1 class="font-bold text-center capitalize mb-6 md:mb-8" style="color: #F0EFEE; font-size: clamp(24px, 5vw, 52px); line-height: 120%; letter-spacing: 0%;">
                 ${escapeHtml(content.hero?.title || '')}
             </h1>
             
-            <div class="flex justify-center mb-12 md:mb-20">
-                <a href="${escapeHtml(content.hero?.cta_link || 'https://brandstory.in/contact-us/')}" class="group flex items-center gap-2 md:gap-3 px-4 md:px-8 py-3 md:py-4 rounded-full border border-white/20 hover:border-fuchsia-500 bg-white/5 hover:bg-white/10 transition-all duration-300 text-sm md:text-lg font-medium">
-                    <span>${escapeHtml(content.hero?.cta_text || 'Book Your Free Consultation Now!')}</span>
-                    <i data-lucide="chevron-right" class="w-4 h-4 md:w-5 md:h-5 text-fuchsia-500 group-hover:translate-x-1 transition-transform flex-shrink-0"></i>
+            <div class="flex justify-center mb-8 md:mb-12 lg:mb-20">
+                <a href="${escapeHtml(content.hero?.cta_link || 'https://brandstory.in/contact-us/')}" class="group flex items-center gap-2 md:gap-3 px-4 md:px-8 py-2.5 md:py-3 lg:py-4 rounded-full border border-white/20 hover:border-fuchsia-500 bg-white/5 hover:bg-white/10 transition-all duration-300 text-xs sm:text-sm md:text-base lg:text-lg font-medium">
+                    <span class="whitespace-nowrap">${escapeHtml(content.hero?.cta_text || 'Book Your Free Consultation Now!')}</span>
+                    <i data-lucide="chevron-right" class="w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5 text-fuchsia-500 group-hover:translate-x-1 transition-transform flex-shrink-0"></i>
                 </a>
             </div>
         </div>
 
         <!-- Client Logos Carousel -->
         <div class="relative w-full mt-16 pb-12">
-            <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 mb-8">
-                <p class="text-lg text-gray-400 text-center">${escapeHtml(content.hero?.trusted_text || 'Trusted By 500+ Brands Across India')}</p>
+            <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 mb-12 md:mb-16">
+                <p class="text-center capitalize font-semibold" style="color: #FFFFFF; font-size: 22px; line-height: 130%; letter-spacing: 0%;">${escapeHtml(content.hero?.trusted_text || 'Trusted by 500+ Brands Across India')}</p>
             </div>
             
             <div class="overflow-hidden mb-12 md:mb-20 w-full">
@@ -137,11 +136,11 @@ function generateHTMLPage(content: any): string {
 
     <!-- Intro Text -->
     <section class="py-20 bg-[#0a0a0a]">
-        <div class="max-w-4xl mx-auto px-4 text-center">
-            <p class="text-lg md:text-xl text-gray-300 leading-relaxed mb-8">
+        <div class="max-w-6xl mx-auto px-4 text-center">
+            <p class="font-medium mb-8" style="color: #FFFFFF; font-size: clamp(16px, 2.5vw, 20px); line-height: 160%; letter-spacing: 0%;">
                 ${escapeHtml(content.intro?.paragraph_1 || '')}
             </p>
-            <p class="text-lg md:text-xl text-gray-300 leading-relaxed">
+            <p class="font-medium" style="color: #FFFFFF; font-size: clamp(16px, 2.5vw, 20px); line-height: 160%; letter-spacing: 0%;">
                 ${escapeHtml(content.intro?.paragraph_2 || '')}
             </p>
         </div>
@@ -151,15 +150,15 @@ function generateHTMLPage(content: any): string {
     <section class="py-20 bg-white text-black">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col lg:flex-row items-center justify-between gap-12">
             <div class="lg:w-1/3">
-                <h2 class="text-3xl md:text-4xl font-bold mb-4 md:mb-6">${escapeHtml(content.reviews?.heading || 'Reviews & Recognition')}</h2>
-                <p class="text-gray-600 text-base md:text-lg leading-relaxed">
+                <h2 class="font-bold capitalize mb-4 md:mb-6" style="color: #000000; font-size: clamp(28px, 4vw, 38px); line-height: 130%; letter-spacing: 0%;">${escapeHtml(content.reviews?.heading || 'Reviews & Recognition')}</h2>
+                <p class="font-medium" style="color: #000000; font-size: clamp(16px, 2.5vw, 20px); line-height: 150%; letter-spacing: 0%;">
                     ${escapeHtml(content.reviews?.description || '')}
                 </p>
             </div>
-            <div class="lg:w-2/3 grid grid-cols-2 md:grid-cols-3 gap-4">
-                ${(content.reviews?.logos || []).map((logo: any) => `
-                <div class="bg-[#181818] p-4 rounded flex flex-col items-center justify-center h-20">
-                    <img src="${escapeHtml(logo.image || '')}" alt="${escapeHtml(logo.alt || '')}" class="w-24 h-12 object-contain">
+            <div class="lg:w-2/3 grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4">
+                ${(content.reviews?.logos || []).map((logo: any, index: number) => `
+                <div class="bg-[#181818] p-3 sm:p-4 rounded flex flex-col items-center justify-center h-16 sm:h-20 ${index === 4 ? 'col-span-2 sm:col-span-1' : ''}">
+                    <img src="${escapeHtml(logo.image || '')}" alt="${escapeHtml(logo.alt || '')}" class="w-20 h-10 sm:w-24 sm:h-12 object-contain">
                 </div>
                 `).join('')}
             </div>
@@ -171,15 +170,19 @@ function generateHTMLPage(content: any): string {
         <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-purple-900/20 via-transparent to-transparent"></div>
         
         <div class="max-w-7xl mx-auto px-4 relative z-10">
-            <h2 class="text-3xl md:text-4xl font-bold text-center mb-12 md:mb-20">${escapeHtml(content.track_record?.heading || 'Our Track Record')}</h2>
+            <h2 class="font-bold text-center capitalize mb-12 md:mb-20" style="color: #FFFFFF; font-size: clamp(28px, 4vw, 38px); line-height: 130%; letter-spacing: 0%;">${escapeHtml(content.track_record?.heading || 'Our Track Record')}</h2>
             
             <div class="relative h-[600px] w-full max-w-4xl mx-auto hidden md:block">
                 <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center z-20 flex items-center justify-center">
                     <img src="assets/images/template-2/brandstory-logo.svg" alt="BrandStory" class="h-10 w-auto object-contain">
                 </div>
                 
+                <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[100px] h-[100px] rounded-full border border-white/5"></div>
                 <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] rounded-full border border-white/5"></div>
                 <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] rounded-full border border-white/5"></div>
+                <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[1000px] rounded-full border border-white/5"></div>
+                <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[1300px] h-[1300px] rounded-full border border-white/5"></div>
+                <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[1600px] h-[1600px] rounded-full border border-white/5"></div>
 
                 ${(content.track_record?.stats || []).map((stat: any, index: number) => {
                   const positions = [
@@ -190,9 +193,9 @@ function generateHTMLPage(content: any): string {
                   ]
                   const pos = positions[index] || positions[0]
                   return `
-                <div class="absolute ${pos.top ? `top-[${pos.top}]` : ''} ${pos.bottom ? `bottom-[${pos.bottom}]` : ''} ${pos.left ? `left-[${pos.left}]` : ''} ${pos.right ? `right-[${pos.right}]` : ''} w-56 h-56 rounded-full bg-white/5 backdrop-blur-sm flex flex-col items-center justify-center text-center p-6 border border-white/10 hover:border-fuchsia-500/50 transition-colors">
-                    <h4 class="text-xl font-bold mb-2">${escapeHtml(stat.title || '')}</h4>
-                    <p class="text-sm text-gray-400">${escapeHtml(stat.description || '')}</p>
+                <div class="absolute ${pos.top ? `top-[${pos.top}]` : ''} ${pos.bottom ? `bottom-[${pos.bottom}]` : ''} ${pos.left ? `left-[${pos.left}]` : ''} ${pos.right ? `right-[${pos.right}]` : ''} w-56 h-56 rounded-full backdrop-blur-sm flex flex-col items-center justify-center text-center p-6 border border-white/10 hover:border-fuchsia-500/50 transition-colors" style="background-color: rgba(18, 19, 23, 0.3);">
+                    <h4 class="font-bold mb-2 text-center" style="color: #FFFFFF; font-size: 24px; line-height: 130%; letter-spacing: 0%;">${escapeHtml(stat.title || '')}</h4>
+                    <p class="font-medium text-center" style="color: #FFFFFF; font-size: 16px; line-height: 140%; letter-spacing: 0%;">${escapeHtml(stat.description || '')}</p>
                 </div>
                 `
                 }).join('')}
@@ -200,9 +203,9 @@ function generateHTMLPage(content: any): string {
 
             <div class="md:hidden grid grid-cols-1 gap-6">
                 ${(content.track_record?.stats || []).map((stat: any) => `
-                <div class="bg-white/5 p-8 rounded-2xl text-center border border-white/10">
-                    <h4 class="text-xl font-bold mb-2">${escapeHtml(stat.title || '')}</h4>
-                    <p class="text-gray-400">${escapeHtml(stat.description || '')}</p>
+                <div class="p-8 rounded-2xl text-center border border-white/10" style="background-color: rgba(18, 19, 23, 0.3);">
+                    <h4 class="font-bold mb-2" style="color: #FFFFFF; font-size: 24px; line-height: 130%;">${escapeHtml(stat.title || '')}</h4>
+                    <p class="font-medium" style="color: #FFFFFF; font-size: 16px; line-height: 140%;">${escapeHtml(stat.description || '')}</p>
                 </div>
                 `).join('')}
             </div>
@@ -210,33 +213,36 @@ function generateHTMLPage(content: any): string {
     </section>
 
     <!-- Key Benefits -->
-    <section class="py-20 bg-[#050505]">
+    <section class="py-12 sm:py-16 md:py-20 bg-[#050505]">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex flex-col lg:flex-row gap-12">
+            <div class="flex flex-col lg:flex-row gap-6 sm:gap-8 md:gap-12">
                 <div class="lg:w-1/3">
-                    <h2 class="text-3xl md:text-4xl font-bold mb-6 md:mb-8">${escapeHtml(content.key_benefits?.heading || 'Key Benefits')}</h2>
-                    <div class="flex gap-4">
-                        <button onclick="scrollBenefits(-1)" class="w-12 h-12 rounded-full bg-white text-black flex items-center justify-center hover:bg-gray-200 transition-colors">
-                            <i data-lucide="arrow-left"></i>
+                    <h2 class="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold mb-4 sm:mb-5 md:mb-6 lg:mb-8 leading-tight">${escapeHtml(content.key_benefits?.heading || 'Key Benefits')}</h2>
+                    <div class="flex gap-3 md:gap-4 mb-4 sm:mb-0">
+                        <button onclick="scrollBenefits(-1)" class="w-10 h-10 md:w-12 md:h-12 rounded-full bg-white text-black flex items-center justify-center hover:bg-gradient-to-br hover:from-fuchsia-500 hover:to-purple-600 hover:text-white transition-all duration-150 flex-shrink-0">
+                            <i data-lucide="arrow-left" class="w-4 h-4 md:w-5 md:h-5"></i>
                         </button>
-                        <button onclick="scrollBenefits(1)" class="w-12 h-12 rounded-full bg-white text-black flex items-center justify-center hover:bg-gray-200 transition-colors">
-                            <i data-lucide="arrow-right"></i>
+                        <button onclick="scrollBenefits(1)" class="w-10 h-10 md:w-12 md:h-12 rounded-full bg-white text-black flex items-center justify-center hover:bg-gradient-to-br hover:from-fuchsia-500 hover:to-purple-600 hover:text-white transition-all duration-150 flex-shrink-0">
+                            <i data-lucide="arrow-right" class="w-4 h-4 md:w-5 md:h-5"></i>
                         </button>
                     </div>
                 </div>
-                <div class="lg:w-2/3 overflow-hidden relative">
-                    <div id="benefits-carousel" class="flex gap-4 md:gap-6 transition-transform duration-500 ease-in-out">
-                        ${(content.key_benefits?.benefits || []).map((benefit: any) => `
-                        <div class="w-full lg:w-[calc(50%-0.75rem)] flex-shrink-0 bg-[#1F2937] p-6 md:p-8 rounded-2xl border border-white/5">
-                            <div class="w-10 h-10 md:w-12 md:h-12 mb-4 md:mb-6 text-fuchsia-500">
-                                <i data-lucide="${escapeHtml(benefit.icon || 'cpu')}" class="w-8 h-8 md:w-10 md:h-10"></i>
-                            </div>
-                            <h3 class="text-lg md:text-xl font-bold mb-3 md:mb-4">${escapeHtml(benefit.title || '')}</h3>
-                            <p class="text-sm md:text-base text-gray-400 leading-relaxed">
-                                ${escapeHtml(benefit.description || '')}
-                            </p>
-                        </div>
-                        `).join('')}
+                <div class="lg:w-2/3 overflow-hidden">
+                    <div id="benefits-carousel" class="flex transition-transform duration-500 ease-in-out">
+                        ${(content.key_benefits?.benefits || []).map((benefit: any) => {
+                            return '<div class="w-full lg:w-[calc(50%-12px)] flex-shrink-0 mr-4 md:mr-6 bg-[#1F2937] p-4 sm:p-5 md:p-6 lg:p-8 rounded-xl sm:rounded-2xl border border-white/5">' +
+                                '<div class="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 mb-3 sm:mb-4 md:mb-6 text-fuchsia-500 flex-shrink-0">' +
+                                '<i data-lucide="' + escapeHtml(benefit.icon || 'cpu') + '" class="w-6 h-6 sm:w-8 sm:h-8 md:w-10 md:h-10"></i>' +
+                                '</div>' +
+                                '<h3 class="font-bold mb-2 sm:mb-3 md:mb-4 text-white" style="font-size: clamp(18px, 4vw, 24px); line-height: 130%;">' + escapeHtml(benefit.title || '') + '</h3>' +
+                                '<p class="font-medium text-gray-300 sm:text-gray-400" style="font-size: clamp(14px, 3vw, 20px); line-height: 150%;">' +
+                                escapeHtml(benefit.description || '') +
+                                '</p>' +
+                                '</div>'
+                        }).join('')}
+                    </div>
+                    <!-- Navigation Dots -->
+                    <div id="benefits-dots" class="flex gap-2 justify-center mt-6 sm:mt-8">
                     </div>
                 </div>
             </div>
@@ -246,21 +252,20 @@ function generateHTMLPage(content: any): string {
     <!-- Services Grid -->
     <section class="py-20 bg-[#050505]">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-12 md:mb-16">
-                <h2 class="text-2xl md:text-3xl lg:text-4xl font-bold mb-3 md:mb-4">${escapeHtml(content.services?.heading || 'Our Services')}</h2>
-                <p class="text-gray-400 max-w-3xl mx-auto">
-                    ${escapeHtml(content.services?.description || '')}
-                </p>
+            <div class="text-center mb-8 sm:mb-12 md:mb-16">
+                <h2 class="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold mb-3 sm:mb-4">${escapeHtml(content.services?.heading || 'Our Services')}</h2>
+                 <p class="font-medium text-gray-400 max-w-7xl mx-auto" style="font-size: clamp(16px, 3vw, 20px);">
+                     ${escapeHtml(content.services?.description || '')}
+                 </p>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 ${(content.services?.services_list || []).map((service: any) => `
-                <div class="group bg-[#1F2937] hover:bg-[#2d3748] p-8 rounded-2xl relative overflow-hidden transition-all duration-300 cursor-pointer">
-                    <h3 class="text-xl font-bold mb-4">${escapeHtml(service.title || '')}</h3>
-                    <p class="text-gray-400 mb-8 relative z-10">
+                <div class="group bg-[#1F2937] hover:bg-gradient-to-br hover:from-fuchsia-500 hover:to-purple-600 p-5 sm:p-6 md:p-8 rounded-2xl relative overflow-hidden transition-all duration-300 cursor-pointer">
+                    <h3 class="font-bold mb-3 sm:mb-4" style="font-size: clamp(20px, 4vw, 24px); line-height: 130%;">${escapeHtml(service.title || '')}</h3>
+                    <p class="font-medium mb-6 sm:mb-8 relative z-10 text-gray-400 group-hover:text-white transition-colors" style="font-size: clamp(16px, 3vw, 20px);">
                         ${escapeHtml(service.description || '')}
                     </p>
-                    <div class="absolute -bottom-10 -right-10 w-32 h-32 rounded-full bg-gradient-to-br from-fuchsia-500 to-purple-600 opacity-0 scale-0 shadow-none group-hover:opacity-100 group-hover:scale-100 group-hover:shadow-[0_0_30px_rgba(217,70,239,0.6)] transition-all duration-1000 ease-out"></div>
                 </div>
                 `).join('')}
             </div>
@@ -269,22 +274,24 @@ function generateHTMLPage(content: any): string {
 
     <!-- Process Section -->
     <section class="py-20 bg-[#050505]">
-        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-12 md:mb-16">
-                <h2 class="text-2xl md:text-3xl font-bold mb-3 md:mb-4">${escapeHtml(content.process?.heading || 'Our Process')}</h2>
-                <p class="text-gray-400">
-                    ${escapeHtml(content.process?.description || '')}
-                </p>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-8 sm:mb-12 md:mb-16">
+                <h2 class="text-xl sm:text-2xl md:text-3xl font-bold mb-3 sm:mb-4">${escapeHtml(content.process?.heading || 'Our Process')}</h2>
+                 <p class="font-medium text-center text-gray-400" style="font-size: clamp(16px, 3vw, 20px);">
+                     ${escapeHtml(content.process?.description || '')}
+                 </p>
             </div>
 
             <div class="space-y-4">
                 ${(content.process?.steps || []).map((step: any) => `
-                <div class="group bg-[#181818] hover:bg-gradient-to-r hover:from-fuchsia-500 hover:to-purple-600 rounded-2xl p-8 flex flex-col md:flex-row items-start md:items-center gap-8 border border-white/5 transition-all duration-300 cursor-pointer">
-                    <div class="text-6xl font-bold text-white group-hover:text-white/90 transition-colors">${escapeHtml(step.number || '')}</div>
+                <div class="group bg-[#181818] hover:bg-gradient-to-r hover:from-fuchsia-500 hover:to-purple-600 rounded-2xl p-5 sm:p-6 md:p-8 flex flex-col md:flex-row items-start md:items-center gap-4 sm:gap-6 md:gap-8 border border-white/5 transition-all duration-300 cursor-pointer">
+                    <div class="font-bold text-white group-hover:text-white/90 transition-colors" style="font-size: clamp(40px, 8vw, 64px);">${escapeHtml(step.number || '')}</div>
+                    <div class="flex-shrink-0 w-full md:w-64">
+                        <h3 class="font-bold mb-2 md:mb-0" style="font-size: clamp(20px, 4vw, 24px); line-height: 130%;">${escapeHtml(step.title || '')}</h3>
+                    </div>
                     <div class="flex-1">
-                        <h3 class="text-xl font-bold mb-1">${escapeHtml(step.title || '')}</h3>
-                        <h4 class="text-lg font-semibold mb-2 text-white group-hover:text-white/90 transition-colors">${escapeHtml(step.subtitle || '')}</h4>
-                        <p class="text-sm text-gray-400 group-hover:text-white/80 transition-colors">
+                        <h4 class="font-bold mb-2 text-white group-hover:text-white/90 transition-colors" style="font-size: clamp(18px, 3vw, 20px);">${escapeHtml(step.subtitle || '')}</h4>
+                        <p class="font-medium text-gray-400 group-hover:text-white/80 transition-colors" style="font-size: clamp(16px, 2.5vw, 18px);">
                             ${escapeHtml(step.description || '')}
                         </p>
                     </div>
@@ -295,36 +302,36 @@ function generateHTMLPage(content: any): string {
     </section>
 
     <!-- White CTA Box -->
-    <section class="py-20 px-4">
-        <div class="max-w-6xl mx-auto bg-white rounded-3xl p-12 md:p-20 text-center">
-            <h2 class="text-2xl md:text-3xl lg:text-4xl font-bold text-black mb-6 md:mb-8 leading-tight">
+    <section class="py-12 sm:py-16 md:py-20 px-4">
+        <div class="max-w-6xl mx-auto bg-white rounded-2xl sm:rounded-3xl p-6 sm:p-8 md:p-12 lg:p-20 text-center">
+            <h2 class="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-black mb-4 sm:mb-6 md:mb-8 leading-tight">
                 ${escapeHtml(content.white_cta?.heading || '')}
             </h2>
-            <p class="text-gray-600 mb-10 max-w-4xl mx-auto">
+            <p class="font-medium mb-6 sm:mb-8 md:mb-10 max-w-4xl mx-auto text-center text-gray-600" style="font-size: clamp(16px, 3vw, 20px);">
                 ${escapeHtml(content.white_cta?.description || '')}
             </p>
-            <a href="${escapeHtml(content.white_cta?.cta_link || 'https://brandstory.in/contact-us/')}" class="group inline-flex items-center gap-2 bg-[#111] text-white px-8 py-4 rounded-full font-semibold hover:bg-black hover:scale-105 hover:shadow-lg transition-all duration-300 ease-in-out">
-                <i data-lucide="chevron-right" class="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300"></i>
-                ${escapeHtml(content.white_cta?.cta_text || 'Book Your Free Consultation Now!')}
+            <a href="${escapeHtml(content.white_cta?.cta_link || 'https://brandstory.in/contact-us/')}" class="group inline-flex items-center gap-2 bg-[#111] text-white px-6 sm:px-8 py-3 sm:py-4 rounded-full font-semibold hover:bg-gradient-to-br hover:from-fuchsia-500 hover:to-purple-600 hover:shadow-lg transition-all duration-300 ease-in-out text-sm sm:text-base">
+                <i data-lucide="chevron-right" class="w-4 h-4 sm:w-5 sm:h-5 group-hover:translate-x-1 transition-transform duration-300"></i>
+                <span class="whitespace-nowrap">${escapeHtml(content.white_cta?.cta_text || 'Book Your Free Consultation Now!')}</span>
             </a>
         </div>
     </section>
 
     <!-- Why GEO Essential -->
-    <section class="py-20 bg-[#050505]">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col lg:flex-row gap-16">
+    <section class="py-12 sm:py-16 md:py-20 bg-[#050505]">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col lg:flex-row gap-8 sm:gap-12 md:gap-16">
             <div class="lg:w-1/2">
-                <h2 class="text-3xl md:text-4xl font-bold mb-6 md:mb-8">${escapeHtml(content.why_essential?.heading || 'Why This Is Essential')}</h2>
-                <p class="text-gray-400 mb-6 leading-relaxed">
+                <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 sm:mb-6 md:mb-8">${escapeHtml(content.why_essential?.heading || 'Why This Is Essential')}</h2>
+                <p class="font-medium mb-4 sm:mb-6 text-gray-400" style="font-size: clamp(16px, 3vw, 20px);">
                     ${escapeHtml(content.why_essential?.description || '')}
                 </p>
             </div>
             <div class="lg:w-1/2">
-                <ul class="space-y-6">
+                <ul class="space-y-4 sm:space-y-6">
                     ${(content.why_essential?.points || []).map((point: string) => `
                     <li class="flex items-start gap-3">
-                        <div class="w-1.5 h-1.5 rounded-full bg-white mt-2.5"></div>
-                        <p class="text-gray-300">${escapeHtml(point)}</p>
+                        <div class="w-1.5 h-1.5 rounded-full bg-white mt-2.5 flex-shrink-0"></div>
+                        <p class="font-medium text-gray-300" style="font-size: clamp(16px, 3vw, 20px);">${escapeHtml(point)}</p>
                     </li>
                     `).join('')}
                 </ul>
@@ -333,28 +340,28 @@ function generateHTMLPage(content: any): string {
     </section>
 
     <!-- Why GEO Essential with Accordion -->
-    <section class="py-20 bg-[#0a0a1a]">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col lg:flex-row gap-16">
+    <section class="py-12 sm:py-16 md:py-20 bg-[#0a0a1a]">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col lg:flex-row gap-8 sm:gap-12 md:gap-16">
             <div class="lg:w-1/2">
-                <h2 class="text-3xl md:text-4xl font-bold mb-6 md:mb-8">${escapeHtml(content.why_essential_accordion?.heading || 'Why This Is Essential')}</h2>
-                <p class="text-gray-400 mb-6 leading-relaxed">
-                    ${escapeHtml(content.why_essential_accordion?.description || '')}
-                </p>
+                <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 sm:mb-6 md:mb-8">${escapeHtml(content.why_essential_accordion?.heading || 'Why This Is Essential')}</h2>
+                 <p class="font-medium mb-4 sm:mb-6 text-gray-400" style="font-size: clamp(16px, 3vw, 20px); letter-spacing: 0%;">
+                     ${escapeHtml(content.why_essential_accordion?.description || '')}
+                 </p>
             </div>
-            <div class="lg:w-1/2 space-y-8">
+            <div class="lg:w-1/2 space-y-4 sm:space-y-6 md:space-y-8">
                 ${(content.why_essential_accordion?.items || []).map((item: any, index: number) => `
                 <div class="bg-[#1F2937] rounded-lg overflow-hidden">
-                    <div class="p-4 flex justify-between items-center cursor-pointer hover:bg-[#2d3748] transition-colors duration-200" onclick="toggleAccordion(${index})">
-                        <span class="font-bold">${escapeHtml(item.title || '')}</span>
-                        <button id="accordion-btn-${index}" class="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 transition-all duration-300 ease-in-out bg-white text-black">
-                            <svg id="accordion-icon-${index}" class="w-4 h-4 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div class="p-3 sm:p-4 flex justify-between items-center cursor-pointer hover:bg-[#2d3748] transition-colors duration-200" onclick="toggleAccordion(${index})">
+                        <span class="font-bold capitalize pr-2 sm:pr-4" style="font-size: clamp(18px, 4vw, 24px); line-height: 130%;">${escapeHtml(item.title || '')}</span>
+                        <button id="accordion-btn-${index}" class="w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center flex-shrink-0 transition-all duration-300 ease-in-out bg-white text-black">
+                            <svg id="accordion-icon-${index}" class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
                             </svg>
                         </button>
                     </div>
                     <div id="accordion-content-${index}" class="grid overflow-hidden" style="grid-template-rows: 0fr; transition: grid-template-rows 0.6s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s ease-in-out; opacity: 0;">
                         <div class="min-h-0 overflow-hidden">
-                            <div class="p-4 pt-0 text-sm text-gray-400">
+                            <div class="p-3 sm:p-4 pt-3 sm:pt-4 text-gray-400" style="font-size: clamp(16px, 2.5vw, 18px); letter-spacing: 0%;">
                                 ${escapeHtml(item.content || '')}
                             </div>
                         </div>
@@ -366,21 +373,17 @@ function generateHTMLPage(content: any): string {
     </section>
 
     <!-- Testimonials -->
-    <section class="py-20 bg-white">
+    <section class="py-12 sm:py-16 md:py-20 bg-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12 md:gap-16">
                 <div>
-                    <h2 class="text-3xl md:text-4xl font-bold mb-6 md:mb-8 text-black">${escapeHtml(content.testimonials?.heading || 'What Clients Say')}</h2>
-                    <div class="flex gap-4 mb-12">
-                        <button onclick="scrollTestimonials(-1)" class="group w-12 h-12 rounded-full border-2 border-black flex items-center justify-center hover:bg-black transition-colors duration-200">
-                            <svg class="w-5 h-5 text-black group-hover:text-white transition-colors duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
-                            </svg>
+                    <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 sm:mb-6 md:mb-8 text-black">${escapeHtml(content.testimonials?.heading || 'What Clients Say')}</h2>
+                    <div class="flex gap-3 sm:gap-4 mb-8 sm:mb-12">
+                        <button onclick="scrollTestimonials(-1)" class="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-black text-white flex items-center justify-center hover:bg-gradient-to-br hover:from-fuchsia-500 hover:to-purple-600 transition-all duration-150">
+                            <i data-lucide="arrow-left" class="w-4 h-4 sm:w-5 sm:h-5"></i>
                         </button>
-                        <button onclick="scrollTestimonials(1)" class="group w-12 h-12 rounded-full border-2 border-black flex items-center justify-center hover:bg-black transition-colors duration-200">
-                            <svg class="w-5 h-5 text-black group-hover:text-white transition-colors duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-                            </svg>
+                        <button onclick="scrollTestimonials(1)" class="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-black text-white flex items-center justify-center hover:bg-gradient-to-br hover:from-fuchsia-500 hover:to-purple-600 transition-all duration-150">
+                            <i data-lucide="arrow-right" class="w-4 h-4 sm:w-5 sm:h-5"></i>
                         </button>
                     </div>
                 </div>
@@ -389,17 +392,17 @@ function generateHTMLPage(content: any): string {
                     <div class="overflow-hidden w-full">
                         <div id="testimonials-carousel" class="flex transition-transform duration-500 ease-in-out">
                             ${(content.testimonials?.testimonials_list || []).map((testimonial: any) => `
-                            <div class="min-w-full w-full flex-shrink-0 px-2">
-                                <div class="bg-[#111] p-8 rounded-2xl border border-gray-200">
-                                    <svg class="w-10 h-10 text-gray-600 mb-4" fill="currentColor" viewBox="0 0 24 24">
+                            <div class="min-w-full w-full flex-shrink-0 px-1 sm:px-2">
+                                <div class="bg-[#111] p-5 sm:p-6 md:p-8 rounded-2xl border border-gray-200 h-full flex flex-col">
+                                    <svg class="w-8 h-8 sm:w-10 sm:h-10 text-gray-600 mb-3 sm:mb-4 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24">
                                         <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.608l.996 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.984zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.608l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/>
                                     </svg>
-                                    <p class="text-lg mb-6 text-white">
+                                    <p class="mb-4 sm:mb-6 text-white flex-grow" style="font-size: clamp(16px, 3vw, 20px);">
                                         ${escapeHtml(testimonial.quote || '')}
                                     </p>
-                                    <div class="flex items-center gap-2">
-                                        <div class="w-8 h-0.5 bg-white"></div>
-                                        <span class="font-bold text-white">${escapeHtml(testimonial.author || '')}</span>
+                                    <div class="flex items-center gap-2 mt-auto">
+                                        <div class="w-6 sm:w-8 h-0.5 bg-white"></div>
+                                        <span class="font-bold text-white text-sm sm:text-base">${escapeHtml(testimonial.author || '')}</span>
                                     </div>
                                 </div>
                             </div>
@@ -417,23 +420,23 @@ function generateHTMLPage(content: any): string {
     </section>
 
     <!-- FAQ Section -->
-    <section class="py-20 bg-[#050505]">
-        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 class="text-3xl md:text-4xl font-bold text-center mb-8 md:mb-12">FAQ's</h2>
-            <div class="space-y-4">
+    <section class="py-12 sm:py-16 md:py-20 bg-[#050505]">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold text-center mb-6 sm:mb-8 md:mb-12">FAQ's</h2>
+            <div class="space-y-3 sm:space-y-4">
                 ${(content.faqs?.faqs_list || []).map((faq: any, index: number) => `
                 <div class="bg-[#1F2937] rounded-lg overflow-hidden">
-                    <div class="p-5 flex justify-between items-center cursor-pointer hover:bg-[#2d3748] transition-colors duration-200" onclick="toggleFAQ(${index})">
-                        <span class="font-bold text-base md:text-lg pr-4">${escapeHtml(faq.question || '')}</span>
-                        <button id="faq-btn-${index}" class="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 transition-all duration-300 ease-in-out bg-white text-black">
-                            <svg id="faq-icon-${index}" class="w-4 h-4 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div class="p-4 sm:p-5 flex justify-between items-center cursor-pointer hover:bg-[#2d3748] transition-colors duration-200" onclick="toggleFAQ(${index})">
+                        <span class="font-bold capitalize pr-2 sm:pr-4 text-left" style="font-size: clamp(18px, 4vw, 24px); line-height: 140%; letter-spacing: 0%;">${escapeHtml(faq.question || '')}</span>
+                        <button id="faq-btn-${index}" class="w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center flex-shrink-0 transition-all duration-300 ease-in-out bg-white text-black">
+                            <svg id="faq-icon-${index}" class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
                             </svg>
                         </button>
                     </div>
                     <div id="faq-content-${index}" class="grid overflow-hidden" style="grid-template-rows: ${faq.expanded ? '1fr' : '0fr'}; transition: grid-template-rows 0.6s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s ease-in-out; opacity: ${faq.expanded ? '1' : '0'};">
                         <div class="min-h-0 overflow-hidden">
-                            <div class="p-5 pt-0 text-gray-400">
+                            <div class="p-4 sm:p-5 pt-3 sm:pt-4" style="font-size: clamp(16px, 3vw, 20px); line-height: 140%; letter-spacing: 0%; color: #9CA3AF;">
                                 ${escapeHtml(faq.answer || '')}
                             </div>
                         </div>
@@ -452,17 +455,65 @@ function generateHTMLPage(content: any): string {
 
         // Benefits carousel
         let currentBenefitsIndex = 0
-        const benefitsCount = ${(content.key_benefits?.benefits || []).length}
+        const totalCards = ${(content.key_benefits?.benefits || []).length}
+        
+        function isDesktop() {
+            return window.innerWidth >= 1024
+        }
+        
+        function getMaxIndex() {
+            return isDesktop() ? Math.max(0, totalCards - 2) : Math.max(0, totalCards - 1)
+        }
+        
+        function updateCarousel() {
+            const carousel = document.getElementById('benefits-carousel')
+            if (!carousel) return
+            
+            const maxIndex = getMaxIndex()
+            if (currentBenefitsIndex > maxIndex) currentBenefitsIndex = maxIndex
+            
+            if (isDesktop()) {
+                carousel.style.transform = \`translateX(calc(-\${currentBenefitsIndex} * (50% + 12px)))\`
+            } else {
+                carousel.style.transform = \`translateX(calc(-\${currentBenefitsIndex} * (100% + 16px)))\`
+            }
+            
+            // Update dots
+            updateDots()
+        }
+        
+        function updateDots() {
+            const dotsContainer = document.getElementById('benefits-dots')
+            if (!dotsContainer) return
+            
+            const numDots = isDesktop() ? Math.max(1, totalCards - 1) : totalCards
+            dotsContainer.innerHTML = ''
+            
+            for (let i = 0; i < numDots; i++) {
+                const dot = document.createElement('button')
+                dot.className = \`h-2 rounded-full transition-all duration-300 cursor-pointer \${i === currentBenefitsIndex ? 'bg-fuchsia-500 w-8' : 'bg-gray-600 w-2 hover:bg-gray-500 hover:w-4'}\`
+                dot.onclick = () => goToBenefits(i)
+                dotsContainer.appendChild(dot)
+            }
+        }
+        
         function scrollBenefits(direction) {
-            const maxIndex = Math.ceil(benefitsCount / 2) - 1
+            const maxIndex = getMaxIndex()
             currentBenefitsIndex += direction
             if (currentBenefitsIndex < 0) currentBenefitsIndex = maxIndex
             if (currentBenefitsIndex > maxIndex) currentBenefitsIndex = 0
-            
-            const carousel = document.getElementById('benefits-carousel')
-            const offset = window.innerWidth >= 1024 ? \`calc(-\${currentBenefitsIndex} * (50% + 0.75rem))\` : \`-\${currentBenefitsIndex * 100}%\`
-            carousel.style.transform = \`translateX(\${offset})\`
+            updateCarousel()
         }
+        
+        function goToBenefits(index) {
+            const maxIndex = getMaxIndex()
+            if (index < 0 || index > maxIndex) return
+            currentBenefitsIndex = index
+            updateCarousel()
+        }
+        
+        window.addEventListener('resize', updateCarousel)
+        setTimeout(updateCarousel, 100)
 
         // Testimonials carousel
         let currentTestimonial = 0
@@ -600,7 +651,7 @@ CRITICAL: Generate ALL sections. All sections are required:
 2. Intro (paragraph_1, paragraph_2)
 3. Reviews (heading, description, logos array with image and alt)
 4. Track Record (heading, 4 stats with title and description)
-5. Key Benefits (heading, 4 benefits with icon, title, description)
+5. Key Benefits (heading, 6 benefits with icon, title, description)
 6. Services (heading, description, 6 services with title and description)
 7. Process (heading, description, 5 steps with number, title, subtitle, description)
 8. White CTA (heading, description, cta_text, cta_link)
@@ -653,7 +704,9 @@ IMPORTANT:
       {"icon": "cpu", "title": "Generate specific benefit title", "description": "Detailed description (3-4 sentences, 60-100 words)"},
       {"icon": "search", "title": "Generate another benefit title", "description": "Detailed description (3-4 sentences, 60-100 words)"},
       {"icon": "zap", "title": "Generate another benefit title", "description": "Detailed description (3-4 sentences, 60-100 words)"},
-      {"icon": "trending-up", "title": "Generate another benefit title", "description": "Detailed description (3-4 sentences, 60-100 words)"}
+      {"icon": "trending-up", "title": "Generate another benefit title", "description": "Detailed description (3-4 sentences, 60-100 words)"},
+      {"icon": "target", "title": "Generate another benefit title", "description": "Detailed description (3-4 sentences, 60-100 words)"},
+      {"icon": "globe", "title": "Generate another benefit title", "description": "Detailed description (3-4 sentences, 60-100 words)"}
     ]
   },
   "services": {

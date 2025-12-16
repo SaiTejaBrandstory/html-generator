@@ -8,6 +8,7 @@ export default function LandingPage1() {
   const [openAccordion, setOpenAccordion] = useState<number | null>(0) // First accordion open by default
   const [currentTestimonial, setCurrentTestimonial] = useState(0) // Current testimonial index
   const [currentBenefitsIndex, setCurrentBenefitsIndex] = useState(0) // Current benefits carousel index
+  const [isDesktop, setIsDesktop] = useState(true) // Track screen size for carousel
   useEffect(() => {
     // Add font link
     let linkElement: HTMLLinkElement | null = null
@@ -80,6 +81,14 @@ export default function LandingPage1() {
           animation: scroll-right 40s linear infinite;
           will-change: transform;
         }
+        .benefits-carousel-simple {
+          transform: translateX(0);
+        }
+        @media (max-width: 1023px) {
+          .benefits-carousel-simple {
+            transform: translateX(0) !important;
+          }
+        }
         .benefits-carousel {
           --carousel-offset: 100%;
         }
@@ -123,7 +132,26 @@ export default function LandingPage1() {
         }
       }
     }
+
   }, [])
+
+  // Track screen size for carousel
+  useEffect(() => {
+    const checkScreenSize = () => {
+      setIsDesktop(window.innerWidth >= 1024)
+    }
+    checkScreenSize()
+    window.addEventListener('resize', checkScreenSize)
+    return () => window.removeEventListener('resize', checkScreenSize)
+  }, [])
+
+  // Reset carousel index when switching screen sizes
+  useEffect(() => {
+    const maxIndex = isDesktop ? 4 : 5
+    if (currentBenefitsIndex > maxIndex) {
+      setCurrentBenefitsIndex(maxIndex)
+    }
+  }, [isDesktop, currentBenefitsIndex])
 
 
   return (
@@ -131,26 +159,43 @@ export default function LandingPage1() {
         {/* Hero Section */}
         <section className="relative pt-20 pb-20 lg:pt-32 lg:pb-32 bg-gradient-hero overflow-hidden">
           {/* Background Grid Effect */}
-          <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20"></div>
-          <div className="absolute inset-0" style={{backgroundImage: 'linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px)', backgroundSize: '50px 50px', maskImage: 'radial-gradient(circle at center, black, transparent 80%)'}}></div>
+          <div className="absolute inset-0 bg-[url('/assets/images/template-2/hero-banner.png')] bg-cover bg-center bg-no-repeat opacity-80"></div>
 
           <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center z-10">
-            <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-white leading-tight mb-8">
-              Generative Engine Optimization Services In Bangalore For AI-First Visibility
+            <h1 
+              className="font-bold text-center capitalize mb-6 md:mb-8"
+              style={{ 
+                color: '#F0EFEE', 
+                fontSize: 'clamp(24px, 5vw, 52px)', 
+                lineHeight: '120%', 
+                letterSpacing: '0%' 
+              }}
+            >
+              Generative Engine Optimization Services in Bangalore for AI-First Visibility
             </h1>
             
-            <div className="flex justify-center mb-12 md:mb-20">
-              <a href="https://brandstory.in/contact-us/" className="group flex items-center gap-2 md:gap-3 px-4 md:px-8 py-3 md:py-4 rounded-full border border-white/20 hover:border-fuchsia-500 bg-white/5 hover:bg-white/10 transition-all duration-300 text-sm md:text-lg font-medium">
-                <span>Book Your Free GEO Consultation Now!</span>
-                <i data-lucide="chevron-right" className="w-4 h-4 md:w-5 md:h-5 text-fuchsia-500 group-hover:translate-x-1 transition-transform flex-shrink-0"></i>
+            <div className="flex justify-center mb-8 md:mb-12 lg:mb-20">
+              <a href="https://brandstory.in/contact-us/" className="group flex items-center gap-2 md:gap-3 px-4 md:px-8 py-2.5 md:py-3 lg:py-4 rounded-full border border-white/20 hover:border-fuchsia-500 bg-white/5 hover:bg-white/10 transition-all duration-300 text-xs sm:text-sm md:text-base lg:text-lg font-medium">
+                <span className="whitespace-nowrap">Book Your Free GEO Consultation Now!</span>
+                <i data-lucide="chevron-right" className="w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5 text-fuchsia-500 group-hover:translate-x-1 transition-transform flex-shrink-0"></i>
               </a>
             </div>
           </div>
 
           {/* Client Logos Carousel Section - Full Width */}
           <div className="relative w-full mt-16 pb-12">
-            <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 mb-8">
-              <p className="text-lg text-gray-400 text-center">Trusted By 500+ Brands Across India</p>
+            <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 mb-12 md:mb-16">
+              <p 
+                className="text-center capitalize font-semibold"
+                style={{ 
+                  color: '#FFFFFF', 
+                  fontSize: '22px', 
+                  lineHeight: '130%', 
+                  letterSpacing: '0%' 
+                }}
+              >
+                Trusted by 500+ Brands Across India
+              </p>
             </div>
             
             {/* Infinite Carousel - Row 1 (Logos 1-10, scrolling left) */}
@@ -195,11 +240,27 @@ export default function LandingPage1() {
 
         {/* Intro Text */}
         <section className="py-20 bg-[#0a0a0a]">
-          <div className="max-w-4xl mx-auto px-4 text-center">
-            <p className="text-lg md:text-xl text-gray-300 leading-relaxed mb-8">
+          <div className="max-w-6xl mx-auto px-4 text-center">
+            <p 
+              className="font-medium mb-8"
+              style={{ 
+                color: '#FFFFFF', 
+                fontSize: 'clamp(16px, 2.5vw, 20px)', 
+                lineHeight: '160%', 
+                letterSpacing: '0%' 
+              }}
+            >
               AI search is already transforming how people find and engage with brands. From ChatGPT to Google SGE, generative engines now shape the buying journey. BrandStory helps you lead in this space. As a top-rated Generative Engine Optimization company in Bangalore, we build structured content systems. It increases visibility, strengthens digital identity and shows your brand up in the answers where it matters.
             </p>
-            <p className="text-lg md:text-xl text-gray-300 leading-relaxed">
+            <p 
+              className="font-medium"
+              style={{ 
+                color: '#FFFFFF', 
+                fontSize: 'clamp(16px, 2.5vw, 20px)', 
+                lineHeight: '160%', 
+                letterSpacing: '0%' 
+              }}
+            >
               Traditional SEO is not enough. Being first on Google doesn&apos;t mean being found in AI answers. Forward-thinking businesses focus on how they show up in conversations, not only in search results. With GEO services, BrandStory positions your business for presence in generative engines, not only in search pages.
             </p>
           </div>
@@ -209,45 +270,63 @@ export default function LandingPage1() {
         <section className="py-20 bg-white text-black">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col lg:flex-row items-center justify-between gap-12">
             <div className="lg:w-1/3">
-              <h2 className="text-3xl md:text-4xl font-bold mb-4 md:mb-6">Reviews & Recognition</h2>
-              <p className="text-gray-600 text-base md:text-lg leading-relaxed">
+              <h2 
+                className="font-bold capitalize mb-4 md:mb-6"
+                style={{ 
+                  color: '#000000', 
+                  fontSize: 'clamp(28px, 4vw, 38px)', 
+                  lineHeight: '130%', 
+                  letterSpacing: '0%' 
+                }}
+              >
+                Reviews & Recognition
+              </h2>
+              <p 
+                className="font-medium"
+                style={{ 
+                  color: '#000000', 
+                  fontSize: 'clamp(16px, 2.5vw, 20px)', 
+                  lineHeight: '150%', 
+                  letterSpacing: '0%' 
+                }}
+              >
                 Top-rated on trustable platforms like Clutch, G2, Trustpilot, GoodFirms, and Google Reviews. It shows us how we deliver high-impact GEO and AEO solutions. We are trusted by clients and backed by results.
               </p>
             </div>
-            <div className="lg:w-2/3 grid grid-cols-2 md:grid-cols-3 gap-4">
-              <div className="bg-[#181818] p-4 rounded flex flex-col items-center justify-center h-20">
+            <div className="lg:w-2/3 grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4">
+              <div className="bg-[#181818] p-3 sm:p-4 rounded flex flex-col items-center justify-center h-16 sm:h-20">
                 <img 
                   src="/assets/images/web-development-company/clutch.svg" 
                   alt="Clutch" 
-                  className="w-24 h-12 object-contain"
+                  className="w-20 h-10 sm:w-24 sm:h-12 object-contain"
                 />
               </div>
-              <div className="bg-[#181818] p-4 rounded flex flex-col items-center justify-center h-20">
+              <div className="bg-[#181818] p-3 sm:p-4 rounded flex flex-col items-center justify-center h-16 sm:h-20">
                 <img 
                   src="/assets/images/geo-location/g2.svg" 
                   alt="G2" 
-                  className="w-24 h-12 object-contain"
+                  className="w-20 h-10 sm:w-24 sm:h-12 object-contain"
                 />
               </div>
-              <div className="bg-[#181818] p-4 rounded flex flex-col items-center justify-center h-20">
+              <div className="bg-[#181818] p-3 sm:p-4 rounded flex flex-col items-center justify-center h-16 sm:h-20">
                 <img 
                   src="/assets/images/geo-location/trust-pilot.svg" 
                   alt="Trustpilot" 
-                  className="w-24 h-12 object-contain"
+                  className="w-20 h-10 sm:w-24 sm:h-12 object-contain"
                 />
               </div>
-              <div className="bg-[#181818] p-4 rounded flex flex-col items-center justify-center h-20">
+              <div className="bg-[#181818] p-3 sm:p-4 rounded flex flex-col items-center justify-center h-16 sm:h-20">
                 <img 
                   src="/assets/images/geo-location/good.svg" 
                   alt="GoodFirms" 
-                  className="w-24 h-12 object-contain"
+                  className="w-20 h-10 sm:w-24 sm:h-12 object-contain"
                 />
               </div>
-              <div className="bg-[#181818] p-4 rounded flex flex-col items-center justify-center h-20">
+              <div className="bg-[#181818] p-3 sm:p-4 rounded flex flex-col items-center justify-center h-16 sm:h-20 col-span-2 sm:col-span-1">
                 <img 
                   src="/assets/images/web-development-company/google-logo.svg" 
                   alt="Google" 
-                  className="w-24 h-12 object-contain"
+                  className="w-20 h-10 sm:w-24 sm:h-12 object-contain"
                 />
               </div>
             </div>
@@ -259,7 +338,17 @@ export default function LandingPage1() {
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-purple-900/20 via-transparent to-transparent"></div>
           
           <div className="max-w-7xl mx-auto px-4 relative z-10">
-            <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 md:mb-20">Our Track Record</h2>
+            <h2 
+              className="font-bold text-center capitalize mb-12 md:mb-20"
+              style={{ 
+                color: '#FFFFFF', 
+                fontSize: 'clamp(28px, 4vw, 38px)', 
+                lineHeight: '130%', 
+                letterSpacing: '0%' 
+              }}
+            >
+              Our Track Record
+            </h2>
             
             {/* Orbit Visualization */}
             <div className="relative h-[600px] w-full max-w-4xl mx-auto hidden md:block">
@@ -273,84 +362,92 @@ export default function LandingPage1() {
               </div>
               
               {/* Orbit Rings */}
+              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[100px] h-[100px] rounded-full border border-white/5"></div>
               <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] rounded-full border border-white/5"></div>
               <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] rounded-full border border-white/5"></div>
+              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[1000px] rounded-full border border-white/5"></div>
+              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[1300px] h-[1300px] rounded-full border border-white/5"></div>
+              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[1600px] h-[1600px] rounded-full border border-white/5"></div>
 
               {/* Satellites - All circles with consistent size and positioning */}
               {/* Top Left */}
-              <div className="absolute top-[5%] left-[5%] w-56 h-56 rounded-full bg-white/5 backdrop-blur-sm flex flex-col items-center justify-center text-center p-6 border border-white/10 hover:border-fuchsia-500/50 transition-colors">
-                <h4 className="text-xl font-bold mb-2">Years of Experience</h4>
-                <p className="text-sm text-gray-400">Over 12 years of strategic expertise.</p>
+              <div className="absolute top-[5%] left-[5%] w-56 h-56 rounded-full backdrop-blur-sm flex flex-col items-center justify-center text-center p-6 border border-white/10 hover:border-fuchsia-500/50 transition-colors" style={{ backgroundColor: 'rgba(18, 19, 23, 0.3)' }}>
+                <h4 className="font-bold mb-2 text-center" style={{ color: '#FFFFFF', fontSize: '24px', lineHeight: '130%', letterSpacing: '0%' }}>Years of Experience</h4>
+                <p className="font-medium text-center" style={{ color: '#FFFFFF', fontSize: '16px', lineHeight: '140%', letterSpacing: '0%' }}>Over 12 years of strategic expertise.</p>
               </div>
               {/* Top Right */}
-              <div className="absolute top-[5%] right-[5%] w-56 h-56 rounded-full bg-white/5 backdrop-blur-sm flex flex-col items-center justify-center text-center p-6 border border-white/10 hover:border-fuchsia-500/50 transition-colors">
-                <h4 className="text-xl font-bold mb-2">Expert Team</h4>
-                <p className="text-sm text-gray-400">120+ skilled professionals</p>
+              <div className="absolute top-[5%] right-[5%] w-56 h-56 rounded-full backdrop-blur-sm flex flex-col items-center justify-center text-center p-6 border border-white/10 hover:border-fuchsia-500/50 transition-colors" style={{ backgroundColor: 'rgba(18, 19, 23, 0.3)' }}>
+                <h4 className="font-bold mb-2 text-center" style={{ color: '#FFFFFF', fontSize: '24px', lineHeight: '130%', letterSpacing: '0%' }}>Expert Team</h4>
+                <p className="font-medium text-center" style={{ color: '#FFFFFF', fontSize: '16px', lineHeight: '140%', letterSpacing: '0%' }}>120+ skilled professionals</p>
               </div>
               {/* Bottom Left */}
-              <div className="absolute bottom-[5%] left-[5%] w-56 h-56 rounded-full bg-white/5 backdrop-blur-sm flex flex-col items-center justify-center text-center p-6 border border-white/10 hover:border-fuchsia-500/50 transition-colors">
-                <h4 className="text-xl font-bold mb-2">Client Success</h4>
-                <p className="text-sm text-gray-400">500+ clients with proven search growth.</p>
+              <div className="absolute bottom-[5%] left-[5%] w-56 h-56 rounded-full backdrop-blur-sm flex flex-col items-center justify-center text-center p-6 border border-white/10 hover:border-fuchsia-500/50 transition-colors" style={{ backgroundColor: 'rgba(18, 19, 23, 0.3)' }}>
+                <h4 className="font-bold mb-2 text-center" style={{ color: '#FFFFFF', fontSize: '24px', lineHeight: '130%', letterSpacing: '0%' }}>Client Success</h4>
+                <p className="font-medium text-center" style={{ color: '#FFFFFF', fontSize: '16px', lineHeight: '140%', letterSpacing: '0%' }}>500+ clients with proven search growth.</p>
               </div>
               {/* Bottom Right */}
-              <div className="absolute bottom-[5%] right-[5%] w-56 h-56 rounded-full bg-white/5 backdrop-blur-sm flex flex-col items-center justify-center text-center p-6 border border-white/10 hover:border-fuchsia-500/50 transition-colors">
-                <h4 className="text-xl font-bold mb-2">Industry Reach</h4>
-                <p className="text-sm text-gray-400">Serving 30+ diverse, dynamic industries.</p>
+              <div className="absolute bottom-[5%] right-[5%] w-56 h-56 rounded-full backdrop-blur-sm flex flex-col items-center justify-center text-center p-6 border border-white/10 hover:border-fuchsia-500/50 transition-colors" style={{ backgroundColor: 'rgba(18, 19, 23, 0.3)' }}>
+                <h4 className="font-bold mb-2 text-center" style={{ color: '#FFFFFF', fontSize: '24px', lineHeight: '130%', letterSpacing: '0%' }}>Industry Reach</h4>
+                <p className="font-medium text-center" style={{ color: '#FFFFFF', fontSize: '16px', lineHeight: '140%', letterSpacing: '0%' }}>Serving 30+ diverse, dynamic industries.</p>
               </div>
             </div>
 
             {/* Mobile Stack for Track Record */}
             <div className="md:hidden grid grid-cols-1 gap-6">
-              <div className="bg-white/5 p-8 rounded-2xl text-center border border-white/10">
-                <h4 className="text-xl font-bold mb-2">Years of Experience</h4>
-                <p className="text-gray-400">Over 12 years of strategic expertise.</p>
+              <div className="p-8 rounded-2xl text-center border border-white/10" style={{ backgroundColor: 'rgba(18, 19, 23, 0.3)' }}>
+                <h4 className="font-bold mb-2" style={{ color: '#FFFFFF', fontSize: '24px', lineHeight: '130%' }}>Years of Experience</h4>
+                <p className="font-medium" style={{ color: '#FFFFFF', fontSize: '16px', lineHeight: '140%' }}>Over 12 years of strategic expertise.</p>
               </div>
-              <div className="bg-white/5 p-8 rounded-2xl text-center border border-white/10">
-                <h4 className="text-xl font-bold mb-2">Expert Team</h4>
-                <p className="text-gray-400">120+ skilled professionals</p>
+              <div className="p-8 rounded-2xl text-center border border-white/10" style={{ backgroundColor: 'rgba(18, 19, 23, 0.3)' }}>
+                <h4 className="font-bold mb-2" style={{ color: '#FFFFFF', fontSize: '24px', lineHeight: '130%' }}>Expert Team</h4>
+                <p className="font-medium" style={{ color: '#FFFFFF', fontSize: '16px', lineHeight: '140%' }}>120+ skilled professionals</p>
               </div>
-              <div className="bg-white/5 p-8 rounded-2xl text-center border border-white/10">
-                <h4 className="text-xl font-bold mb-2">Client Success</h4>
-                <p className="text-gray-400">500+ clients with proven search growth.</p>
+              <div className="p-8 rounded-2xl text-center border border-white/10" style={{ backgroundColor: 'rgba(18, 19, 23, 0.3)' }}>
+                <h4 className="font-bold mb-2" style={{ color: '#FFFFFF', fontSize: '24px', lineHeight: '130%' }}>Client Success</h4>
+                <p className="font-medium" style={{ color: '#FFFFFF', fontSize: '16px', lineHeight: '140%' }}>500+ clients with proven search growth.</p>
               </div>
-              <div className="bg-white/5 p-8 rounded-2xl text-center border border-white/10">
-                <h4 className="text-xl font-bold mb-2">Industry Reach</h4>
-                <p className="text-gray-400">Serving 30+ diverse, dynamic industries.</p>
+              <div className="p-8 rounded-2xl text-center border border-white/10" style={{ backgroundColor: 'rgba(18, 19, 23, 0.3)' }}>
+                <h4 className="font-bold mb-2" style={{ color: '#FFFFFF', fontSize: '24px', lineHeight: '130%' }}>Industry Reach</h4>
+                <p className="font-medium" style={{ color: '#FFFFFF', fontSize: '16px', lineHeight: '140%' }}>Serving 30+ diverse, dynamic industries.</p>
               </div>
             </div>
           </div>
         </section>
 
         {/* Key Benefits */}
-        <section className="py-20 bg-[#050505]">
+        <section className="py-12 sm:py-16 md:py-20 bg-[#050505]">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex flex-col lg:flex-row gap-12">
+            <div className="flex flex-col lg:flex-row gap-6 sm:gap-8 md:gap-12">
               <div className="lg:w-1/3">
-                <h2 className="text-3xl md:text-4xl font-bold mb-6 md:mb-8">Key Benefits Of GEO Services For AI Search Engines</h2>
-                <div className="flex gap-4">
+                <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold mb-4 sm:mb-5 md:mb-6 lg:mb-8 leading-tight">Key Benefits Of GEO Services For AI Search Engines</h2>
+                <div className="flex gap-3 md:gap-4 mb-4 sm:mb-0">
                   <button 
                     onClick={() => {
-                      setCurrentBenefitsIndex((prev) => (prev === 0 ? 1 : prev - 1))
+                      const maxIndex = isDesktop ? 4 : 5
+                      setCurrentBenefitsIndex((prev) => (prev === 0 ? maxIndex : prev - 1))
                     }}
-                    className="w-12 h-12 rounded-full bg-white text-black flex items-center justify-center hover:bg-gray-200 transition-colors"
+                    className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-white text-black flex items-center justify-center hover:bg-gradient-to-br hover:from-fuchsia-500 hover:to-purple-600 hover:text-white transition-all duration-150 flex-shrink-0"
                   >
-                    <i data-lucide="arrow-left"></i>
+                    <i data-lucide="arrow-left" className="w-4 h-4 md:w-5 md:h-5"></i>
                   </button>
                   <button 
                     onClick={() => {
-                      setCurrentBenefitsIndex((prev) => (prev === 1 ? 0 : prev + 1))
+                      const maxIndex = isDesktop ? 4 : 5
+                      setCurrentBenefitsIndex((prev) => (prev === maxIndex ? 0 : prev + 1))
                     }}
-                    className="w-12 h-12 rounded-full bg-white text-black flex items-center justify-center hover:bg-gray-200 transition-colors"
+                    className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-white text-black flex items-center justify-center hover:bg-gradient-to-br hover:from-fuchsia-500 hover:to-purple-600 hover:text-white transition-all duration-150 flex-shrink-0"
                   >
-                    <i data-lucide="arrow-right"></i>
+                    <i data-lucide="arrow-right" className="w-4 h-4 md:w-5 md:h-5"></i>
                   </button>
                 </div>
               </div>
-              <div className="lg:w-2/3 overflow-hidden relative">
+              <div className="lg:w-2/3 overflow-hidden">
                 <div 
-                  className="flex gap-4 md:gap-6 transition-transform duration-500 ease-in-out benefits-carousel"
+                  className="flex transition-transform duration-500 ease-in-out"
                   style={{ 
-                    transform: `translateX(calc(-${currentBenefitsIndex} * var(--carousel-offset)))`
+                    transform: isDesktop 
+                      ? `translateX(calc(-${currentBenefitsIndex} * (50% + 12px)))` 
+                      : `translateX(calc(-${currentBenefitsIndex} * (100% + 16px)))`
                   }}
                 >
                   {[
@@ -373,17 +470,53 @@ export default function LandingPage1() {
                       icon: 'trending-up',
                       title: 'Future-Proof Your SEO Strategy',
                       description: 'Stay ahead of the curve as AI search becomes the dominant discovery method, ensuring your brand remains visible in the evolving digital landscape.'
+                    },
+                    {
+                      icon: 'target',
+                      title: 'Entity Recognition & Optimization',
+                      description: 'Enhance your brand\'s entity recognition across AI systems by optimizing structured data, knowledge graphs, and semantic relationships that AI engines use to understand and recommend your brand.'
+                    },
+                    {
+                      icon: 'globe',
+                      title: 'Multi-Platform AI Presence',
+                      description: 'Expand your visibility across multiple AI platforms including ChatGPT, Google SGE, Bing Copilot, and other emerging AI search engines, ensuring comprehensive brand coverage.'
                     }
                   ].map((benefit, index) => (
-                    <div key={index} className="w-full lg:w-[calc(50%-0.75rem)] flex-shrink-0 bg-[#1F2937] p-6 md:p-8 rounded-2xl border border-white/5">
-                      <div className="w-10 h-10 md:w-12 md:h-12 mb-4 md:mb-6 text-fuchsia-500">
-                        <i data-lucide={benefit.icon} className="w-8 h-8 md:w-10 md:h-10"></i>
+                    <div 
+                      key={index} 
+                      className="w-full lg:w-[calc(50%-12px)] flex-shrink-0 mr-4 md:mr-6 bg-[#1F2937] p-4 sm:p-5 md:p-6 lg:p-8 rounded-xl sm:rounded-2xl border border-white/5"
+                    >
+                      <div className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 mb-3 sm:mb-4 md:mb-6 text-fuchsia-500 flex-shrink-0">
+                        <i data-lucide={benefit.icon} className="w-6 h-6 sm:w-8 sm:h-8 md:w-10 md:h-10"></i>
                       </div>
-                      <h3 className="text-lg md:text-xl font-bold mb-3 md:mb-4">{benefit.title}</h3>
-                      <p className="text-sm md:text-base text-gray-400 leading-relaxed">
+                      <h3 
+                        className="font-bold mb-2 sm:mb-3 md:mb-4 text-white"
+                        style={{ fontSize: 'clamp(18px, 4vw, 24px)', lineHeight: '130%' }}
+                      >
+                        {benefit.title}
+                      </h3>
+                      <p 
+                        className="font-medium text-gray-300 sm:text-gray-400"
+                        style={{ fontSize: 'clamp(14px, 3vw, 20px)', lineHeight: '150%' }}
+                      >
                         {benefit.description}
                       </p>
                     </div>
+                  ))}
+                </div>
+                {/* Navigation Dots */}
+                <div className="flex gap-2 justify-center mt-6 sm:mt-8">
+                  {Array.from({ length: isDesktop ? 5 : 6 }).map((_, index) => (
+                    <button
+                      key={index}
+                      onClick={() => setCurrentBenefitsIndex(index)}
+                      className={`h-2 rounded-full transition-all duration-300 cursor-pointer ${
+                        currentBenefitsIndex === index
+                          ? 'bg-fuchsia-500 w-6 sm:w-8'
+                          : 'bg-gray-600 w-2 hover:bg-gray-500 hover:w-3 sm:hover:w-4'
+                      }`}
+                      aria-label={`Go to benefits position ${index + 1}`}
+                    />
                   ))}
                 </div>
               </div>
@@ -394,61 +527,106 @@ export default function LandingPage1() {
         {/* Services Grid */}
         <section className="py-20 bg-[#050505]">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-12 md:mb-16">
-              <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-3 md:mb-4">BrandStory&apos;s Generative Engine Optimization Services For AI Search Engines</h2>
-              <p className="text-gray-400 max-w-3xl mx-auto">
+            <div className="text-center mb-8 sm:mb-12 md:mb-16">
+              <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold mb-3 sm:mb-4">BrandStory&apos;s Generative Engine Optimization Services For AI Search Engines</h2>
+              <p 
+                className="font-medium text-gray-400 max-w-7xl mx-auto"
+                style={{ fontSize: 'clamp(16px, 3vw, 20px)' }}
+              >
                 Stay discoverable in AI-first search. Our GEO services position your brand across AI Overviews, answer engines, and voice platforms through structured, entity-rich, and semantically intelligent content.
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
               {/* Service Card 1 */}
-              <div className="group bg-[#1F2937] hover:bg-[#2d3748] p-8 rounded-2xl relative overflow-hidden transition-all duration-300 cursor-pointer">
-                <h3 className="text-xl font-bold mb-4">Answer Engine Optimization (AEO)</h3>
-                <p className="text-gray-400 mb-8 relative z-10">
+              <div className="group bg-[#1F2937] hover:bg-gradient-to-br hover:from-fuchsia-500 hover:to-purple-600 p-5 sm:p-6 md:p-8 rounded-2xl relative overflow-hidden transition-all duration-300 cursor-pointer">
+                <h3 
+                  className="font-bold mb-3 sm:mb-4"
+                  style={{ fontSize: 'clamp(20px, 4vw, 24px)', lineHeight: '130%' }}
+                >
+                  Answer Engine Optimization (AEO)
+                </h3>
+                <p 
+                  className="font-medium mb-6 sm:mb-8 relative z-10 text-gray-400 group-hover:text-white transition-colors"
+                  style={{ fontSize: 'clamp(16px, 3vw, 20px)' }}
+                >
                   Optimize for AI-generated answers on platforms like Google AI Overviews and Bing Copilot. Align content with high-intent, zero-click queries using structured formats and intent mapping.
                 </p>
-                <div className="absolute -bottom-10 -right-10 w-32 h-32 rounded-full bg-gradient-to-br from-fuchsia-500 to-purple-600 opacity-0 scale-0 shadow-none group-hover:opacity-100 group-hover:scale-100 group-hover:shadow-[0_0_30px_rgba(217,70,239,0.6)] transition-all duration-1000 ease-out"></div>
               </div>
               {/* Service Card 2 */}
-              <div className="group bg-[#1F2937] hover:bg-[#2d3748] p-8 rounded-2xl relative overflow-hidden transition-all duration-300 cursor-pointer">
-                <h3 className="text-xl font-bold mb-4">Answer Engine Optimization (AEO)</h3>
-                <p className="text-gray-400 mb-8 relative z-10">
+              <div className="group bg-[#1F2937] hover:bg-gradient-to-br hover:from-fuchsia-500 hover:to-purple-600 p-5 sm:p-6 md:p-8 rounded-2xl relative overflow-hidden transition-all duration-300 cursor-pointer">
+                <h3 
+                  className="font-bold mb-3 sm:mb-4"
+                  style={{ fontSize: 'clamp(20px, 4vw, 24px)', lineHeight: '130%' }}
+                >
+                  Answer Engine Optimization (AEO)
+                </h3>
+                <p 
+                  className="font-medium mb-6 sm:mb-8 relative z-10 text-gray-400 group-hover:text-white transition-colors"
+                  style={{ fontSize: 'clamp(16px, 3vw, 20px)' }}
+                >
                   Optimize for AI-generated answers on platforms like Google AI Overviews and Bing Copilot. Align content with high-intent, zero-click queries using structured formats and intent mapping.
                 </p>
-                <div className="absolute -bottom-10 -right-10 w-32 h-32 rounded-full bg-gradient-to-br from-fuchsia-500 to-purple-600 opacity-0 scale-0 shadow-none group-hover:opacity-100 group-hover:scale-100 group-hover:shadow-[0_0_30px_rgba(217,70,239,0.6)] transition-all duration-1000 ease-out"></div>
               </div>
               {/* Service Card 3 */}
-              <div className="group bg-[#1F2937] hover:bg-[#2d3748] p-8 rounded-2xl relative overflow-hidden transition-all duration-300 cursor-pointer">
-                <h3 className="text-xl font-bold mb-4">Answer Engine Optimization (AEO)</h3>
-                <p className="text-gray-400 mb-8 relative z-10">
+              <div className="group bg-[#1F2937] hover:bg-gradient-to-br hover:from-fuchsia-500 hover:to-purple-600 p-5 sm:p-6 md:p-8 rounded-2xl relative overflow-hidden transition-all duration-300 cursor-pointer">
+                <h3 
+                  className="font-bold mb-3 sm:mb-4"
+                  style={{ fontSize: 'clamp(20px, 4vw, 24px)', lineHeight: '130%' }}
+                >
+                  Answer Engine Optimization (AEO)
+                </h3>
+                <p 
+                  className="font-medium mb-6 sm:mb-8 relative z-10 text-gray-400 group-hover:text-white transition-colors"
+                  style={{ fontSize: 'clamp(16px, 3vw, 20px)' }}
+                >
                   Optimize for AI-generated answers on platforms like Google AI Overviews and Bing Copilot. Align content with high-intent, zero-click queries using structured formats and intent mapping.
                 </p>
-                <div className="absolute -bottom-10 -right-10 w-32 h-32 rounded-full bg-gradient-to-br from-fuchsia-500 to-purple-600 opacity-0 scale-0 shadow-none group-hover:opacity-100 group-hover:scale-100 group-hover:shadow-[0_0_30px_rgba(217,70,239,0.6)] transition-all duration-1000 ease-out"></div>
               </div>
               {/* Service Card 4 */}
-              <div className="group bg-[#1F2937] hover:bg-[#2d3748] p-8 rounded-2xl relative overflow-hidden transition-all duration-300 cursor-pointer">
-                <h3 className="text-xl font-bold mb-4">Answer Engine Optimization (AEO)</h3>
-                <p className="text-gray-400 mb-8 relative z-10">
+              <div className="group bg-[#1F2937] hover:bg-gradient-to-br hover:from-fuchsia-500 hover:to-purple-600 p-5 sm:p-6 md:p-8 rounded-2xl relative overflow-hidden transition-all duration-300 cursor-pointer">
+                <h3 
+                  className="font-bold mb-3 sm:mb-4"
+                  style={{ fontSize: 'clamp(20px, 4vw, 24px)', lineHeight: '130%' }}
+                >
+                  Answer Engine Optimization (AEO)
+                </h3>
+                <p 
+                  className="font-medium mb-6 sm:mb-8 relative z-10 text-gray-400 group-hover:text-white transition-colors"
+                  style={{ fontSize: 'clamp(16px, 3vw, 20px)' }}
+                >
                   Optimize for AI-generated answers on platforms like Google AI Overviews and Bing Copilot. Align content with high-intent, zero-click queries using structured formats and intent mapping.
                 </p>
-                <div className="absolute -bottom-10 -right-10 w-32 h-32 rounded-full bg-gradient-to-br from-fuchsia-500 to-purple-600 opacity-0 scale-0 shadow-none group-hover:opacity-100 group-hover:scale-100 group-hover:shadow-[0_0_30px_rgba(217,70,239,0.6)] transition-all duration-1000 ease-out"></div>
               </div>
               {/* Service Card 5 */}
-              <div className="group bg-[#1F2937] hover:bg-[#2d3748] p-8 rounded-2xl relative overflow-hidden transition-all duration-300 cursor-pointer">
-                <h3 className="text-xl font-bold mb-4">Answer Engine Optimization (AEO)</h3>
-                <p className="text-gray-400 mb-8 relative z-10">
+              <div className="group bg-[#1F2937] hover:bg-gradient-to-br hover:from-fuchsia-500 hover:to-purple-600 p-5 sm:p-6 md:p-8 rounded-2xl relative overflow-hidden transition-all duration-300 cursor-pointer">
+                <h3 
+                  className="font-bold mb-3 sm:mb-4"
+                  style={{ fontSize: 'clamp(20px, 4vw, 24px)', lineHeight: '130%' }}
+                >
+                  Answer Engine Optimization (AEO)
+                </h3>
+                <p 
+                  className="font-medium mb-6 sm:mb-8 relative z-10 text-gray-400 group-hover:text-white transition-colors"
+                  style={{ fontSize: 'clamp(16px, 3vw, 20px)' }}
+                >
                   Optimize for AI-generated answers on platforms like Google AI Overviews and Bing Copilot. Align content with high-intent, zero-click queries using structured formats and intent mapping.
                 </p>
-                <div className="absolute -bottom-10 -right-10 w-32 h-32 rounded-full bg-gradient-to-br from-fuchsia-500 to-purple-600 opacity-0 scale-0 shadow-none group-hover:opacity-100 group-hover:scale-100 group-hover:shadow-[0_0_30px_rgba(217,70,239,0.6)] transition-all duration-1000 ease-out"></div>
               </div>
               {/* Service Card 6 */}
-              <div className="group bg-[#1F2937] hover:bg-[#2d3748] p-8 rounded-2xl relative overflow-hidden transition-all duration-300 cursor-pointer">
-                <h3 className="text-xl font-bold mb-4">Answer Engine Optimization (AEO)</h3>
-                <p className="text-gray-400 mb-8 relative z-10">
+              <div className="group bg-[#1F2937] hover:bg-gradient-to-br hover:from-fuchsia-500 hover:to-purple-600 p-5 sm:p-6 md:p-8 rounded-2xl relative overflow-hidden transition-all duration-300 cursor-pointer">
+                <h3 
+                  className="font-bold mb-3 sm:mb-4"
+                  style={{ fontSize: 'clamp(20px, 4vw, 24px)', lineHeight: '130%' }}
+                >
+                  Answer Engine Optimization (AEO)
+                </h3>
+                <p 
+                  className="font-medium mb-6 sm:mb-8 relative z-10 text-gray-400 group-hover:text-white transition-colors"
+                  style={{ fontSize: 'clamp(16px, 3vw, 20px)' }}
+                >
                   Optimize for AI-generated answers on platforms like Google AI Overviews and Bing Copilot. Align content with high-intent, zero-click queries using structured formats and intent mapping.
                 </p>
-                <div className="absolute -bottom-10 -right-10 w-32 h-32 rounded-full bg-gradient-to-br from-fuchsia-500 to-purple-600 opacity-0 scale-0 shadow-none group-hover:opacity-100 group-hover:scale-100 group-hover:shadow-[0_0_30px_rgba(217,70,239,0.6)] transition-all duration-1000 ease-out"></div>
               </div>
             </div>
           </div>
@@ -456,66 +634,169 @@ export default function LandingPage1() {
 
         {/* Process Section */}
         <section className="py-20 bg-[#050505]">
-          <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-12 md:mb-16">
-              <h2 className="text-2xl md:text-3xl font-bold mb-3 md:mb-4">Our 5-Stage GEO Process For AI-First Search Success</h2>
-              <p className="text-gray-400">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-8 sm:mb-12 md:mb-16">
+              <h2 className="text-xl sm:text-2xl md:text-3xl font-bold mb-3 sm:mb-4">Our 5-Stage GEO Process For AI-First Search Success</h2>
+              <p 
+                className="font-medium text-center text-gray-400"
+                style={{ fontSize: 'clamp(16px, 3vw, 20px)' }}
+              >
                 We simplify the complex. Our GEO approach is structured to reduce guesswork, bring clarity, and deliver measurable AI-first visibility using the right tools, frameworks, and experience at every stage.
               </p>
             </div>
 
             <div className="space-y-4">
               {/* Step 1 */}
-              <div className="group bg-[#181818] hover:bg-gradient-to-r hover:from-fuchsia-500 hover:to-purple-600 rounded-2xl p-8 flex flex-col md:flex-row items-start md:items-center gap-8 border border-white/5 transition-all duration-300 cursor-pointer">
-                <div className="text-6xl font-bold text-white group-hover:text-white/90 transition-colors">01</div>
+              <div className="group bg-[#181818] hover:bg-gradient-to-r hover:from-fuchsia-500 hover:to-purple-600 rounded-2xl p-5 sm:p-6 md:p-8 flex flex-col md:flex-row items-start md:items-center gap-4 sm:gap-6 md:gap-8 border border-white/5 transition-all duration-300 cursor-pointer">
+                <div 
+                  className="font-bold text-white group-hover:text-white/90 transition-colors"
+                  style={{ fontSize: 'clamp(40px, 8vw, 64px)' }}
+                >
+                  01
+                </div>
+                <div className="flex-shrink-0 w-full md:w-64">
+                  <h3 
+                    className="font-bold mb-2 md:mb-0"
+                    style={{ fontSize: 'clamp(20px, 4vw, 24px)', lineHeight: '130%' }}
+                  >
+                    Entity & Visibility Audit
+                  </h3>
+                </div>
                 <div className="flex-1">
-                  <h3 className="text-xl font-bold mb-1">Entity & Visibility Audit</h3>
-                  <h4 className="text-lg font-semibold mb-2 text-white group-hover:text-white/90 transition-colors">Know where you stand</h4>
-                  <p className="text-sm text-gray-400 group-hover:text-white/80 transition-colors">
+                  <h4 
+                    className="font-bold mb-2 text-white group-hover:text-white/90 transition-colors"
+                    style={{ fontSize: 'clamp(18px, 3vw, 20px)' }}
+                  >
+                    Know where you stand
+                  </h4>
+                  <p 
+                    className="font-medium text-gray-400 group-hover:text-white/80 transition-colors"
+                    style={{ fontSize: 'clamp(16px, 2.5vw, 18px)' }}
+                  >
                     We evaluate how AI systems like ChatGPT, Google AI, and Perplexity perceive your brand, content, and entity relevance—so we start with clarity, not assumptions.
                   </p>
                 </div>
               </div>
               {/* Step 2 */}
-              <div className="group bg-[#181818] hover:bg-gradient-to-r hover:from-fuchsia-500 hover:to-purple-600 rounded-2xl p-8 flex flex-col md:flex-row items-start md:items-center gap-8 border border-white/5 transition-all duration-300 cursor-pointer">
-                <div className="text-6xl font-bold text-white group-hover:text-white/90 transition-colors">02</div>
+              <div className="group bg-[#181818] hover:bg-gradient-to-r hover:from-fuchsia-500 hover:to-purple-600 rounded-2xl p-5 sm:p-6 md:p-8 flex flex-col md:flex-row items-start md:items-center gap-4 sm:gap-6 md:gap-8 border border-white/5 transition-all duration-300 cursor-pointer">
+                <div 
+                  className="font-bold text-white group-hover:text-white/90 transition-colors"
+                  style={{ fontSize: 'clamp(40px, 8vw, 64px)' }}
+                >
+                  02
+                </div>
+                <div className="flex-shrink-0 w-full md:w-64">
+                  <h3 
+                    className="font-bold mb-2 md:mb-0"
+                    style={{ fontSize: 'clamp(20px, 4vw, 24px)', lineHeight: '130%' }}
+                  >
+                    Entity & Visibility Audit
+                  </h3>
+                </div>
                 <div className="flex-1">
-                  <h3 className="text-xl font-bold mb-1">Entity & Visibility Audit</h3>
-                  <h4 className="text-lg font-semibold mb-2 text-white group-hover:text-white/90 transition-colors">Know where you stand</h4>
-                  <p className="text-sm text-gray-400 group-hover:text-white/80 transition-colors">
+                  <h4 
+                    className="font-bold mb-2 text-white group-hover:text-white/90 transition-colors"
+                    style={{ fontSize: 'clamp(18px, 3vw, 20px)' }}
+                  >
+                    Know where you stand
+                  </h4>
+                  <p 
+                    className="font-medium text-gray-400 group-hover:text-white/80 transition-colors"
+                    style={{ fontSize: 'clamp(16px, 2.5vw, 18px)' }}
+                  >
                     We evaluate how AI systems like ChatGPT, Google AI, and Perplexity perceive your brand, content, and entity relevance—so we start with clarity, not assumptions.
                   </p>
                 </div>
               </div>
               {/* Step 3 */}
-              <div className="group bg-[#181818] hover:bg-gradient-to-r hover:from-fuchsia-500 hover:to-purple-600 rounded-2xl p-8 flex flex-col md:flex-row items-start md:items-center gap-8 border border-white/5 transition-all duration-300 cursor-pointer">
-                <div className="text-6xl font-bold text-white group-hover:text-white/90 transition-colors">03</div>
+              <div className="group bg-[#181818] hover:bg-gradient-to-r hover:from-fuchsia-500 hover:to-purple-600 rounded-2xl p-5 sm:p-6 md:p-8 flex flex-col md:flex-row items-start md:items-center gap-4 sm:gap-6 md:gap-8 border border-white/5 transition-all duration-300 cursor-pointer">
+                <div 
+                  className="font-bold text-white group-hover:text-white/90 transition-colors"
+                  style={{ fontSize: 'clamp(40px, 8vw, 64px)' }}
+                >
+                  03
+                </div>
+                <div className="flex-shrink-0 w-full md:w-64">
+                  <h3 
+                    className="font-bold mb-2 md:mb-0"
+                    style={{ fontSize: 'clamp(20px, 4vw, 24px)', lineHeight: '130%' }}
+                  >
+                    Entity & Visibility Audit
+                  </h3>
+                </div>
                 <div className="flex-1">
-                  <h3 className="text-xl font-bold mb-1">Entity & Visibility Audit</h3>
-                  <h4 className="text-lg font-semibold mb-2 text-white group-hover:text-white/90 transition-colors">Know where you stand</h4>
-                  <p className="text-sm text-gray-400 group-hover:text-white/80 transition-colors">
+                  <h4 
+                    className="font-bold mb-2 text-white group-hover:text-white/90 transition-colors"
+                    style={{ fontSize: 'clamp(18px, 3vw, 20px)' }}
+                  >
+                    Know where you stand
+                  </h4>
+                  <p 
+                    className="font-medium text-gray-400 group-hover:text-white/80 transition-colors"
+                    style={{ fontSize: 'clamp(16px, 2.5vw, 18px)' }}
+                  >
                     We evaluate how AI systems like ChatGPT, Google AI, and Perplexity perceive your brand, content, and entity relevance—so we start with clarity, not assumptions.
                   </p>
                 </div>
               </div>
               {/* Step 4 */}
-              <div className="group bg-[#181818] hover:bg-gradient-to-r hover:from-fuchsia-500 hover:to-purple-600 rounded-2xl p-8 flex flex-col md:flex-row items-start md:items-center gap-8 border border-white/5 transition-all duration-300 cursor-pointer">
-                <div className="text-6xl font-bold text-white group-hover:text-white/90 transition-colors">04</div>
+              <div className="group bg-[#181818] hover:bg-gradient-to-r hover:from-fuchsia-500 hover:to-purple-600 rounded-2xl p-5 sm:p-6 md:p-8 flex flex-col md:flex-row items-start md:items-center gap-4 sm:gap-6 md:gap-8 border border-white/5 transition-all duration-300 cursor-pointer">
+                <div 
+                  className="font-bold text-white group-hover:text-white/90 transition-colors"
+                  style={{ fontSize: 'clamp(40px, 8vw, 64px)' }}
+                >
+                  04
+                </div>
+                <div className="flex-shrink-0 w-full md:w-64">
+                  <h3 
+                    className="font-bold mb-2 md:mb-0"
+                    style={{ fontSize: 'clamp(20px, 4vw, 24px)', lineHeight: '130%' }}
+                  >
+                    Entity & Visibility Audit
+                  </h3>
+                </div>
                 <div className="flex-1">
-                  <h3 className="text-xl font-bold mb-1">Entity & Visibility Audit</h3>
-                  <h4 className="text-lg font-semibold mb-2 text-white group-hover:text-white/90 transition-colors">Know where you stand</h4>
-                  <p className="text-sm text-gray-400 group-hover:text-white/80 transition-colors">
+                  <h4 
+                    className="font-bold mb-2 text-white group-hover:text-white/90 transition-colors"
+                    style={{ fontSize: 'clamp(18px, 3vw, 20px)' }}
+                  >
+                    Know where you stand
+                  </h4>
+                  <p 
+                    className="font-medium text-gray-400 group-hover:text-white/80 transition-colors"
+                    style={{ fontSize: 'clamp(16px, 2.5vw, 18px)' }}
+                  >
                     We evaluate how AI systems like ChatGPT, Google AI, and Perplexity perceive your brand, content, and entity relevance—so we start with clarity, not assumptions.
                   </p>
                 </div>
               </div>
               {/* Step 5 */}
-              <div className="group bg-[#181818] hover:bg-gradient-to-r hover:from-fuchsia-500 hover:to-purple-600 rounded-2xl p-8 flex flex-col md:flex-row items-start md:items-center gap-8 border border-white/5 transition-all duration-300 cursor-pointer">
-                <div className="text-6xl font-bold text-white group-hover:text-white/90 transition-colors">05</div>
+              <div className="group bg-[#181818] hover:bg-gradient-to-r hover:from-fuchsia-500 hover:to-purple-600 rounded-2xl p-5 sm:p-6 md:p-8 flex flex-col md:flex-row items-start md:items-center gap-4 sm:gap-6 md:gap-8 border border-white/5 transition-all duration-300 cursor-pointer">
+                <div 
+                  className="font-bold text-white group-hover:text-white/90 transition-colors"
+                  style={{ fontSize: 'clamp(40px, 8vw, 64px)' }}
+                >
+                  05
+                </div>
+                <div className="flex-shrink-0 w-full md:w-64">
+                  <h3 
+                    className="font-bold mb-2 md:mb-0"
+                    style={{ fontSize: 'clamp(20px, 4vw, 24px)', lineHeight: '130%' }}
+                  >
+                    Entity & Visibility Audit
+                  </h3>
+                </div>
                 <div className="flex-1">
-                  <h3 className="text-xl font-bold mb-1">Entity & Visibility Audit</h3>
-                  <h4 className="text-lg font-semibold mb-2 text-white group-hover:text-white/90 transition-colors">Know where you stand</h4>
-                  <p className="text-sm text-gray-400 group-hover:text-white/80 transition-colors">
+                  <h4 
+                    className="font-bold mb-2 text-white group-hover:text-white/90 transition-colors"
+                    style={{ fontSize: 'clamp(18px, 3vw, 20px)' }}
+                  >
+                    Know where you stand
+                  </h4>
+                  <p 
+                    className="font-medium text-gray-400 group-hover:text-white/80 transition-colors"
+                    style={{ fontSize: 'clamp(16px, 2.5vw, 18px)' }}
+                  >
                     We evaluate how AI systems like ChatGPT, Google AI, and Perplexity perceive your brand, content, and entity relevance—so we start with clarity, not assumptions.
                   </p>
                 </div>
@@ -525,51 +806,82 @@ export default function LandingPage1() {
         </section>
 
         {/* White CTA Box */}
-        <section className="py-20 px-4">
-          <div className="max-w-6xl mx-auto bg-white rounded-3xl p-12 md:p-20 text-center">
-            <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-black mb-6 md:mb-8 leading-tight">
+        <section className="py-12 sm:py-16 md:py-20 px-4">
+          <div className="max-w-6xl mx-auto bg-white rounded-2xl sm:rounded-3xl p-6 sm:p-8 md:p-12 lg:p-20 text-center">
+            <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-black mb-4 sm:mb-6 md:mb-8 leading-tight">
               Why Partner With Our Generative Engine Optimization Agency In Bangalore
             </h2>
-            <p className="text-gray-600 mb-10 max-w-4xl mx-auto">
+            <p 
+              className="font-medium mb-6 sm:mb-8 md:mb-10 max-w-4xl mx-auto text-center text-gray-600"
+              style={{ fontSize: 'clamp(16px, 3vw, 20px)' }}
+            >
               Search is no longer a list of links—it&apos;s a stream of answers. As a leading Generative Engine Optimization agency in Bangalore, BrandStory ensures your business is represented across AI tools like ChatGPT, Perplexity, and Google AI Overviews. With a structured, AI-first approach, content is crafted to be cited, surfaced, and trusted in zero-click environments.
             </p>
-            <a href="https://brandstory.in/contact-us/" className="group inline-flex items-center gap-2 bg-[#111] text-white px-8 py-4 rounded-full font-semibold hover:bg-black hover:scale-105 hover:shadow-lg transition-all duration-300 ease-in-out">
-              <i data-lucide="chevron-right" className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300"></i>
-              Book Your Free GEO Consultation Now!
+            <a href="https://brandstory.in/contact-us/" className="group inline-flex items-center gap-2 bg-[#111] text-white px-6 sm:px-8 py-3 sm:py-4 rounded-full font-semibold hover:bg-gradient-to-br hover:from-fuchsia-500 hover:to-purple-600 hover:shadow-lg transition-all duration-300 ease-in-out text-sm sm:text-base">
+              <i data-lucide="chevron-right" className="w-4 h-4 sm:w-5 sm:h-5 group-hover:translate-x-1 transition-transform duration-300"></i>
+              <span className="whitespace-nowrap">Book Your Free GEO Consultation Now!</span>
             </a>
           </div>
         </section>
 
         {/* Why GEO Essential */}
-        <section className="py-20 bg-[#050505]">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col lg:flex-row gap-16">
+        <section className="py-12 sm:py-16 md:py-20 bg-[#050505]">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col lg:flex-row gap-8 sm:gap-12 md:gap-16">
             <div className="lg:w-1/2">
-              <h2 className="text-3xl md:text-4xl font-bold mb-6 md:mb-8">Why GEO Is Essential For Modern Search Visibility</h2>
-              <p className="text-gray-400 mb-6 leading-relaxed">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 sm:mb-6 md:mb-8">Why GEO Is Essential For Modern Search Visibility</h2>
+              <p 
+                className="font-medium mb-4 sm:mb-6 text-gray-400"
+                style={{ fontSize: 'clamp(16px, 3vw, 20px)' }}
+              >
                 Modern search begins inside generative engines. Visibility now depends on how AI understands, summarizes, and ranks your content. Being present in traditional search is no longer enough. To start ahead, partnering with our experienced Answer Engine Optimization agency in Bangalore ensures your brand earns visibility in the AI-first search era.
               </p>
             </div>
             <div className="lg:w-1/2">
-              <ul className="space-y-6">
+              <ul className="space-y-4 sm:space-y-6">
                 <li className="flex items-start gap-3">
-                  <div className="w-1.5 h-1.5 rounded-full bg-white mt-2.5"></div>
-                  <p className="text-gray-300">Over 50% of digital journeys now start with AI tools and assistants</p>
+                  <div className="w-1.5 h-1.5 rounded-full bg-white mt-2.5 flex-shrink-0"></div>
+                  <p 
+                    className="font-medium text-gray-300"
+                    style={{ fontSize: 'clamp(16px, 3vw, 20px)' }}
+                  >
+                    Over 50% of digital journeys now start with AI tools and assistants
+                  </p>
                 </li>
                 <li className="flex items-start gap-3">
-                  <div className="w-1.5 h-1.5 rounded-full bg-white mt-2.5"></div>
-                  <p className="text-gray-300">GEO services for AI Overviews and ChatGPT rankings improve answer inclusion and topical relevance</p>
+                  <div className="w-1.5 h-1.5 rounded-full bg-white mt-2.5 flex-shrink-0"></div>
+                  <p 
+                    className="font-medium text-gray-300"
+                    style={{ fontSize: 'clamp(16px, 3vw, 20px)' }}
+                  >
+                    GEO services for AI Overviews and ChatGPT rankings improve answer inclusion and topical relevance
+                  </p>
                 </li>
                 <li className="flex items-start gap-3">
-                  <div className="w-1.5 h-1.5 rounded-full bg-white mt-2.5"></div>
-                  <p className="text-gray-300">Zero-click search optimization services in Bangalore increase visibility without needing link clicks</p>
+                  <div className="w-1.5 h-1.5 rounded-full bg-white mt-2.5 flex-shrink-0"></div>
+                  <p 
+                    className="font-medium text-gray-300"
+                    style={{ fontSize: 'clamp(16px, 3vw, 20px)' }}
+                  >
+                    Zero-click search optimization services in Bangalore increase visibility without needing link clicks
+                  </p>
                 </li>
                 <li className="flex items-start gap-3">
-                  <div className="w-1.5 h-1.5 rounded-full bg-white mt-2.5"></div>
-                  <p className="text-gray-300">Structured responses enhance performance on voice assistants like Siri, Alexa, and Google Assistant</p>
+                  <div className="w-1.5 h-1.5 rounded-full bg-white mt-2.5 flex-shrink-0"></div>
+                  <p 
+                    className="font-medium text-gray-300"
+                    style={{ fontSize: 'clamp(16px, 3vw, 20px)' }}
+                  >
+                    Structured responses enhance performance on voice assistants like Siri, Alexa, and Google Assistant
+                  </p>
                 </li>
                 <li className="flex items-start gap-3">
-                  <div className="w-1.5 h-1.5 rounded-full bg-white mt-2.5"></div>
-                  <p className="text-gray-300">AI content optimization for local businesses in Bangalore delivers geo-relevant results in conversational search</p>
+                  <div className="w-1.5 h-1.5 rounded-full bg-white mt-2.5 flex-shrink-0"></div>
+                  <p 
+                    className="font-medium text-gray-300"
+                    style={{ fontSize: 'clamp(16px, 3vw, 20px)' }}
+                  >
+                    AI content optimization for local businesses in Bangalore delivers geo-relevant results in conversational search
+                  </p>
                 </li>
               </ul>
             </div>
@@ -577,15 +889,21 @@ export default function LandingPage1() {
         </section>
 
         {/* Section 2: Why GEO Essential with Accordion - Dark Blue Background */}
-        <section className="py-20 bg-[#0a0a1a]">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col lg:flex-row gap-16">
+        <section className="py-12 sm:py-16 md:py-20 bg-[#0a0a1a]">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col lg:flex-row gap-8 sm:gap-12 md:gap-16">
             <div className="lg:w-1/2">
-              <h2 className="text-3xl md:text-4xl font-bold mb-6 md:mb-8">Why GEO Is Essential For Modern Search Visibility</h2>
-              <p className="text-gray-400 mb-6 leading-relaxed">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 sm:mb-6 md:mb-8">Why GEO Is Essential For Modern Search Visibility</h2>
+               <p 
+                 className="font-medium mb-4 sm:mb-6 text-gray-400"
+                 style={{ 
+                   fontSize: 'clamp(16px, 3vw, 20px)', 
+                   letterSpacing: '0%' 
+                 }}
+               >
                 BrandStory brings precision, clarity, and strategic expertise to every GEO engagement. Recognized as one of the top 10 Generative Engine Optimization companies in Bangalore. Our agency ensures content is not just visible, but impactful across AI-first platforms.
               </p>
             </div>
-            <div className="lg:w-1/2 space-y-8">
+            <div className="lg:w-1/2 space-y-4 sm:space-y-6 md:space-y-8">
               {[
                 { title: 'Local AI Optimization Expertise', content: 'Utilize GEO Frameworks Specifically Designed For Bangalore-Based Businesses. Improve Local Visibility In AI-Generated Results Through Region-Specific Schema.' },
                 { title: 'Built for LLMs and Conversational AI', content: 'Specialize in Perplexity and ChatGPT SEO services in Bangalore. Align content with how large language models generate and prioritize answers.' },
@@ -596,21 +914,29 @@ export default function LandingPage1() {
                 return (
                   <div key={index} className="bg-[#1F2937] rounded-lg overflow-hidden">
                     <div 
-                      className="p-4 flex justify-between items-center cursor-pointer hover:bg-[#2d3748] transition-colors duration-200"
+                      className="p-3 sm:p-4 flex justify-between items-center cursor-pointer hover:bg-[#2d3748] transition-colors duration-200"
                       onClick={() => {
                         setOpenAccordion(isOpen ? null : index)
                       }}
                     >
-                      <span className="font-bold">{item.title}</span>
+                      <span 
+                        className="font-bold capitalize pr-2 sm:pr-4"
+                        style={{ 
+                          fontSize: 'clamp(18px, 4vw, 24px)', 
+                          lineHeight: '130%' 
+                        }}
+                      >
+                        {item.title}
+                      </span>
                       <button 
-                        className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 transition-all duration-300 ease-in-out ${
+                        className={`w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center flex-shrink-0 transition-all duration-300 ease-in-out ${
                           isOpen 
                             ? 'bg-gradient-to-r from-fuchsia-500 to-purple-600' 
                             : 'bg-white text-black'
                         }`}
                       >
                         <svg 
-                          className={`w-4 h-4 transition-all duration-300 ease-in-out ${isOpen ? 'text-white' : 'text-black'}`}
+                          className={`w-3.5 h-3.5 sm:w-4 sm:h-4 transition-all duration-300 ease-in-out ${isOpen ? 'text-white' : 'text-black'}`}
                           fill="none" 
                           stroke="currentColor" 
                           viewBox="0 0 24 24"
@@ -632,7 +958,13 @@ export default function LandingPage1() {
                       }}
                     >
                       <div className="min-h-0 overflow-hidden">
-                        <div className="p-4 pt-0 text-sm text-gray-400">
+                        <div 
+                          className="p-3 sm:p-4 pt-3 sm:pt-4 text-gray-400"
+                          style={{ 
+                            fontSize: 'clamp(16px, 2.5vw, 18px)', 
+                            letterSpacing: '0%' 
+                          }}
+                        >
                           {item.content}
                         </div>
                       </div>
@@ -645,32 +977,28 @@ export default function LandingPage1() {
         </section>
 
         {/* Section 3: Testimonial - White Background */}
-        <section className="py-20 bg-white">
+        <section className="py-12 sm:py-16 md:py-20 bg-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12 md:gap-16">
               {/* Left: Heading & Navigation */}
               <div>
-                <h2 className="text-3xl md:text-4xl font-bold mb-6 md:mb-8 text-black">What Clients Say About Our GEO Expertise</h2>
-                <div className="flex gap-4 mb-12">
+                <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 sm:mb-6 md:mb-8 text-black">What Clients Say About Our GEO Expertise</h2>
+                <div className="flex gap-3 sm:gap-4 mb-8 sm:mb-12">
                   <button 
                     onClick={() => {
                       setCurrentTestimonial((prev) => (prev === 0 ? 5 : prev - 1))
                     }}
-                    className="group w-12 h-12 rounded-full border-2 border-black flex items-center justify-center hover:bg-black transition-colors duration-200"
+                    className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-black text-white flex items-center justify-center hover:bg-gradient-to-br hover:from-fuchsia-500 hover:to-purple-600 transition-all duration-150"
                   >
-                    <svg className="w-5 h-5 text-black group-hover:text-white transition-colors duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-                    </svg>
+                    <i data-lucide="arrow-left" className="w-4 h-4 sm:w-5 sm:h-5"></i>
                   </button>
                   <button 
                     onClick={() => {
                       setCurrentTestimonial((prev) => (prev === 5 ? 0 : prev + 1))
                     }}
-                    className="group w-12 h-12 rounded-full border-2 border-black flex items-center justify-center hover:bg-black transition-colors duration-200"
+                    className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-black text-white flex items-center justify-center hover:bg-gradient-to-br hover:from-fuchsia-500 hover:to-purple-600 transition-all duration-150"
                   >
-                    <svg className="w-5 h-5 text-black group-hover:text-white transition-colors duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                    </svg>
+                    <i data-lucide="arrow-right" className="w-4 h-4 sm:w-5 sm:h-5"></i>
                   </button>
                 </div>
               </div>
@@ -708,17 +1036,20 @@ export default function LandingPage1() {
                         author: 'CEO, SaaS Startup' 
                       },
                     ].map((testimonial, index) => (
-                      <div key={index} className="min-w-full w-full flex-shrink-0 px-2">
-                        <div className="bg-[#111] p-8 rounded-2xl border border-gray-200">
-                          <svg className="w-10 h-10 text-gray-600 mb-4" fill="currentColor" viewBox="0 0 24 24">
+                      <div key={index} className="min-w-full w-full flex-shrink-0 px-1 sm:px-2">
+                        <div className="bg-[#111] p-5 sm:p-6 md:p-8 rounded-2xl border border-gray-200 h-full flex flex-col">
+                          <svg className="w-8 h-8 sm:w-10 sm:h-10 text-gray-600 mb-3 sm:mb-4 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24">
                             <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.608l.996 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.984zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.608l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/>
                           </svg>
-                          <p className="text-lg mb-6 text-white">
+                          <p 
+                            className="mb-4 sm:mb-6 text-white flex-grow"
+                            style={{ fontSize: 'clamp(16px, 3vw, 20px)' }}
+                          >
                             {testimonial.quote}
                           </p>
-                          <div className="flex items-center gap-2">
-                            <div className="w-8 h-0.5 bg-white"></div>
-                            <span className="font-bold text-white">{testimonial.author}</span>
+                          <div className="flex items-center gap-2 mt-auto">
+                            <div className="w-6 sm:w-8 h-0.5 bg-white"></div>
+                            <span className="font-bold text-white text-sm sm:text-base">{testimonial.author}</span>
                           </div>
                         </div>
                       </div>
@@ -746,10 +1077,10 @@ export default function LandingPage1() {
         </section>
 
         {/* FAQ Section */}
-        <section className="py-20 bg-[#050505]">
-          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="text-3xl md:text-4xl font-bold text-center mb-8 md:mb-12">FAQ&apos;s</h2>
-            <div className="space-y-4">
+        <section className="py-12 sm:py-16 md:py-20 bg-[#050505]">
+          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-center mb-6 sm:mb-8 md:mb-12">FAQ&apos;s</h2>
+            <div className="space-y-3 sm:space-y-4">
               {[
                 { question: 'How Does Generative Engine Optimization Help Brands Grow?', answer: 'It Boosts Visibility Across AI Tools Like ChatGPT And Perplexity - Summarize, Recommend, And Answer. GEO Aligns Your Content With How Users Now Search.' },
                 { question: 'How Does ChatGPT Content Visibility Optimization In Bangalore Support GEO Goals?', answer: 'Our ChatGPT content visibility optimization in Bangalore helps your brand appear in AI-generated responses. It aligns content with ChatGPT\'s structure and improves semantic accuracy.' },
@@ -772,21 +1103,30 @@ export default function LandingPage1() {
                 return (
                   <div key={index} className="bg-[#1F2937] rounded-lg overflow-hidden">
                     <div 
-                      className="p-5 flex justify-between items-center cursor-pointer hover:bg-[#2d3748] transition-colors duration-200"
+                      className="p-4 sm:p-5 flex justify-between items-center cursor-pointer hover:bg-[#2d3748] transition-colors duration-200"
                       onClick={() => {
                         setOpenFaq(isOpen ? null : index)
                       }}
                     >
-                      <span className="font-bold text-base md:text-lg pr-4">{faq.question}</span>
+                      <span 
+                        className="font-bold capitalize pr-2 sm:pr-4 text-left"
+                        style={{ 
+                          fontSize: 'clamp(18px, 4vw, 24px)', 
+                          lineHeight: '140%', 
+                          letterSpacing: '0%' 
+                        }}
+                      >
+                        {faq.question}
+                      </span>
                       <button 
-                        className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 transition-all duration-300 ease-in-out ${
+                        className={`w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center flex-shrink-0 transition-all duration-300 ease-in-out ${
                           isOpen 
                             ? 'bg-gradient-to-r from-fuchsia-500 to-purple-600' 
                             : 'bg-white text-black'
                         }`}
                       >
                         <svg 
-                          className={`w-4 h-4 transition-all duration-300 ease-in-out ${isOpen ? 'text-white' : 'text-black'}`}
+                          className={`w-3.5 h-3.5 sm:w-4 sm:h-4 transition-all duration-300 ease-in-out ${isOpen ? 'text-white' : 'text-black'}`}
                           fill="none" 
                           stroke="currentColor" 
                           viewBox="0 0 24 24"
@@ -808,7 +1148,15 @@ export default function LandingPage1() {
                       }}
                     >
                       <div className="min-h-0 overflow-hidden">
-                        <div className="p-5 pt-0 text-gray-400">
+                        <div 
+                          className="p-4 sm:p-5 pt-3 sm:pt-4"
+                          style={{ 
+                            fontSize: 'clamp(16px, 3vw, 20px)', 
+                            lineHeight: '140%', 
+                            letterSpacing: '0%',
+                            color: '#9CA3AF'
+                          }}
+                        >
                           {faq.answer}
                         </div>
                       </div>
