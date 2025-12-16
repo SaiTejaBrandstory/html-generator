@@ -180,7 +180,7 @@ export default function LandingPage1() {
                 <i data-lucide="chevron-right" className="w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5 text-fuchsia-500 group-hover:translate-x-1 transition-transform flex-shrink-0"></i>
               </a>
             </div>
-          </div>
+            </div>
 
           {/* Client Logos Carousel Section - Full Width */}
           <div className="relative w-full mt-16 pb-12">
@@ -196,7 +196,7 @@ export default function LandingPage1() {
               >
                 Trusted by 500+ Brands Across India
               </p>
-            </div>
+              </div>
             
             {/* Infinite Carousel - Row 1 (Logos 1-10, scrolling left) */}
             <div className="overflow-hidden mb-12 md:mb-20 w-full">
@@ -371,24 +371,24 @@ export default function LandingPage1() {
 
               {/* Satellites - All circles with consistent size and positioning */}
               {/* Top Left */}
-              <div className="absolute top-[5%] left-[5%] w-56 h-56 rounded-full backdrop-blur-sm flex flex-col items-center justify-center text-center p-6 border border-white/10 hover:border-fuchsia-500/50 transition-colors" style={{ backgroundColor: 'rgba(18, 19, 23, 0.3)' }}>
-                <h4 className="font-bold mb-2 text-center" style={{ color: '#FFFFFF', fontSize: '24px', lineHeight: '130%', letterSpacing: '0%' }}>Years of Experience</h4>
-                <p className="font-medium text-center" style={{ color: '#FFFFFF', fontSize: '16px', lineHeight: '140%', letterSpacing: '0%' }}>Over 12 years of strategic expertise.</p>
+              <div className="absolute top-[5%] left-[5%] w-56 h-56 rounded-full backdrop-blur-sm flex flex-col items-center justify-center text-center p-4 sm:p-5 md:p-6 border border-white/10 hover:border-fuchsia-500/50 transition-colors overflow-hidden" style={{ backgroundColor: 'rgba(18, 19, 23, 0.3)' }}>
+                <h4 className="font-bold mb-1 sm:mb-2 text-center break-words px-2" style={{ color: '#FFFFFF', fontSize: 'clamp(18px, 2.5vw, 24px)', lineHeight: '130%', letterSpacing: '0%' }}>Years of Experience</h4>
+                <p className="font-medium text-center break-words px-2" style={{ color: '#FFFFFF', fontSize: 'clamp(14px, 2vw, 16px)', lineHeight: '140%', letterSpacing: '0%' }}>Over 12 years of strategic expertise.</p>
               </div>
               {/* Top Right */}
-              <div className="absolute top-[5%] right-[5%] w-56 h-56 rounded-full backdrop-blur-sm flex flex-col items-center justify-center text-center p-6 border border-white/10 hover:border-fuchsia-500/50 transition-colors" style={{ backgroundColor: 'rgba(18, 19, 23, 0.3)' }}>
-                <h4 className="font-bold mb-2 text-center" style={{ color: '#FFFFFF', fontSize: '24px', lineHeight: '130%', letterSpacing: '0%' }}>Expert Team</h4>
-                <p className="font-medium text-center" style={{ color: '#FFFFFF', fontSize: '16px', lineHeight: '140%', letterSpacing: '0%' }}>120+ skilled professionals</p>
+              <div className="absolute top-[5%] right-[5%] w-56 h-56 rounded-full backdrop-blur-sm flex flex-col items-center justify-center text-center p-4 sm:p-5 md:p-6 border border-white/10 hover:border-fuchsia-500/50 transition-colors overflow-hidden" style={{ backgroundColor: 'rgba(18, 19, 23, 0.3)' }}>
+                <h4 className="font-bold mb-1 sm:mb-2 text-center break-words px-2" style={{ color: '#FFFFFF', fontSize: 'clamp(18px, 2.5vw, 24px)', lineHeight: '130%', letterSpacing: '0%' }}>Expert Team</h4>
+                <p className="font-medium text-center break-words px-2" style={{ color: '#FFFFFF', fontSize: 'clamp(14px, 2vw, 16px)', lineHeight: '140%', letterSpacing: '0%' }}>120+ skilled professionals</p>
               </div>
               {/* Bottom Left */}
-              <div className="absolute bottom-[5%] left-[5%] w-56 h-56 rounded-full backdrop-blur-sm flex flex-col items-center justify-center text-center p-6 border border-white/10 hover:border-fuchsia-500/50 transition-colors" style={{ backgroundColor: 'rgba(18, 19, 23, 0.3)' }}>
-                <h4 className="font-bold mb-2 text-center" style={{ color: '#FFFFFF', fontSize: '24px', lineHeight: '130%', letterSpacing: '0%' }}>Client Success</h4>
-                <p className="font-medium text-center" style={{ color: '#FFFFFF', fontSize: '16px', lineHeight: '140%', letterSpacing: '0%' }}>500+ clients with proven search growth.</p>
+              <div className="absolute bottom-[5%] left-[5%] w-56 h-56 rounded-full backdrop-blur-sm flex flex-col items-center justify-center text-center p-4 sm:p-5 md:p-6 border border-white/10 hover:border-fuchsia-500/50 transition-colors overflow-hidden" style={{ backgroundColor: 'rgba(18, 19, 23, 0.3)' }}>
+                <h4 className="font-bold mb-1 sm:mb-2 text-center break-words px-2" style={{ color: '#FFFFFF', fontSize: 'clamp(18px, 2.5vw, 24px)', lineHeight: '130%', letterSpacing: '0%' }}>Client Success</h4>
+                <p className="font-medium text-center break-words px-2" style={{ color: '#FFFFFF', fontSize: 'clamp(14px, 2vw, 16px)', lineHeight: '140%', letterSpacing: '0%' }}>500+ clients with proven search growth.</p>
               </div>
               {/* Bottom Right */}
-              <div className="absolute bottom-[5%] right-[5%] w-56 h-56 rounded-full backdrop-blur-sm flex flex-col items-center justify-center text-center p-6 border border-white/10 hover:border-fuchsia-500/50 transition-colors" style={{ backgroundColor: 'rgba(18, 19, 23, 0.3)' }}>
-                <h4 className="font-bold mb-2 text-center" style={{ color: '#FFFFFF', fontSize: '24px', lineHeight: '130%', letterSpacing: '0%' }}>Industry Reach</h4>
-                <p className="font-medium text-center" style={{ color: '#FFFFFF', fontSize: '16px', lineHeight: '140%', letterSpacing: '0%' }}>Serving 30+ diverse, dynamic industries.</p>
+              <div className="absolute bottom-[5%] right-[5%] w-56 h-56 rounded-full backdrop-blur-sm flex flex-col items-center justify-center text-center p-4 sm:p-5 md:p-6 border border-white/10 hover:border-fuchsia-500/50 transition-colors overflow-hidden" style={{ backgroundColor: 'rgba(18, 19, 23, 0.3)' }}>
+                <h4 className="font-bold mb-1 sm:mb-2 text-center break-words px-2" style={{ color: '#FFFFFF', fontSize: 'clamp(18px, 2.5vw, 24px)', lineHeight: '130%', letterSpacing: '0%' }}>Industry Reach</h4>
+                <p className="font-medium text-center break-words px-2" style={{ color: '#FFFFFF', fontSize: 'clamp(14px, 2vw, 16px)', lineHeight: '140%', letterSpacing: '0%' }}>Serving 30+ diverse, dynamic industries.</p>
               </div>
             </div>
 
@@ -488,7 +488,7 @@ export default function LandingPage1() {
                     >
                       <div className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 mb-3 sm:mb-4 md:mb-6 text-fuchsia-500 flex-shrink-0">
                         <i data-lucide={benefit.icon} className="w-6 h-6 sm:w-8 sm:h-8 md:w-10 md:h-10"></i>
-                      </div>
+                  </div>
                       <h3 
                         className="font-bold mb-2 sm:mb-3 md:mb-4 text-white"
                         style={{ fontSize: 'clamp(18px, 4vw, 24px)', lineHeight: '130%' }}
@@ -500,10 +500,10 @@ export default function LandingPage1() {
                         style={{ fontSize: 'clamp(14px, 3vw, 20px)', lineHeight: '150%' }}
                       >
                         {benefit.description}
-                      </p>
-                    </div>
-                  ))}
+                  </p>
                 </div>
+                  ))}
+                  </div>
                 {/* Navigation Dots */}
                 <div className="flex gap-2 justify-center mt-6 sm:mt-8">
                   {Array.from({ length: isDesktop ? 5 : 6 }).map((_, index) => (

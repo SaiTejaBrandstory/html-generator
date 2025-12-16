@@ -193,9 +193,9 @@ function generateHTMLPage(content: any): string {
                   ]
                   const pos = positions[index] || positions[0]
                   return `
-                <div class="absolute ${pos.top ? `top-[${pos.top}]` : ''} ${pos.bottom ? `bottom-[${pos.bottom}]` : ''} ${pos.left ? `left-[${pos.left}]` : ''} ${pos.right ? `right-[${pos.right}]` : ''} w-56 h-56 rounded-full backdrop-blur-sm flex flex-col items-center justify-center text-center p-6 border border-white/10 hover:border-fuchsia-500/50 transition-colors" style="background-color: rgba(18, 19, 23, 0.3);">
-                    <h4 class="font-bold mb-2 text-center" style="color: #FFFFFF; font-size: 24px; line-height: 130%; letter-spacing: 0%;">${escapeHtml(stat.title || '')}</h4>
-                    <p class="font-medium text-center" style="color: #FFFFFF; font-size: 16px; line-height: 140%; letter-spacing: 0%;">${escapeHtml(stat.description || '')}</p>
+                <div class="absolute ${pos.top ? `top-[${pos.top}]` : ''} ${pos.bottom ? `bottom-[${pos.bottom}]` : ''} ${pos.left ? `left-[${pos.left}]` : ''} ${pos.right ? `right-[${pos.right}]` : ''} w-56 h-56 rounded-full backdrop-blur-sm flex flex-col items-center justify-center text-center p-4 sm:p-5 md:p-6 border border-white/10 hover:border-fuchsia-500/50 transition-colors overflow-hidden" style="background-color: rgba(18, 19, 23, 0.3);">
+                    <h4 class="font-bold mb-1 sm:mb-2 text-center break-words px-2" style="color: #FFFFFF; font-size: clamp(18px, 2.5vw, 24px); line-height: 130%; letter-spacing: 0%;">${escapeHtml(stat.title || '')}</h4>
+                    <p class="font-medium text-center break-words px-2" style="color: #FFFFFF; font-size: clamp(14px, 2vw, 16px); line-height: 140%; letter-spacing: 0%;">${escapeHtml(stat.description || '')}</p>
                 </div>
                 `
                 }).join('')}
