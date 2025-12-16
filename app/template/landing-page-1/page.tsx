@@ -330,7 +330,7 @@ export default function LandingPage1() {
                 <div className="flex gap-4">
                   <button 
                     onClick={() => {
-                      setCurrentBenefitsIndex((prev) => (prev === 0 ? 2 : prev - 1))
+                      setCurrentBenefitsIndex((prev) => (prev === 0 ? 1 : prev - 1))
                     }}
                     className="w-12 h-12 rounded-full bg-white text-black flex items-center justify-center hover:bg-gray-200 transition-colors"
                   >
@@ -338,7 +338,7 @@ export default function LandingPage1() {
                   </button>
                   <button 
                     onClick={() => {
-                      setCurrentBenefitsIndex((prev) => (prev === 2 ? 0 : prev + 1))
+                      setCurrentBenefitsIndex((prev) => (prev === 1 ? 0 : prev + 1))
                     }}
                     className="w-12 h-12 rounded-full bg-white text-black flex items-center justify-center hover:bg-gray-200 transition-colors"
                   >

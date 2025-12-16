@@ -42,7 +42,7 @@ export default function Home() {
       {/* Templates Grid */}
       <section className="pb-20">
         <div className="max-w-[1400px] mx-auto px-6 sm:px-8 lg:px-12">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-12">
             {/* Template 1 */}
             <div className="group bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden border border-gray-100">
               <div className="relative overflow-hidden bg-gradient-to-br from-blue-50 to-purple-50">
