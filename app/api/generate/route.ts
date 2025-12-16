@@ -91,9 +91,9 @@ function generateHTMLPage(content: any): string {
                 <div class="col-md-12 col-lg-3">
                     <div class="swiper clients-swiper" data-aos="fade-up" data-aos-duration="1000">
                         <div class="swiper-wrapper">
-                            ${Array.from({ length: 13 }, (_, i) => `
+                            ${Array.from({ length: 10 }, (_, i) => `
                             <div class="swiper-slide">
-                                <img src="assets/images/web-development-company/client-${String(i + 1).padStart(2, '0')}.svg" class="img-fluid active" alt="">
+                                <img src="assets/images/cilent-logos/client-logo-${i + 1}.svg" class="img-fluid active" alt="">
                             </div>
                             `).join('')}
                         </div>
@@ -102,9 +102,9 @@ function generateHTMLPage(content: any): string {
                 <div class="col-md-12 col-lg-3">
                     <div class="swiper clients-swiper02 pt-5" data-aos="fade-up" data-aos-duration="1000">
                         <div class="swiper-wrapper">
-                            ${Array.from({ length: 13 }, (_, i) => `
+                            ${Array.from({ length: 11 }, (_, i) => `
                             <div class="swiper-slide">
-                                <img src="assets/images/web-development-company/slider-logo${String(i + 1).padStart(2, '0')}.svg" class="img-fluid active" alt="">
+                                <img src="assets/images/cilent-logos/client-logo-${i + 11}.svg" class="img-fluid active" alt="">
                             </div>
                             `).join('')}
                         </div>

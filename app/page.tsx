@@ -1,22 +1,23 @@
 export default function Home() {
   return (
-    <main className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      <header className="bg-white dark:bg-gray-900 shadow-md border-b border-gray-200 dark:border-gray-700">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
+    <main className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-50">
+      {/* Header */}
+      <header className="bg-white/80 backdrop-blur-sm border-b border-gray-200/50 sticky top-0 z-50">
+        <div className="max-w-[1400px] mx-auto px-6 sm:px-8 lg:px-12">
+          <div className="flex items-center justify-between h-20">
             <div className="flex items-center">
-              <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+              <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
                 HTML Generator
               </h1>
             </div>
-            <nav className="hidden md:flex space-x-8">
-              <a href="#" className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+            <nav className="hidden md:flex items-center space-x-8">
+              <a href="#" className="text-gray-700 hover:text-blue-600 transition-colors font-medium">
                 Home
               </a>
-              <a href="#" className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+              <a href="#" className="text-gray-700 hover:text-blue-600 transition-colors font-medium">
                 About
               </a>
-              <a href="#" className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+              <a href="#" className="text-gray-700 hover:text-blue-600 transition-colors font-medium">
                 Contact
               </a>
             </nav>
@@ -24,31 +25,111 @@ export default function Home() {
         </div>
       </header>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="flex flex-col items-center">
-          <div className="w-64 bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden border border-gray-200 dark:border-gray-700">
-            <div className="w-full h-48 bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center overflow-hidden">
-              <img 
-                src="/assets/images/geo-location/geo-banner.png" 
-                alt="Geo Banner" 
-                className="w-full h-full object-cover"
-              />
-            </div>
+      {/* Hero Section */}
+      <section className="pt-16 pb-12">
+        <div className="max-w-[1400px] mx-auto px-6 sm:px-8 lg:px-12">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-4 leading-tight">
+               HTML Templates
+            </h2>
+            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+              Choose from our collection of premium templates and generate custom HTML pages with AI-powered content
+            </p>
           </div>
-          <div className="mt-4 text-center">
-            <p className="text-lg font-semibold text-gray-900 dark:text-white">template 1</p>
-            <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">geo-service-template</p>
-            <div className="flex gap-3 mt-4 justify-center">
-              <a href="/template/geo" className="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors shadow-md hover:shadow-lg">
-                View
-              </a>
-              <a href="/template/geo/generate" className="px-6 py-2 bg-purple-600 hover:bg-purple-700 text-white font-medium rounded-lg transition-colors shadow-md hover:shadow-lg">
-                Generate
-              </a>
+        </div>
+      </section>
+
+      {/* Templates Grid */}
+      <section className="pb-20">
+        <div className="max-w-[1400px] mx-auto px-6 sm:px-8 lg:px-12">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
+            {/* Template 1 */}
+            <div className="group bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden border border-gray-100">
+              <div className="relative overflow-hidden bg-gradient-to-br from-blue-50 to-purple-50">
+                <div className="aspect-video w-full">
+                  <img 
+                    src="/assets/images/home-page/template1-banner.png" 
+                    alt="Geo Service Template" 
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  />
+                </div>
+                <div className="absolute top-4 right-4">
+                  <span className="px-3 py-1 bg-white/90 backdrop-blur-sm rounded-full text-xs font-semibold text-gray-700">
+                    Template 1
+                  </span>
+                </div>
+              </div>
+              <div className="p-8">
+                <h3 className="text-2xl font-bold text-gray-900 mb-2">Geo Service Template</h3>
+                <p className="text-gray-600 mb-6 leading-relaxed">
+                  A comprehensive template designed for GEO (Generative Engine Optimization) services with modern design and full customization options.
+                </p>
+                <div className="flex flex-col sm:flex-row gap-3">
+                  <a 
+                    href="/template/geo" 
+                    className="flex-1 px-6 py-3 bg-gray-900 hover:bg-gray-800 text-white font-semibold rounded-lg transition-all duration-300 text-center shadow-md hover:shadow-lg hover:scale-[1.02]"
+                  >
+                    View Template
+                  </a>
+                  <a 
+                    href="/template/geo/generate" 
+                    className="flex-1 px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-semibold rounded-lg transition-all duration-300 text-center shadow-md hover:shadow-lg hover:scale-[1.02]"
+                  >
+                    Generate
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            {/* Template 2 */}
+            <div className="group bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden border border-gray-100">
+              <div className="relative overflow-hidden bg-gradient-to-br from-purple-50 to-pink-50">
+                <div className="aspect-video w-full">
+                  <img 
+                    src="/assets/images/home-page/template2-banner.png" 
+                    alt="Landing Page Template" 
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  />
+                </div>
+                <div className="absolute top-4 right-4">
+                  <span className="px-3 py-1 bg-white/90 backdrop-blur-sm rounded-full text-xs font-semibold text-gray-700">
+                    Template 2
+                  </span>
+                </div>
+              </div>
+              <div className="p-8">
+                <h3 className="text-2xl font-bold text-gray-900 mb-2">Landing Page Template</h3>
+                <p className="text-gray-600 mb-6 leading-relaxed">
+                  A modern, conversion-focused landing page template with infinite carousels, interactive elements, and AI-powered content generation.
+                </p>
+                <div className="flex flex-col sm:flex-row gap-3">
+                  <a 
+                    href="/template/landing-page-1" 
+                    className="flex-1 px-6 py-3 bg-gray-900 hover:bg-gray-800 text-white font-semibold rounded-lg transition-all duration-300 text-center shadow-md hover:shadow-lg hover:scale-[1.02]"
+                  >
+                    View Template
+                  </a>
+                  <a 
+                    href="/template/landing-page-1/generate" 
+                    className="flex-1 px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-semibold rounded-lg transition-all duration-300 text-center shadow-md hover:shadow-lg hover:scale-[1.02]"
+                  >
+                    Generate
+                  </a>
+                </div>
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="border-t border-gray-200 bg-white/50 backdrop-blur-sm py-8">
+        <div className="max-w-[1400px] mx-auto px-6 sm:px-8 lg:px-12">
+          <div className="text-center text-gray-600">
+            <p className="text-sm">© 2024 HTML Generator. All rights reserved.</p>
+          </div>
+        </div>
+      </footer>
     </main>
   )
 }

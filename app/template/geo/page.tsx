@@ -447,9 +447,9 @@ export default function GeoTemplate() {
             <div className="col-md-12 col-lg-3">
               <div className="swiper clients-swiper" data-aos="fade-up" data-aos-duration="1000" style={{ height: '600px' }}>
                 <div className="swiper-wrapper">
-                  {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13].map((num) => (
+                  {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((num) => (
                     <div key={num} className="swiper-slide" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                      <img src={`/assets/images/web-development-company/client-${String(num).padStart(2, '0')}.svg`} className="img-fluid" alt={`Client ${num}`} style={{ maxHeight: '100px', width: 'auto', objectFit: 'contain' }} />
+                      <img src={`/assets/images/cilent-logos/client-logo-${num}.svg`} className="img-fluid" alt={`Client ${num}`} style={{ maxHeight: '100px', width: 'auto', objectFit: 'contain' }} />
                     </div>
                   ))}
                 </div>
@@ -458,9 +458,9 @@ export default function GeoTemplate() {
             <div className="col-md-12 col-lg-3">
               <div className="swiper clients-swiper02 pt-5" data-aos="fade-up" data-aos-duration="1000" style={{ height: '600px' }}>
                 <div className="swiper-wrapper">
-                  {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13].map((num) => (
+                  {[11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21].map((num) => (
                     <div key={num} className="swiper-slide" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                      <img src={`/assets/images/web-development-company/slider-logo${String(num).padStart(2, '0')}.svg`} className="img-fluid" alt={`Logo ${num}`} style={{ maxHeight: '100px', width: 'auto', objectFit: 'contain' }} />
+                      <img src={`/assets/images/cilent-logos/client-logo-${num}.svg`} className="img-fluid" alt={`Logo ${num}`} style={{ maxHeight: '100px', width: 'auto', objectFit: 'contain' }} />
                     </div>
                   ))}
                 </div>
