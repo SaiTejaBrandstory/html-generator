@@ -561,6 +561,27 @@ function generateHTMLPage(content: any): string {
             const btn = document.getElementById(\`accordion-btn-\${index}\`)
             const isOpen = content.style.gridTemplateRows === '1fr'
             
+            // Close all other accordion items
+            const allAccordionContents = document.querySelectorAll('[id^="accordion-content-"]')
+            const allAccordionIcons = document.querySelectorAll('[id^="accordion-icon-"]')
+            const allAccordionBtns = document.querySelectorAll('[id^="accordion-btn-"]')
+            
+            allAccordionContents.forEach((accContent, i) => {
+                if (i !== index) {
+                    accContent.style.gridTemplateRows = '0fr'
+                    accContent.style.opacity = '0'
+                    if (allAccordionIcons[i]) {
+                        allAccordionIcons[i].innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>'
+                        allAccordionIcons[i].classList.remove('text-white')
+                        allAccordionIcons[i].classList.add('text-black')
+                    }
+                    if (allAccordionBtns[i]) {
+                        allAccordionBtns[i].classList.remove('bg-gradient-to-r', 'from-fuchsia-500', 'to-purple-600')
+                        allAccordionBtns[i].classList.add('bg-white', 'text-black')
+                    }
+                }
+            })
+            
             if (isOpen) {
                 content.style.gridTemplateRows = '0fr'
                 content.style.opacity = '0'
@@ -585,6 +606,27 @@ function generateHTMLPage(content: any): string {
             const icon = document.getElementById(\`faq-icon-\${index}\`)
             const btn = document.getElementById(\`faq-btn-\${index}\`)
             const isOpen = content.style.gridTemplateRows === '1fr'
+            
+            // Close all other FAQ items
+            const allFAQContents = document.querySelectorAll('[id^="faq-content-"]')
+            const allFAQIcons = document.querySelectorAll('[id^="faq-icon-"]')
+            const allFAQBtns = document.querySelectorAll('[id^="faq-btn-"]')
+            
+            allFAQContents.forEach((faqContent, i) => {
+                if (i !== index) {
+                    faqContent.style.gridTemplateRows = '0fr'
+                    faqContent.style.opacity = '0'
+                    if (allFAQIcons[i]) {
+                        allFAQIcons[i].innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>'
+                        allFAQIcons[i].classList.remove('text-white')
+                        allFAQIcons[i].classList.add('text-black')
+                    }
+                    if (allFAQBtns[i]) {
+                        allFAQBtns[i].classList.remove('bg-gradient-to-r', 'from-fuchsia-500', 'to-purple-600')
+                        allFAQBtns[i].classList.add('bg-white', 'text-black')
+                    }
+                }
+            })
             
             if (isOpen) {
                 content.style.gridTemplateRows = '0fr'
