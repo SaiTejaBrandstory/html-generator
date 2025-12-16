@@ -349,17 +349,19 @@ function generateHTMLPage(content: any): string {
                  </p>
             </div>
             <div class="lg:w-1/2 space-y-4 sm:space-y-6 md:space-y-8">
-                ${(content.why_essential_accordion?.items || []).map((item: any, index: number) => `
+                ${(content.why_essential_accordion?.items || []).map((item: any, index: number) => {
+                  const isFirst = index === 0
+                  return `
                 <div class="bg-[#1F2937] rounded-lg overflow-hidden">
                     <div class="p-3 sm:p-4 flex justify-between items-center cursor-pointer hover:bg-[#2d3748] transition-colors duration-200" onclick="toggleAccordion(${index})">
                         <span class="font-bold capitalize pr-2 sm:pr-4" style="font-size: clamp(18px, 4vw, 24px); line-height: 130%;">${escapeHtml(item.title || '')}</span>
-                        <button id="accordion-btn-${index}" class="w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center flex-shrink-0 transition-all duration-300 ease-in-out bg-white text-black">
-                            <svg id="accordion-icon-${index}" class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        <button id="accordion-btn-${index}" class="w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center flex-shrink-0 transition-all duration-300 ease-in-out ${isFirst ? 'bg-gradient-to-r from-fuchsia-500 to-purple-600' : 'bg-white text-black'}">
+                            <svg id="accordion-icon-${index}" class="w-3.5 h-3.5 sm:w-4 sm:h-4 ${isFirst ? 'text-white' : 'text-black'}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                ${isFirst ? '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"></path>' : '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>'}
                             </svg>
                         </button>
                     </div>
-                    <div id="accordion-content-${index}" class="grid overflow-hidden" style="grid-template-rows: 0fr; transition: grid-template-rows 0.6s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s ease-in-out; opacity: 0;">
+                    <div id="accordion-content-${index}" class="grid overflow-hidden" style="grid-template-rows: ${isFirst ? '1fr' : '0fr'}; transition: grid-template-rows 0.6s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s ease-in-out; opacity: ${isFirst ? '1' : '0'};">
                         <div class="min-h-0 overflow-hidden">
                             <div class="p-3 sm:p-4 pt-3 sm:pt-4 text-gray-400" style="font-size: clamp(16px, 2.5vw, 18px); letter-spacing: 0%;">
                                 ${escapeHtml(item.content || '')}
@@ -367,7 +369,8 @@ function generateHTMLPage(content: any): string {
                         </div>
                     </div>
                 </div>
-                `).join('')}
+                `
+                }).join('')}
             </div>
         </div>
     </section>
