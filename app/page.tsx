@@ -62,7 +62,7 @@ export default function Home() {
               <div className="p-8">
                 <h3 className="text-2xl font-bold text-gray-900 mb-2">Landing Page Template 1</h3>
                 <p className="text-gray-600 mb-6 leading-relaxed">
-                  A comprehensive template designed for GEO (Generative Engine Optimization) services with modern design and full customization options.
+                  A comprehensive GEO services template with 15 content sections including process workflow, AI tools showcase, industries served, testimonials, FAQs, and AI-powered content generation for service-based businesses.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-3">
                   <a 
@@ -100,7 +100,7 @@ export default function Home() {
               <div className="p-8">
                 <h3 className="text-2xl font-bold text-gray-900 mb-2">Landing Page Template 2</h3>
                 <p className="text-gray-600 mb-6 leading-relaxed">
-                  A modern, conversion-focused landing page template with infinite carousels, interactive elements, and AI-powered content generation.
+                  A modern, conversion-focused landing page template with 12 content sections featuring infinite carousels, interactive accordions, process workflow, reviews showcase, testimonials, FAQs, and AI-powered content generation.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-3">
                   <a 
@@ -138,7 +138,7 @@ export default function Home() {
               <div className="p-8">
                 <h3 className="text-2xl font-bold text-gray-900 mb-2">Landing Page Template 3</h3>
                 <p className="text-gray-600 mb-6 leading-relaxed">
-                  A sleek and professional landing page template with advanced features, responsive design, and seamless user experience.
+                  A comprehensive ecommerce-focused landing page template with 17 content sections including interactive accordions, tools & technologies showcase, success stories, testimonials, FAQs, and AI-powered content generation for dynamic customization.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-3">
                   <a 
