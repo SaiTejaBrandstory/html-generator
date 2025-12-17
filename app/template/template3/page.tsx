@@ -1,0 +1,2322 @@
+'use client'
+
+import { useEffect } from 'react'
+import Script from 'next/script'
+
+export default function Template3() {
+  useEffect(() => {
+    // Add custom CSS for accordion to ensure content is visible (only fixes visibility, keeps Bootstrap animations)
+    const style = document.createElement('style')
+    style.id = 'faq-accordion-fix'
+    style.textContent = `
+      .accordion-body {
+        display: block !important;
+        visibility: visible !important;
+      }
+      .faq-cus-acc .accordion-collapse.show .accordion-body {
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+      }
+      .custom-accordion .accordion-collapse.show .accordion-body {
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+      }
+      .accordion-body ul {
+        list-style-type: disc !important;
+        padding-left: 1.5rem !important;
+      }
+      .accordion-body ul li {
+        list-style-type: disc !important;
+        display: list-item !important;
+      }
+    `
+    // Remove existing style if present
+    const existingStyle = document.getElementById('faq-accordion-fix')
+    if (existingStyle) {
+      existingStyle.remove()
+    }
+    document.head.appendChild(style)
+
+    // Add CSS and script links to head
+    const links = [
+      { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
+      { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossOrigin: 'anonymous' },
+      { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=DM+Serif+Text:ital@0;1&family=Hanken+Grotesk:ital,wght@0,100..900;1,100..900&display=swap' },
+      { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap' },
+      { rel: 'stylesheet', href: 'https://brandstory.in/services/ecommerce-website-development-company-bangalore/assets/css/menu.css?key=1765949516' },
+      { rel: 'stylesheet', href: 'https://brandstory.in/services/ecommerce-website-development-company-bangalore/assets/css/bootstrap.min.css' },
+      { rel: 'stylesheet', href: 'https://brandstory.in/services/ecommerce-website-development-company-bangalore/assets/css/global.css?key=1765949516' },
+      { rel: 'stylesheet', href: 'https://brandstory.in/services/ecommerce-website-development-company-bangalore/assets/css/style.css?key=1765949516' },
+      { rel: 'stylesheet', href: 'https://brandstory.in/services/ecommerce-website-development-company-bangalore/assets/css/swiper.css?key=1765949516' },
+      { rel: 'stylesheet', href: 'https://brandstory.in/services/ecommerce-website-development-company-bangalore/assets/css/aos.css?key=1765949516' },
+      { rel: 'stylesheet', href: 'https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css' },
+    ]
+
+    links.forEach(linkData => {
+      const existingLink = document.querySelector(`link[href="${linkData.href}"]`)
+      if (!existingLink) {
+        const link = document.createElement('link')
+        Object.entries(linkData).forEach(([key, value]) => {
+          if (key === 'crossOrigin') {
+            link.setAttribute('crossorigin', value as string)
+          } else {
+            link.setAttribute(key, value as string)
+          }
+        })
+        document.head.appendChild(link)
+      }
+    })
+
+    // Load scripts
+    const scripts = [
+      'https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js',
+      'https://brandstory.in/services/ecommerce-website-development-company-bangalore/assets/js/swiper-bundle.min.js',
+      'https://brandstory.in/services/ecommerce-website-development-company-bangalore/assets/js/jquery.min.js',
+      'https://brandstory.in/services/ecommerce-website-development-company-bangalore/assets/js/site.js',
+      'https://brandstory.in/services/ecommerce-website-development-company-bangalore/assets/js/aos.js',
+      'https://brandstory.in/services/ecommerce-website-development-company-bangalore/assets/js/menu.js',
+      'https://brandstory.in/services/ecommerce-website-development-company-bangalore/assets/js/counter.js',
+    ]
+
+    scripts.forEach(src => {
+      const existingScript = document.querySelector(`script[src="${src}"]`)
+      if (!existingScript) {
+        const script = document.createElement('script')
+        script.src = src
+        script.crossOrigin = 'anonymous'
+        document.body.appendChild(script)
+      }
+    })
+
+    // Initialize AOS after scripts load
+    const initAOS = () => {
+      if (typeof window !== 'undefined' && (window as any).AOS) {
+        (window as any).AOS.init({
+          duration: 1000,
+          once: true
+        })
+      }
+    }
+
+    // Wait for scripts to load
+    setTimeout(initAOS, 2000)
+  }, [])
+
+  const htmlContent = `
+
+<!doctype html>
+<html lang="en">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta property="og:image" content="https://brandstory.in/services/ecommerce-website-development-company-bangalore/assets/images/home/favicon.png">
+  <meta property="og:image:type" content="image/jpeg">
+  <meta property="og:image:width" content="200">
+  <meta property="og:image:height" content="200">
+  <title>Ecommerce Website Development Company in Bangalore | eCommerce Website Developers</title>
+  <meta name="description" content="Ecommerce Website Development Company in Bangalore, eCommerce Website Developers in Bangalore, Best Ecommerce Web Design Company in Bangalore, Ecommerce Website Developers in Bangalore" />
+  <meta name="Keywords" content="">
+  <link rel="canonical" href="https://brandstory.in/services/ecommerce-website-development-company-bangalore/" />
+  <link rel="preload" fetchpriority="high" as="image" href="https://brandstory.in/website-development-company-in-bangalore/assets/images/web-development-company/banner-01.png" type="image/webp">
+  
+  <!--CSS -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Text:ital@0;1&family=Hanken+Grotesk:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+
+  <link href="https://brandstory.in/services/ecommerce-website-development-company-bangalore/assets/css/menu.css?key=1765949516" rel="stylesheet">
+  <link href="https://brandstory.in/services/ecommerce-website-development-company-bangalore/assets/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://brandstory.in/services/ecommerce-website-development-company-bangalore/assets/css/global.css?key=1765949516" rel="stylesheet">
+  <link href="https://brandstory.in/services/ecommerce-website-development-company-bangalore/assets/css/style.css?key=1765949516" rel="stylesheet">
+  <link href="https://brandstory.in/services/ecommerce-website-development-company-bangalore/assets/css/swiper.css?key=1765949516" rel="stylesheet">
+  <link href="https://brandstory.in/services/ecommerce-website-development-company-bangalore/assets/css/aos.css?key=1765949516" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+
+
+  <!--Favicon start-->
+  <link rel="icon" type="image/png" sizes="32x32" href="https://brandstory.in/assets/images/wp-content/uploads/2018/04/favicon.png">
+  <!--Favicon start-->
+
+<!-- Google tag (gtag.js) --> <script async src="https://www.googletagmanager.com/gtag/js?id=G-DDVR73Z12Z"></script> <script> window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'G-DDVR73Z12Z'); </script>
+
+<meta name="msvalidate.01" content="64EEAA85D7640935D5E948C1E01EA76C">
+  <meta name="author" content="Brandstory">
+  <meta name="yandex-verification" content="9ec5c244caece904">
+<meta name="robots" content="INDEX, FOLLOW">
+<meta name="google-site-verification" content="N3JWVAy_bEiIsE5TVLcqG-hRpSdbTOJFeFv-aRUTxzY">
+  <meta name="facebook-domain-verification" content="cwzlu4temes9xs1qgpwxe28qsijaev">
+
+<!-- Google Tag Manager -->
+  <script>(function (w, d, s, l, i) {
+      w[l] = w[l] || []; w[l].push({
+        'gtm.start':
+          new Date().getTime(), event: 'gtm.js'
+      }); var f = d.getElementsByTagName(s)[0],
+        j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+          'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+    })(window, document, 'script', 'dataLayer', 'GTM-PCS4BV');</script>
+  <!-- End Google Tag Manager -->
+
+<script type="application/ld+json">
+        {
+            "@context": "https://schema.org/",
+            "@type": "WebSite",
+            "name": "Brandstory Solutions Pvt.Ltd",
+            "url": "https://brandstory.in/",
+            "potentialAction": {
+                "@type": "SearchAction",
+                "target": "https://brandstory.in/search?={search_term_string}",
+                "query-input": "required name=search_term_string"
+            }
+        }
+    </script>
+    
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "Organization",
+            "name": "Brandstory Solutions Pvt.Ltd",
+            "alternateName": "Brandstory",
+            "url": "https://brandstory.in/",
+            "logo": "https://blr1.digitaloceanspaces.com/brandstory/2024/logo.webp",
+            "sameAs": [
+                "https://in.linkedin.com/company/brandstory-digital",
+                "https://www.instagram.com/brandstorydigital/",
+                "https://www.facebook.com/brandstory.in/",
+                "https://x.com/BrandStory_in/"
+            ]
+        }
+    </script>
+             <script type="application/ld+json">
+        {
+          "@context": "https://schema.org",
+          "@type": "Review",
+          "name": "Best Website Design and Web Development Company In Bangalore India",
+          "url": "https://brandstory.in",
+          "author": {
+            "@type": "Person",
+            "name": "ManoHar S"
+          },
+          "reviewBody": "Brandstory truly stands out as the best website development company in Bangalore! Their team's expertise and dedication are unmatched. From concept to execution, they seamlessly brought my vision to life, delivering a website that not only looks stunning but also functions flawlessly. The attention to detail and commitment to client satisfaction set them apart. I highly recommend Brandstory to anyone in search of top-notch web development services. Thank you for exceeding my expectations!",
+          "reviewRating": {
+            "@type": "Rating",
+            "ratingValue": "5"
+          },
+          "sameAs": [
+            "https://in.linkedin.com/company/brandstory-digital",
+                "https://www.instagram.com/brandstorydigital/",
+                "https://www.facebook.com/brandstory.in/",
+                "https://x.com/BrandStory_in/"
+          ],
+          "publisher": {
+            "@type": "Organization",
+            "name": "Google Review"
+          },
+          "itemReviewed": {
+            "@type": "LocalBusiness",
+            "name": "Brandstory Solutions Pvt.Ltd",
+            "address": {
+              "@type": "PostalAddress",
+              "streetAddress": "No 5, 3rd Floor,1st Cross, Krishna Reddy Colony,",
+              "addressLocality": "Domlur Layout, Bengaluru",
+              "addressRegion": "IN",
+              "postalCode": "560071",
+              "addressCountry": "IN"
+            },
+            "aggregateRating": {
+              "@type": "AggregateRating",
+              "ratingValue": "4.9",
+              "bestRating": "5",
+              "worstRating": "1",
+              "reviewCount": "230"
+            }
+          }
+        }
+    </script>
+        <script type="application/ld+json">
+{
+  "@context": "https://schema.org/",
+  "@type": "Service",
+  "serviceType": "Website Development and Website Designing Company in Bangalore",
+  "provider": {
+    "@type": "LocalBusiness",
+    "name": "Web Development,Website Design, Web application and SEO Services in Bangalore"
+  },
+  "areaServed": {
+    "@type": "State",
+    "name": "Karanataka"
+  },
+  "hasOfferCatalog": {
+    "@type": "OfferCatalog",
+    "name": "Web Design Company in Bangalore",
+    "itemListElement": [
+      {
+        "@type": "OfferCatalog",
+        "name": "Website Development Company in Bangalore",
+        "itemListElement": [
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Web Design Agency in Banglaore"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Web Development Company in Banglaore"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Seo Agency in Bangalore"
+            }
+          }
+        ]
+      },
+      {
+        "@type": "OfferCatalog",
+        "name": "Custom Web Development Company in Bangalore",
+        "itemListElement": [
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Best Django website Development Company in Bangalore"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Top Website Redesign and Revamp company in Bangalore"
+            }
+          },
+                    {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Best Website Redesign Company in Bangalore India"
+            }
+          },
+                   {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "SEO Agency In Bangalore India"
+            }
+          },
+                    {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Best React JS Development Company in Bangalore"
+            }
+          },
+                    {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "ecommerce Development Company in Bangalore"
+            }
+          },
+           {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Best Digital Marketing Company in Bangalore"
+            }
+          },
+            {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Best Python Development Company in Bangalore"
+            }
+          },
+            {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Django Web Application Development in Bangalore"
+            }
+          },
+                {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "ecommerce development company in bangalore"
+            }
+          },
+             {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Best web application development company in bangalore"
+            }
+          },
+             {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "digital marketing company in bangalore"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Local SEO company in Bangalore"
+            }
+          }
+        ]
+      }
+    ]
+  }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [{
+    "@type": "Question",
+    "name": "What if my website looks good but does not generate leads?",
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Even stunning websites can fail because of the lack of strategic UX and CTAs. So, we are here to help you optimize user flow, messaging, and lead capture tools to guide visitors toward action. It helps to convert traffic into measurable business results."
+    }
+  },{
+    "@type": "Question",
+    "name": "Will I receive maintenance and support after launching the website?",
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Yes, definitely. We do not stop only with launching a website. We offer maintenance, including security updates, backups, performance checks, and bug fixes. It helps to ensure your website stays fast, secure, and problem-free. The duration of maintaining your website may vary according to the package you choose."
+    }
+  },{
+    "@type": "Question",
+    "name": "Will you help us if my website gets hacked?",
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Sure. If your website gets hacked, our website creation company in Bangalore will act quickly to isolate threats, restore backups, and secure vulnerabilities. Your site is cleaned, hardened, and brought back online safely to protect both data and user trust without compromising SEO or functionality."
+    }
+  },{
+    "@type": "Question",
+    "name": "Can I redesign my site without disturbing SEO or losing data?",
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Yes, with the right process. We preserve SEO equity by managing URL redirects, metadata, and core structure while refreshing the look. Data stays intact, and your rankings remain stable during the visual transformation."
+    }
+  },{
+    "@type": "Question",
+    "name": "My site doesn't work well on mobile. How do I fix that?",
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Mobile responsiveness is crucial today. We restructure layouts, compress media, and optimize touch-based navigation to ensure fast, user-friendly mobile experiences that reduce bounce rates and improve conversions on all devices."
+    }
+  },{
+    "@type": "Question",
+    "name": "I have a website, but there's no traffic - Could you help me with that?",
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Yes, we do. Without SEO, your website remains invisible. Missing keywords, poor structure, and lack of content strategy result in low visibility. So, we perform a detailed audit and implement improvements to help users actually find and visit your site."
+    }
+  },{
+    "@type": "Question",
+    "name": "Will redesigning or redeveloping help if my website isn't performing well?",
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Yes, it helps because redesigning helps to enhance user experience and aesthetics while redeveloping addresses deeper technical issues. Our website development company in Bangalore recommends the right approach to boost speed, usability, engagement, and overall business outcomes based on your performance gaps."
+    }
+  },{
+    "@type": "Question",
+    "name": "How much does it cost to complete a powerful website?",
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Website cost differs according to your goals, not just pages. Custom design, integrations, SEO readiness, and scalable architecture measure the pricing. A specialized and customized solution is an investment that delivers stronger long-term performance than generic templates."
+    }
+  },{
+    "@type": "Question",
+    "name": "Why does my new website not rank on Google?",
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "If your site isn't optimized for search, it won't rank. So, BrandStory helps you with handling indexing, metadata, keywords, and technical SEO to make your site search-friendly from day one. It ensures visibility on Google and beyond."
+    }
+  },{
+    "@type": "Question",
+    "name": "What makes Brandstory one of the best website development companies in Bangalore?",
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "A great website is built with purpose. Brandstory combines strategy, design and performance to deliver custom websites. It not only looks impressive but also aligns with the business goals and drives real growth that you can measure."
+    }
+  },{
+    "@type": "Question",
+    "name": "How long does website development take?",
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "BrandStory completed most of the website projects within 8 to 12 weeks. A three-month timeline provides ample opportunity for thorough planning, design, development, testing, and optimization. We always ensure that everything works exactly as it should."
+    }
+  },{
+    "@type": "Question",
+    "name": "Will I get the full source code and backups after project completion?",
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Yes, once the project is completed, we hand over full ownership. It includes all source code, credentials, assets and backup files for your records and future use."
+    }
+  },{
+    "@type": "Question",
+    "name": "Can Brandstory build a high-performing website for startups in Bangalore?",
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Absolutely. We help startups launch fast, scalable and conversion ready websites. We design websites to build trust, tell your story and grow from day one."
+    }
+  },{
+    "@type": "Question",
+    "name": "What are the core principles Brandstory follows for website development in Bangalore?",
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Our website development company focuses on five key pillars user first design, mobile responsiveness, SEO readiness, performance and future scalability. BrandStory ensures all our projects are guided by performance and experience."
+    }
+  },{
+    "@type": "Question",
+    "name": "What should I check before choosing a web development company in Bangalore?",
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Check for a strong portfolio, transparent pricing, a flexible tech stack and reliable support. You do not need to get confused, just have a quick call with Brandstory to clarify how to align with your needs."
+    }
+  },{
+    "@type": "Question",
+    "name": "Is it possible to track the progress of the website?",
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Yes. Our website development services in Bangalore provide weekly updates, timelines and progress dashboards. Milestones are shared in advance. You stay informed at every stage, with clear communication and dedicated points of contact."
+    }
+  },{
+    "@type": "Question",
+    "name": "What else does Brandstory offer beyond website development bangalore?",
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "BrandStory is a full service digital agency beyond websites. We deliver a range of solutions, including branding, UI/UX design, SEO, digital marketing, e-commerce and growth focused services."
+    }
+  },{
+    "@type": "Question",
+    "name": "Who are the top website design companies in bangalore known for creative UI/UX?",
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "The best UI/UX agencies combine visual storytelling with insights into user behaviour. Our agency focuses on intuitive layouts, brand aligned visuals and user flows that turn visitors into engaged customers."
+    }
+  },{
+    "@type": "Question",
+    "name": "What strategies can I implement through my website to generate high quality business leads?",
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Our website development company in Bangalore uses clear messaging, fast load speeds, strong CTAs and SEO driven content. Smart forms, landing pages and performance analytics help guide the right users toward conversion."
+    }
+  },{
+    "@type": "Question",
+    "name": "What is a web design company?",
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "A web design company creates user friendly websites that reflect your brand identity, boost trust and improve user experience. It blends design aesthetics with strategy to build high converting digital platforms tailored for growth."
+    }
+  },{
+    "@type": "Question",
+    "name": "What are the services offered by the BrandStory web design company in Bangalore?",
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Our website design company in Bangalore provides all types of services from UI/UX design to full stack development, frontend, backend, CMS and eCommerce websites. BrandStory also offers website redesigns, SEO integration and post launch support. If you need something specific, get in touch with us to build exactly what your brand needs."
+    }
+  },{
+    "@type": "Question",
+    "name": "How do I choose the best website design company in Bangalore?",
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "You should check the experience, SEO knowledge, post launch support, etc. Our best web design company in Bangalore, BrandStory, has all the qualities. We align with your business goals to create digital platforms and drive measurable outcomes."
+    }
+  },{
+    "@type": "Question",
+    "name": "What is the importance of web design?",
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Effective web design helps to build trust, enhance navigation, support SEO and boost conversions. It shapes how users experience your brand. That's why we are the top web design development company in Bangalore, using strategy to achieve success."
+    }
+  },{
+    "@type": "Question",
+    "name": "What are the benefits of hiring a web design company in Bangalore?",
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "You get tailored solutions, fast delivery, SEO ready code and responsive design from skilled web designers. BrandStory experts focus on improving visibility, engagement and business impact for your brand."
+    }
+  },{
+    "@type": "Question",
+    "name": "Why is responsive design so important?",
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Your audience is on every device. Our web design and development company in Bangalore, BrandStory designs responsive websites that look great, work smoothly and support SEO. It helps your brand connect, engage, and perform in today's mobile-first world."
+    }
+  },{
+    "@type": "Question",
+    "name": "How do I know if my website actually helps my business?",
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "We set up analytics tools to track engagement, leads, and conversions. With data dashboards and custom reporting, you'll clearly understand how your site performs and contributes to growth not just how it looks."
+    }
+  }]
+}
+</script>
+
+</head>
+
+<body class="homepage">
+
+
+
+<section class="home-banner bg-black">
+ <div class="container-fluid p-0">
+  <div class="swiper bannerSwiper">
+   <div class="swiper-wrapper">
+    <!-- Slide 1 -->
+    <div class="swiper-slide">
+     <div class="bnr-slide01 bg-bnr d-flex align-items-center">
+      <div class="container">
+       <div class="row">
+        <div class="col-md-8 text-white">
+         <h1 class="mb-4">Ecommerce Website Development Company in Bangalore for Scalable Online Growth</h1>
+         <p class="mb-5">Boost online visibility and capture intent driven traffic with ethical, transparent<span class="db"> and strategic SEO execution.</span>
+         </p>
+         <div class="smm-uae-btn btn-001">
+          <a href="https://brandstory.in/contact-us/" class="fs-22 cnt-btn fw-700 text-white d-flex align-items-center gap-2">Schedule Your Free Ecommerce Consultation Today!</a>
+              </div>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+
+   </div>
+
+  </div>
+ </div>
+ <div class="container">
+ <p class="text-center text-white ml-5 mr-5 pt-5">
+ E-commerce websites and services are rapidly expanding as customer preferences evolve and digital trends continue to reshape buying behavior. E-commerce businesses enable direct interaction between customers and products or services, fostering long term loyalty through personalized recommendations, responsive customer support and features like reviews and wishlists that build trust and engagement. As a leading Ecommerce website development company in Bangalore, BrandStory creates scalable, transparent and feature-rich solutions tailored to your business goals. Our strategies are crafted to support growth, usability and long term success.
+ </p>
+ </div>
+</section>
+
+<section class="next-section py-5 bg-black text-white">
+  <div class="container">
+    <div class="row align-items-center g-4">
+      
+      <!-- Left Image -->
+      <div class="col-lg-6">
+        <img src="https://brandstory.in/services/ecommerce-website-development-company-bangalore/assets/images/ecom/ecommerce-uiux.png" 
+             alt="Ecommerce UI/UX" 
+             class="img-fluid rounded-4 shadow">
+      </div>
+      
+      <!-- Right Content -->
+      <div class="col-lg-6">
+        <p>
+          BrandStory helps you reach your target audience more effectively and build a strong, 
+          credible online presence. Our goal is to deliver ecommerce solutions that not only 
+          showcase the products but also highlight your brand’s unique value and engage users 
+          across global markets. At BrandStory, we place strong emphasis on both User Interface 
+          (UI) and User Experience (UX) to ensure the site is both visually appealing and 
+          functionally seamless. While UI covers visual elements like layout, color schemes and 
+          buttons, UX ensures the site is intuitive, responsive and easy to navigate. Together, 
+          they define how users interact with and experience your platform.
+        </p>
+        <p>
+          Backed by years of expertise, BrandStory’s comprehensive custom Ecommerce services in 
+          Bangalore focus on building smart, user-friendly interfaces that drive real business 
+          outcomes. We work closely with you to design unique UI/UX components that enhance 
+          engagement and retention. Our design team conducts detailed market research, builds 
+          interactive prototypes and then tests them with real users – ensuring every element 
+          delivers value from day one.
+        </p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section class="trusted-brands spb-100">
+<div class="container">
+<h2 class="text-white mb-5 text-center" data-aos="fade-up">Powering Digital Growth for 500+ Brands Nationwide</h2>
+<p class="text-white">BrandStory creates ecommerce websites engineered for growth. From fast-moving D2C startups to large-scale enterprise storefronts, our ecommerce web development in Bangalore team transforms digital journeys into high-converting experiences across every industry, platform and product line.</p>
+
+ <!-- Swiper 01 -->
+  <div class="swiper clients-swiper" data-aos="fade-up">
+    <div class="swiper-wrapper">
+      <div class="swiper-slide logo">
+        <img src="https://brandstory.in/services/ecommerce-website-development-company-bangalore/assets/images/ecom/nuu.svg" loading="lazy" class="img-fluid active" alt="web development company in Bangalore">
+      </div>
+      <div class="swiper-slide logo">
+        <img src="https://brandstory.in/services/ecommerce-website-development-company-bangalore/assets/images/ecom/luna.svg" loading="lazy" class="img-fluid active" alt="website development company in Bangalore">
+      </div>
+      <div class="swiper-slide logo">
+        <img src="https://brandstory.in/services/ecommerce-website-development-company-bangalore/assets/images/ecom/rzo.svg" loading="lazy" class="img-fluid active" alt="website design service provider in Bangalore">
+      </div>
+      <div class="swiper-slide logo">
+        <img src="https://brandstory.in/services/ecommerce-website-development-company-bangalore/assets/images/ecom/m.svg" loading="lazy" class="img-fluid active" alt="leading web design company in Bangalore">
+      </div>
+      <div class="swiper-slide logo">
+        <img src="https://brandstory.in/services/ecommerce-website-development-company-bangalore/assets/images/ecom/daily.svg" loading="lazy" class="img-fluid active" alt="web design and development company in Bangalore">
+      </div>
+      <div class="swiper-slide logo">
+        <img src="https://brandstory.in/services/ecommerce-website-development-company-bangalore/assets/images/ecom/dimen.svg" loading="lazy" class="img-fluid active" alt="web development company in Bangalore">
+      </div>
+      <div class="swiper-slide logo">
+        <img src="https://brandstory.in/services/ecommerce-website-development-company-bangalore/assets/images/ecom/tiipoi.svg" loading="lazy" class="img-fluid active" alt="affordable web design company Bangalore">
+      </div>
+
+    </div>
+  </div>
+
+<!-- Swiper 02 -->
+  <!-- <div class="swiper clients-swiper02 pt-5" data-aos="fade-up">
+    <div class="swiper-wrapper">
+      <div class="swiper-slide">
+        <img src="https://brandstory.in/services/ecommerce-website-development-company-bangalore/assets/images/ecom/nuu.svg" loading="lazy" class="img-fluid active" alt="web development company in Bangalore">
+      </div>
+      <div class="swiper-slide">
+        <img src="https://brandstory.in/services/ecommerce-website-development-company-bangalore/assets/images/ecom/luna.svg" loading="lazy" class="img-fluid active" alt="website development company in Bangalore">
+      </div>
+      <div class="swiper-slide">
+        <img src="https://brandstory.in/services/ecommerce-website-development-company-bangalore/assets/images/ecom/rzo.svg" loading="lazy" class="img-fluid active" alt="website design service provider in Bangalore">
+      </div>
+      <div class="swiper-slide">
+        <img src="https://brandstory.in/services/ecommerce-website-development-company-bangalore/assets/images/ecom/m.svg" loading="lazy" class="img-fluid active" alt="leading web design company in Bangalore">
+      </div>
+      <div class="swiper-slide">
+        <img src="https://brandstory.in/services/ecommerce-website-development-company-bangalore/assets/images/ecom/daily.svg" loading="lazy" class="img-fluid active" alt="web design and development company in Bangalore">
+      </div>
+      <div class="swiper-slide">
+        <img src="https://brandstory.in/services/ecommerce-website-development-company-bangalore/assets/images/ecom/dimen.svg" loading="lazy" class="img-fluid active" alt="web development company in Bangalore">
+      </div>
+      <div class="swiper-slide">
+        <img src="https://brandstory.in/services/ecommerce-website-development-company-bangalore/assets/images/ecom/tiipoi.svg" loading="lazy" class="img-fluid active" alt="affordable web design company Bangalore">
+      </div>
+    </div>
+  </div> --> 
+</div>
+</section>
+
+<!--Start: Reviewed by Verified Experts-->
+<section class="meet-bsd spb-100 cus-overflow-x">
+<div class="container">
+<div class="row">
+<div class="col-lg-12">
+<h2 class="text-white text-center mb-5" data-aos="fade-up">Rated & Reviewed on Trusted Platforms</h2>
+
+<div class="row">
+<div class="col-md-3 mb-3 mb-md-0">
+<div class="review-card " data-aos="fade-up">
+   <img src="https://brandstory.in/services/ecommerce-website-development-company-bangalore/assets/images/web-development-company/google-logo.svg" class="img-fluid cus-w-150" alt="Accordion Image 1">
+</div>
+</div>
+<div class="col-md-3 mb-3 mb-md-0">
+<div class="review-card bg-review " data-aos="fade-up">
+   <img src="https://brandstory.in/services/ecommerce-website-development-company-bangalore/assets/images/web-development-company/clutch.svg" loading="lazy" class="img-fluid cus-w-100" alt="Accordion Image 1">
+</div>
+</div>
+<div class="col-md-3 mb-3 mb-md-0">
+<div class="review-card bg-review-02 " data-aos="fade-up">
+   <img src="https://brandstory.in/services/ecommerce-website-development-company-bangalore/assets/images/web-development-company/ambitation-box.svg" loading="lazy" class="img-fluid cus-w-200" alt="Accordion Image 1">
+</div>
+</div>
+<div class="col-md-3 mb-3 mb-md-0">
+<div class="review-card bg-review-03 " data-aos="fade-up">
+   <img src="https://brandstory.in/services/ecommerce-website-development-company-bangalore/assets/images/web-development-company/just-dial.svg" loading="lazy" class="img-fluid cus-w-150" alt="Accordion Image 1">
+</div>
+</div>
+</div>
+
+</div>
+</div>
+</section>
+<!--End: Reviewed by Verified Experts-->
+
+<section class="trusted-brands spb-100">
+<div class="container">
+<h2 class="text-white mb-5 text-center" data-aos="fade-up">Performance Backed by Experience</h2>
+<div class="row">
+ <div class="col-md-3" data-aos="fade-up">  
+  <div class="brand-box bg-brand-01 text-white p-3 mb-3 mb-md-0" data-aos="fade-up" data-aos-delay="200" 
+  data-aos-duration="1000">
+   <h3>12+</h3>
+   <div class="content-bottom">
+   <p class="fs-18">Experience Built Over Time </p>
+   <p class="fs-18">12+ years of building high-performance ecommerce platforms.</p>
+  </div>
+  </div>
+ </div>
+<div class="col-md-3">
+  <div class="brand-box bg-brand-02 text-black p-3 mb-3 mb-md-0" data-aos="fade-up" data-aos-delay="400" 
+  data-aos-duration="1200">
+   <h3>120+</h3>
+   <div class="content-bottom">
+   <p class="fs-18">Team Strength </p>
+   <p class="fs-18">Cross-functional team of 120+ strategists, designers and developers.</p>
+  </div>
+  </div>
+</div>
+<div class="col-md-3">
+  <div class="brand-box bg-brand-03 text-white p-3 mb-3 mb-md-0" data-aos="fade-up" data-aos-delay="600" 
+  data-aos-duration="1300">
+   <h3>350%</h3>
+   <div class="content-bottom">
+   <p class="fs-18">Proven Impact</p>
+   <p class="fs-18">350% organic traffic growth for high-growth ecommerce brands via strategic SEO.</p>
+  </div>
+  </div>
+</div>
+<div class="col-md-3">
+  <div class="brand-box bg-brand-04 text-white p-3 mb-3 mb-md-0" data-aos="fade-up" data-aos-delay="800" 
+  data-aos-duration="1400">
+   <h3>30+</h3>
+   <div class="content-bottom">
+   <p class="fs-18">Industry Reach</p>
+   <p class="fs-18">Served 30+ sectors, including fashion, tech, pharma, real estate and more.</p>
+  </div>
+  </div>
+</div>
+</div>
+</div>
+</section>
+
+<!--Start: Your Website section-->
+<section class="meet-bsd spb-100 cus-overflow-x">
+<div class="container">
+<div class="row">
+<div class="col-lg-12">
+<h2 class="text-white text-center mb-5" data-aos="fade-up">Key Benefits of E-commerce Website Development Services</h2>
+<div class="row g-3">
+<div class="col-md-4">
+<div class="feature-card" data-aos="fade-left">
+  <span class="circle-feature-box circle-purple"></span>
+  <img src="https://brandstory.in/services/ecommerce-website-development-company-bangalore/assets/images/scc/create.png" class="img-fluid mb-4" alt="Exceptional User Experience">
+  <h3 class="text-white mb-2">Create High Converting Digital Storefronts </h3>
+  <span class="line-feature-box line-purple"></span>
+  <p class="text-white fs-18 mb-0">Build ecommerce websites designed to guide users from landing to checkout seamlessly. It helps to increase engagement and boost sales.</p>
+</div>
+</div>
+<div class="col-md-4">
+<div class="feature-card" data-aos="fade-up">
+  <span class="circle-feature-box circle-pastel-red"></span>
+  <img src="https://brandstory.in/services/ecommerce-website-development-company-bangalore/assets/images/scc/deliver.png" class="img-fluid mb-4" alt="Scalability and Adaptability">
+  <h3 class="text-white mb-2">Deliver Optimized Mobile Experiences</h3>
+  <span class="line-feature-box line-pastel-red"></span>
+  <p class="text-white fs-18 mb-0">Ensure smooth, responsive performance across devices to give customers a consistent and frictionless shopping journey everywhere.</p>
+</div>
+</div>
+<div class="col-md-4">
+<div class="feature-card" data-aos="fade-right">
+  <span class="circle-feature-box circle-soft-blue"></span>
+  <img src="https://brandstory.in/services/ecommerce-website-development-company-bangalore/assets/images/scc/integrate.png" class="img-fluid mb-4" alt="Data Collection and Analytics">
+  <h3 class="text-white mb-2">Integrate Scalable Backend Systems</h3>
+  <span class="line-feature-box line-soft-blue"></span>
+  <p class="text-white fs-18 mb-0">Connect your website with payment gateways, inventory systems and CRMs for streamlined operations and growth ready infrastructure.</p>
+</div>
+</div>
+<div class="col-md-4">
+<div class="feature-card" data-aos="fade-left">
+  <span class="circle-feature-box circle-teal"></span>
+  <img src="https://brandstory.in/services/ecommerce-website-development-company-bangalore/assets/images/scc/enhance.png" loading="lazy" class="img-fluid mb-4" alt="Build Instant Trust">
+  <h3 class="text-white mb-2">Enhance Visual & Functional UX/UI</h3>
+  <span class="line-feature-box line-teal"></span>
+  <p class="text-white fs-18 mb-0">Provide a design first experience that blends aesthetics with usability. It keeps the customers engaged and encourages repeat purchases.</p>
+</div>
+</div>
+<div class="col-md-4">
+<div class="feature-card" data-aos="fade-up">
+  <span class="circle-feature-box circle-orchid"></span>
+  <img src="https://brandstory.in/services/ecommerce-website-development-company-bangalore/assets/images/scc/easy.png" class="img-fluid mb-4" alt="24/7 Customer Support">
+  <h3 class="text-white mb-2">Enable Easy Management & Updates</h3>
+  <span class="line-feature-box line-orchid"></span>
+  <p class="text-white fs-18 mb-0">Maintain control of your store with easy to manage CMS platforms and backend tools that simplify product and content updates. </p>
+</div>
+</div>
+<div class="col-md-4">
+<div class="feature-card" data-aos="fade-right">
+  <span class="circle-feature-box circle-vivid-orange"></span>
+  <img src="https://brandstory.in/services/ecommerce-website-development-company-bangalore/assets/images/scc/across.png" loading="lazy" class="img-fluid mb-4" alt="Unique From Competitors">
+  <h3 class="text-white mb-2">Support Growth Across Platforms</h3>
+  <span class="line-feature-box line-vivid-orange"></span>
+  <p class="text-white fs-18 mb-0">Develop ecommerce websites that adapt to multichannel selling – integrating with marketplaces, social commerce and mobile apps. </p>
+</div>
+</div>
+
+
+</div>
+</div>
+</div>
+</section>
+<!--End: Your Website section-->
+
+<!-- Start: Industries We Serve -->
+<section class="spb-100 cus-overflow-x">
+ <div class="container">
+  <h2 class="mb-5 mt-3 text-center text-white">Comprehensive Ecommerce Development Services Tailored for Growth</span>
+  </h2>
+  <p class="text-center text-white">BrandStory’s ecommerce website development services in Bangalore go beyond design. We focus on building scalable systems that streamline operations, boost conversions, and support long-term digital growth. </p>
+  <div class="row g-4">
+  <!--1 -->
+   <div class="col-md-4" data-aos="fade-left">
+    <div class="ind-card bg-white position-relative">
+     <div class="ind-inner-01 position-relative">
+      <img src="https://brandstory.in/services/ecommerce-website-development-company-bangalore/assets/images/scc/custom.png" loading="lazy" class="img-fluid mb-0" alt="Ecommerce website design and development company in Bangalore">
+      <div class="ind-head position-absolute">
+       <h3 class=" text-white text-center ">Custom Feature Development</h3>
+      </div>
+     </div>
+     <div class="ind-inner-02">
+      <h4 class="text-center fs-24 fw-700 mb-3">Custom Feature Development</h4>
+      <p class="text-center mb-0 fs-18">Tailored features built from scratch to support your business workflows, product models, or customer journeys. Best for brands that need scalable systems beyond default templates and want full control.</p>
+     </div>
+    </div>
+   </div>
+    <!--2-->
+   <div class="col-md-4" data-aos="fade-up">
+    <div class="ind-card bg-white position-relative">
+     <div class="ind-inner-01 position-relative">
+      <img src="https://brandstory.in/services/ecommerce-website-development-company-bangalore/assets/images/scc/cart.png" loading="lazy" class="img-fluid mb-0" alt="Healthcare website design and development company in Bangalore">
+      <div class="ind-head position-absolute">
+       <h3 class=" text-white text-center ">Shopping Cart and Checkout Integration</h3>
+      </div>
+     </div>
+     <div class="ind-inner-02">
+      <h4 class="text-center fs-24 fw-700 mb-3">Shopping Cart and Checkout Integration</h4>
+      <p class="text-center mb-0 fs-18">A smooth, secure, and intuitive cart and checkout experience that reduces drop offs and speeds up conversions. Perfect for ecommerce businesses focused on increasing trust and simplifying purchases.</p>
+     </div>
+    </div>
+   </div>
+    <!--3-->
+  <div class="col-md-4" data-aos="fade-right">
+    <div class="ind-card bg-white position-relative">
+     <div class="ind-inner-01 position-relative">
+      <img src="https://brandstory.in/services/ecommerce-website-development-company-bangalore/assets/images/scc/payment.png" loading="lazy" class="img-fluid mb-0" alt="Real estate website design and development company in Bangalore">
+      <div class="ind-head position-absolute">
+       <h3 class=" text-white text-center ">Payment Gateway Integration</h3>
+      </div>
+     </div>
+     <div class="ind-inner-02">
+      <h4 class="text-center fs-24 fw-700 mb-3">Payment Gateway Integration</h4>
+      <p class="text-center mb-0 fs-18">Enable safe, multi-currency transactions through trusted gateways. Best suited for businesses selling locally and globally with a focus on speed and ease of checkout.</p>
+     </div>
+    </div>
+   </div>
+     <!--4-->
+  <div class="col-md-4" data-aos="fade-left">
+    <div class="ind-card bg-white position-relative">
+     <div class="ind-inner-01 position-relative">
+      <img src="https://brandstory.in/services/ecommerce-website-development-company-bangalore/assets/images/scc/inventory.png" loading="lazy" class="img-fluid mb-0" alt="Travel and tourism website design and development company in Bangalore">
+      <div class="ind-head position-absolute">
+       <h3 class=" text-white text-center ">Inventory & Order Management Systems</h3>
+      </div>
+     </div>
+     <div class="ind-inner-02">
+      <h4 class="text-center fs-24 fw-700 mb-3">Inventory & Order Management Systems</h4>
+      <p class="text-center mb-0 fs-18">Manage stock, track orders and fulfil purchases efficiently from one place. Designed for businesses with multiple SKUs and high order volumes needing better automation and accuracy.</p>
+     </div>
+    </div>
+   </div>
+     <!--5-->
+  <div class="col-md-4" data-aos="fade-up">
+    <div class="ind-card bg-white position-relative">
+     <div class="ind-inner-01 position-relative">
+      <img src="https://brandstory.in/services/ecommerce-website-development-company-bangalore/assets/images/scc/ecomm.png" loading="lazy" class="img-fluid mb-0" alt="Technology website design and development company in Bangalore">
+      <div class="ind-head position-absolute">
+       <h3 class=" text-white text-center ">Ecommerce Mobile App Development</h3>
+      </div>
+     </div>
+     <div class="ind-inner-02">
+      <h4 class="text-center fs-24 fw-700 mb-3">Ecommerce Mobile App Development</h4>
+      <p class="text-center mb-0 fs-18">Turn your store into a native mobile app for iOS and Android. Ideal for brands focused on mobile first users, offering push notifications and a hassle free shopping experience.</p>
+     </div>
+    </div>
+   </div>
+     <!--6-->
+  <div class="col-md-4" data-aos="fade-right">
+    <div class="ind-card bg-white position-relative">
+     <div class="ind-inner-01 position-relative">
+      <img src="https://brandstory.in/services/ecommerce-website-development-company-bangalore/assets/images/scc/services.png" class="img-fluid mb-0" loading="lazy" alt="Fintech website design and development company in Bangalore">
+      <div class="ind-head position-absolute">
+       <h3 class=" text-white text-center ">Ecommerce UI/UX Design Services</h3>
+      </div>
+     </div>
+     <div class="ind-inner-02">
+      <h4 class="text-center fs-24 fw-700 mb-3">Ecommerce UI/UX Design Services</h4>
+      <p class="text-center mb-0 fs-18">We design clean, modern ecommerce interfaces that are easy to navigate and optimized for conversions. Ideal for brands looking for conversion ready shopping experiences.</p>
+     </div>
+    </div>
+   </div>
+  <!--7-->
+  <div class="col-md-4" data-aos="fade-left">
+    <div class="ind-card bg-white position-relative">
+     <div class="ind-inner-01 position-relative">
+      <img src="https://brandstory.in/services/ecommerce-website-development-company-bangalore/assets/images/scc/solutions.png" loading="lazy" class="img-fluid mb-0" alt="Interiors website design and development company in Bangalore">
+      <div class="ind-head position-absolute">
+       <h3 class=" text-white text-center ">Ecommerce SEO & Marketing Solutions</h3>
+      </div>
+     </div>
+     <div class="ind-inner-02">
+      <h4 class="text-center fs-24 fw-700 mb-3">Ecommerce SEO & Marketing Solutions</h4>
+      <p class="text-center mb-0 fs-18">Increase visibility, rankings, and traffic through organic and paid strategies. Designed for ecommerce brands targeting better discoverability and customer acquisition across the digital funnel.</p>
+     </div>
+    </div>
+   </div>
+     <!--8-->
+  <div class="col-md-4" data-aos="fade-up">
+    <div class="ind-card bg-white position-relative">
+     <div class="ind-inner-01 position-relative">
+      <img src="https://brandstory.in/services/ecommerce-website-development-company-bangalore/assets/images/scc/api.png" loading="lazy" class="img-fluid mb-0" alt="Enterprise website design and development company in Bangalore">
+      <div class="ind-head position-absolute">
+       <h3 class=" text-white text-center ">Third-Party API Integrations</h3>
+      </div>
+     </div>
+     <div class="ind-inner-02">
+      <h4 class="text-center fs-24 fw-700 mb-3">Third-Party API Integrations</h4>
+      <p class="text-center mb-0 fs-18">We integrate your store with CRMs, shipping providers, ERPs, and tools you rely on. Our experts ensure smooth data flow and operational efficiency for growing ecommerce businesses.</p>
+     </div>
+    </div>
+   </div>
+     <!--9-->
+  <div class="col-md-4" data-aos="fade-right">
+    <div class="ind-card bg-white position-relative">
+     <div class="ind-inner-01 position-relative">
+      <img src="https://brandstory.in/services/ecommerce-website-development-company-bangalore/assets/images/scc/migrations.png" loading="lazy" class="img-fluid mb-0" alt="Law website design and development company in Bangalore">
+      <div class="ind-head position-absolute">
+       <h3 class=" text-white text-center ">Ecommerce Migration Services</h3>
+      </div>
+     </div>
+     <div class="ind-inner-02">
+      <h4 class="text-center fs-24 fw-700 mb-3">Ecommerce Migration Services</h4>
+      <p class="text-center mb-0 fs-18">Safely move your store to a faster and more flexible platform without losing data or SEO value. Ideal for businesses outgrowing their current tech and looking to scale smoothly.</p>
+     </div>
+    </div>
+   </div>
+     <!--10-->
+  <div class="col-md-4" data-aos="fade-left">
+    <div class="ind-card bg-white position-relative">
+     <div class="ind-inner-01 position-relative">
+      <img src="https://brandstory.in/services/ecommerce-website-development-company-bangalore/assets/images/scc/security.png" loading="lazy" class="img-fluid mb-0" alt="Professional service website design and development company in Bangalore">
+      <div class="ind-head position-absolute">
+       <h3 class=" text-white text-center ">Ecommerce Security & Performance Optimization</h3>
+      </div>
+     </div>
+     <div class="ind-inner-02">
+      <h4 class="text-center fs-24 fw-700 mb-3">Ecommerce Security & Performance Optimization</h4>
+      <p class="text-center mb-0 fs-18">Boost page speed, reinforce security, and deliver a seamless user experience. Best for stores seeking better conversions, reduced bounce rates, and higher customer trust.</p>
+     </div>
+    </div>
+   </div>
+     <!--11-->
+  <div class="col-md-4" data-aos="fade-up">
+    <div class="ind-card bg-white position-relative">
+     <div class="ind-inner-01 position-relative">
+      <img src="https://brandstory.in/services/ecommerce-website-development-company-bangalore/assets/images/scc/vend.png" loading="lazy" class="img-fluid mb-0" alt="Start-up website design and development company in Bangalore">
+      <div class="ind-head position-absolute">
+       <h3 class=" text-white text-center ">Multi-Vendor Marketplace Development</h3>
+      </div>
+     </div>
+     <div class="ind-inner-02">
+      <h4 class="text-center fs-24 fw-700 mb-3">Multi-Vendor Marketplace Development</h4>
+      <p class="text-center mb-0 fs-18">Launch a feature rich marketplace that allows multiple vendors to sell under one platform. Great for entrepreneurs building scalable ecommerce ecosystems with vendor dashboards and centralized control.</p>
+     </div>
+    </div>
+   </div>
+   <div class="col-md-4" data-aos="fade-right">
+   <div class="ind-card bg-white position-relative">
+     <div class="ind-inner-01 position-relative">
+      <img src="https://brandstory.in/services/ecommerce-website-development-company-bangalore/assets/images/scc/repor.png" loading="lazy" class="img-fluid mb-0" alt="Start-up website design and development company in Bangalore">
+      <div class="ind-head position-absolute">
+       <h3 class=" text-white text-center ">Analytics & Reporting Dashboard</h3>
+      </div>
+     </div>
+     <div class="ind-inner-02">
+      <h4 class="text-center fs-24 fw-700 mb-3">Analytics & Reporting Dashboard</h4>
+      <p class="text-center mb-0 fs-18">Get visual dashboards and real time insights into customer behavior, sales trends, and product performance. Perfect for decision makers who rely on data to grow smarter.</p>
+     </div>
+    </div>
+</div>
+  </div>
+ </div>
+</section>
+<!--End: Industries We Serve -->
+
+<!--Start : Accordian Section -->
+<section class="spb-70">
+  <div class="container">
+    <h2 class="text-white text-center mb-5" data-aos="fade-up">Flexible Ecommerce Platforms for All Business Models</h2>
+    <p class="text-center text-white">At BrandStory, our ecommerce website development services in Bangalore are built to support diverse business models by connecting brands, buyers, and marketplaces. From D2C to B2B, we deliver secure and scalable platforms tailored for long-term business growth.</p>
+   <div class="row g-4 d-flex align-items-center">
+     <div class="col-md-4" data-aos="fade-up">
+      <img src="https://brandstory.in/services/ecommerce-website-development-company-bangalore/assets/images/scc/flex.png" loading="lazy" class="img-fluid rounded-3 mb-3" alt="UX Animation">
+     </div>
+     <div class="col-md-8" data-aos="fade-up">
+<div class="accordion custom-accordion" id="mainAccordion">
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="headingOne">
+        <button class="accordion-button show fs-24 fw-700" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+         Multi-Vendor Ecommerce Solutions
+              </button>
+      </h2>
+      <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#mainAccordion">
+        <div class="accordion-body">
+          <p>Create a thriving marketplace with seller onboarding, robust vendor dashboards and secure transactions. We build scalable multi vendor platforms that simplify management and elevate the shopping experience for all users.</p>
+            </div>
+          </div>
+          </div>
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="headingTwo">
+        <button class="accordion-button collapsed fs-24 fw-700" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+          B2B Ecommerce Solutions
+        </button>
+      </h2>
+      <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#mainAccordion">
+        <div class="accordion-body">
+          <p>We simplify enterprise commerce with features like bulk ordering, tiered pricing and CRM integration. Our B2B platforms streamline operations for wholesalers, suppliers and manufacturers aiming for long-term scalability. </p>
+        </div>
+      </div>
+    </div>
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="headingThree">
+        <button class="accordion-button collapsed fs-24 fw-700" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+         B2C Ecommerce Solutions
+        </button>
+      </h2>
+      <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#mainAccordion">
+        <div class="accordion-body">
+          <p>Deliver consumer-first digital stores with mobile optimized designs and smooth navigation. BrandStory’s  B2C ecommerce solutions drive engagement, boost conversions and keep your brand connected across every touchpoint.</p>
+        </div>
+      </div>
+    </div>
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="headingFour">
+        <button class="accordion-button collapsed fs-24 fw-700" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+          C2C Ecommerce Solutions
+        </button>
+      </h2>
+      <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#mainAccordion">
+        <div class="accordion-body">
+          <p>We empower peer to peer marketplaces with trusted features like secure messaging, listing tools, and integrated payments. It helps individuals trade safely and confidently in a dynamic online space.</p>
+        </div>
+      </div>
+    </div>
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="headingFive">
+        <button class="accordion-button collapsed fs-24 fw-700" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+          D2C Ecommerce Solutions
+        </button>
+      </h2>
+      <div id="collapseFive" class="accordion-collapse collapse" aria-labelledby="headingFive" data-bs-parent="#mainAccordion">
+        <div class="accordion-body">
+          <p>Build deeper relationships with your audience. Our D2C ecommerce development helps brands control the buyer journey, increase margins and offer personalized experiences across digital storefronts.</p>
+        </div>
+      </div>
+    </div>
+    
+  </div>
+     </div>
+   </div>
+  </div>
+</section>
+<!-- End:  Accordian section -->
+
+<section class="why-ecom-section py-5">
+  <div class="container">
+    <h2 class="text-center text-white mb-4">
+      Why Choose Our Ecommerce Website Development <br>& Design Services
+    </h2>
+    <p class="text-center text-white mb-5">
+      As a trusted ecommerce design agency in Bangalore, BrandStory is known for combining 
+      technical excellence with strategic thinking to build high performing digital storefronts. 
+      Our expert team has successfully delivered ecommerce solutions to clients across industries 
+      and geographies. We are always prioritizing quality, transparency, and long-term success.
+    </p>
+    <p class="text-center text-white mb-5">
+      Whether you're a startup or an enterprise brand, our team crafts e-commerce experiences 
+      that are not only visually compelling but also built to scale. Our professionals stay ahead 
+      with cutting-edge tools, responsive mobile design, and personalized strategies. Backed by a 
+      strong research and innovation team, we focus on delivering ecommerce websites that don’t 
+      just look good but perform at scale.
+    </p>
+
+    <div class="row align-items-center pt-5">
+      <!-- Left Image -->
+      <div class="col-md-6 d-flex justify-content-center">
+        <img src="https://brandstory.in/services/ecommerce-website-development-company-bangalore/assets/images/scc/ecom-choose.png" 
+             alt="Why Choose Ecommerce Development Services" 
+             class="img-fluid rounded">
+      </div>
+
+      <!-- Right Content -->
+      <div class="col-md-6 mx-auto text-white">
+        <p>
+          With flexible pricing and engagement models, BrandStory is committed to delivering value, 
+          performance, and an exceptional experience for every client.
+        </p>
+        <h4 class="fw-bold mb-3">How We Are Different from Others:</h4>
+        <ul class="fs-18">
+          <li>Ability to manage multiple complex projects simultaneously</li>
+          <li>Flexible collaboration across all global time zones</li>
+          <li>Experience with high-profile clients and enterprise-scale solutions</li>
+          <li>Proven expertise in mobile app development and SaaS platforms</li>
+          <li>Trend-forward approach fused with creative innovation</li>
+          <li>Engagement models that suit your needs—hourly, part-time, or full-time</li>
+          <li>Top-tier quality standards in every project we deliver</li>
+        </ul>
+        <div class="smm-uae-btn btn-001">
+          <a href="https://brandstory.in/contact-us/" class="fs-22 cnt-btn fw-700 text-white d-flex align-items-center gap-2">Claim Your Free Competitive SEO Report!</a>
+         </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Start :  Top Platforms We Use for Website Development -->
+ <section class="spb-100 px-2 px-md-0">
+ <div class="container" data-aos="fade-up">
+  <h2 class="mb-5 mt-3 text-center text-white" data-aos="fade-up">Platform-Specific Ecommerce Development Services We Offer</h2>
+  <p class="text-center text-white">BrandStory works across top platforms to suit startups, SMEs and growing enterprises. From quick launch sites to complex eCommerce builds, we use the right tools for your goals.</p>
+  <div class="row border border-light">
+    <div class="col-md-4 border border-light platform-main">
+      <div class="platform-card py-5 px-2">
+       <div class="pf-card-img d-flex justify-content-between align-items-center pb-4">
+        <img src="https://brandstory.in/services/ecommerce-website-development-company-bangalore/assets/images/scc/magneto.png" class="img-fluid mb-0" alt="Magneto">
+        <img src="https://brandstory.in/services/ecommerce-website-development-company-bangalore/assets/images/web-development-company/platform-arrow.svg" class="img-fluid mb-0" alt="Magento">
+       </div>
+       <div class="pf-card-content">
+        <h3 class="mb-3 mt-2 fs-28">Magento</h3>
+        <p class="mb-0 fs-18">This e-commerce service will help manage your online business and provide a wholesome experience to all customers from around the world. You can either go for the Magneto e-commerce development or we have perfect solutions to offer you regarding e-commerce. The Magento ecommerce services in Bangalore have made a significant difference to businesses.</p>
+       </div>
+      </div>
+    </div>
+    <div class="col-md-4 border border-light platform-main">
+      <div class="platform-card py-5 px-2">
+       <div class="pf-card-img d-flex justify-content-between align-items-center pb-4">
+        <img src="https://brandstory.in/services/ecommerce-website-development-company-bangalore/assets/images/scc/shopify.png" class="img-fluid mb-0" alt="Shopify">
+        <img src="https://brandstory.in/services/ecommerce-website-development-company-bangalore/assets/images/web-development-company/platform-arrow.svg" class="img-fluid mb-0" alt="Shopify">
+       </div>
+       <div class="pf-card-content">
+        <h3 class="mb-3 mt-2  fs-28">Shopify</h3>
+        <p class="mb-0  fs-18">With the Shopify development methods, one can easily bring effective solutions to their e-commerce needs. Our expert designers build websites using custom Shopify themes from scratch. This is a great way to upgrade your website as well. Also, our Shopify development company in Bangalore provides the necessary support and elements are added with the new versions after they are released.</p>
+       </div>
+      </div>
+    </div>
+    <div class="col-md-4 border border-light platform-main">
+      <div class="platform-card py-5 px-2">
+       <div class="pf-card-img d-flex justify-content-between align-items-center pb-4">
+        <img src="https://brandstory.in/services/ecommerce-website-development-company-bangalore/assets/images/scc/woo.png" class="img-fluid mb-0" alt="Woo">
+        <img src="https://brandstory.in/services/ecommerce-website-development-company-bangalore/assets/images/web-development-company/platform-arrow.svg" class="img-fluid mb-0" alt="Woo">
+       </div>
+       <div class="pf-card-content">
+        <h3 class="mb-3 mt-2  fs-28">Woo-Commerce</h3>
+        <p class="mb-0  fs-18">We are a Woo Commerce development company in Bangalore, incorporating Woo Commerce elements and designs for your brand or company’s website and reaching more audiences. We analyze the requirements and develop the website according to the client, keeping in mind all the parameters. We include a variety of features to make your website look great and attractive and so that it runs smoothly as well.</p>
+       </div>
+      </div>
+    </div>
+    <div class="col-md-4 border border-light platform-main">
+      <div class="platform-card py-5 px-2">
+       <div class="pf-card-img d-flex justify-content-between align-items-center pb-4">
+        <img src="https://brandstory.in/services/ecommerce-website-development-company-bangalore/assets/images/scc/big.png" class="img-fluid mb-0" alt="BigCommerce">
+        <img src="https://brandstory.in/services/ecommerce-website-development-company-bangalore/assets/images/web-development-company/platform-arrow.svg" class="img-fluid mb-0" alt="Big">
+       </div>
+       <div class="pf-card-content">
+        <h3 class="mb-3 mt-2  fs-28">BigCommerce Development</h3>
+        <p class="mb-0  fs-18">BigCommerce provides powerful ecommerce tools without the complexity. We develop modern, mobile-optimized BigCommerce stores that support scalability, secure checkout, and seamless integration with third-party apps and payment systems.</p>
+       </div>
+      </div>
+    </div>
+     <div class="col-md-4 border border-light platform-main">
+      <div class="platform-card py-5 px-2">
+       <div class="pf-card-img d-flex justify-content-between align-items-center pb-4">
+        <img src="https://brandstory.in/services/ecommerce-website-development-company-bangalore/assets/images/scc/opencart.png" loading="lazy" class="img-fluid mb-0" alt="OpenCart">
+        <img src="https://brandstory.in/services/ecommerce-website-development-company-bangalore/assets/images/web-development-company/platform-arrow.svg" class="img-fluid mb-0" alt="OpenCart">
+       </div>
+       <div class="pf-card-content">
+        <h3 class="mb-3 mt-2  fs-28">OpenCart Development</h3>
+        <p class="mb-0  fs-18">For businesses seeking a lightweight and flexible solution, our OpenCart development services in Bangalore deliver fully customized online stores. We tailor modules, themes, and performance enhancements for intuitive user journeys and backend simplicity.</p>
+       </div>
+      </div>
+    </div>
+     <div class="col-md-4 border border-light platform-main">
+      <div class="platform-card py-5 px-2">
+       <div class="pf-card-img d-flex justify-content-between align-items-center pb-4">
+        <img src="https://brandstory.in/services/ecommerce-website-development-company-bangalore/assets/images/scc/wix.png" class="img-fluid mb-0" alt="Wix">
+        <img src="https://brandstory.in/services/ecommerce-website-development-company-bangalore/assets/images/web-development-company/platform-arrow.svg" class="img-fluid mb-0" alt="Wix">
+       </div>
+       <div class="pf-card-content">
+        <h3 class="mb-3 mt-2  fs-28">Wix Ecommerce Development</h3>
+        <p class="mb-0  fs-18">Wix is perfect for startups and small businesses seeking fast deployment and visually rich design. Our ecommerce website developers in Bangalore customize Wix ecommerce templates with branded elements, payment gateways, and responsive shopping interfaces.</p>
+       </div>
+      </div>
+    </div>
+     <div class="col-md-12 border border-light platform-main">
+      <div class="platform-card py-5 px-2">
+       <div class="pf-card-img d-flex justify-content-between align-items-center pb-4">
+        <img src="https://brandstory.in/services/ecommerce-website-development-company-bangalore/assets/images/scc/cusecom.png" class="img-fluid mb-0" alt="Cutsom Ecommerce">
+        <img src="https://brandstory.in/services/ecommerce-website-development-company-bangalore/assets/images/web-development-company/platform-arrow.svg" class="img-fluid mb-0" alt="Cutsom Ecommerce">
+       </div>
+       <div class="pf-card-content">
+        <h3 class="mb-3 mt-2  fs-28">Custom e-commerce development</h3>
+        <p class="mb-0  fs-18">BrandStory’s custom services focus on reaching the target audiences and helping the company increase their reach. We set up an interactive website that is user-friendly and smooth with our expertise to give customers an experience that they will remember. Our ecommerce web and mobile app development services in Bangalore have the most unique and out-of-the-box themes to personalize your online identity and give it a fresh look compared to the others.</p>
+       </div>
+      </div>
+    </div>
+    
+  </div>
+ </div>
+ </section>
+<!--  End:  Top Platforms We Use for Website Development -->
+
+<section class="ecom-success py-5">
+  <div class="container">
+    <h2 class="text-center text-white mb-5">
+      Ecommerce Success Stories Backed by Data
+    </h2>
+
+    <div class="row g-4">
+      <!-- Card 1 -->
+      <div class="col-md-4">
+        <div class="success-card h-100">
+          <img src="https://brandstory.in/services/ecommerce-website-development-company-bangalore/assets/images/web-development-company/quotes.svg" class="w-11" alt="quotes">
+          <p>
+            Redesigned UX and integrated smart cart flow, reducing cart abandonment 
+            and boosting mobile conversion rate by 38% in the minimum period.
+          </p>
+          <strong>Fashion Retailer | 80% Faster Checkout</strong>
+        </div>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="col-md-4">
+        <div class="success-card h-100">
+          <img src="https://brandstory.in/services/ecommerce-website-development-company-bangalore/assets/images/web-development-company/quotes.svg" class="w-11" alt="quotes">
+          <p>
+            Launched a custom Shopify store with marketing automation – 
+            200% increase in repeat purchases and 3X higher monthly revenue.
+          </p>
+          <strong>D2C Skincare Brand | 3X Revenue Growth</strong>
+        </div>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="col-md-4">
+        <div class="success-card h-100">
+          <img src="https://brandstory.in/services/ecommerce-website-development-company-bangalore/assets/images/web-development-company/quotes.svg" class="w-11" alt="quotes">
+          <p>
+            Migrated legacy system to scalable Magento architecture. Improved load 
+            time by 52% and ensured 99.9% uptime during seasonal traffic spikes.
+          </p>
+          <strong>Electronics Marketplace | 99.9% Uptime</strong>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- Start: Development Process -->
+<section class="spb-100 px-2">
+  <div class="container">
+    <h2 class="text-center text-white mb-5" data-aos="fade-up">
+      Tools & Technologies Used in eCommerce Website Development
+    </h2>
+    <p class="text-center text-white">
+      Building an e-commerce website is not only about putting up a few product images. It requires a mix of the right technologies that ensure speed, security, usability, and scalability. Building an e-commerce website is not only about putting up a few product images. It requires a mix of the right technologies that ensure speed, security, usability, and scalability. 
+    </p>
+
+    <!-- ========= Block 01 ========= -->
+    <div class="process-sec" data-aos="fade-up">
+      <div class="row align-items-center inner-p-sec text-white p-2">
+        <div class="col-auto">
+          <span class="p-2 p-md-4 fs-88">01</span>
+        </div>
+        <div class="col">
+          <h5 class="fw-bold mb-1 fs-24">Frontend Technologies (What the user sees)</h5>
+          <p class="mb-0 fs-18">
+            These technologies are responsible for the visual layout and user interactions on your website.
+          </p>
+
+          <div class="read-more-content">
+          <div class="tab-box">
+            <ul class="tab-list">
+              <li class="active" data-tab="goals-01">HTML5 & CSS3</li>
+              <li data-tab="market-01">JavaScript</li>
+              <li data-tab="audience-01">React.js / Angular / Vue.js</li>
+            </ul>
+            <div class="tab-content">
+              <p data-tab="goals-01" class="active">The basic building blocks for structuring and styling your website. Think of HTML as the skeleton and CSS as the clothes.</p>
+              <p data-tab="market-01">Makes your website interactive. Want product sliders, quick add-to-cart buttons, or instant validation on forms? That’s JavaScript in action.</p>
+              <p data-tab="audience-01">These JavaScript frameworks speed up frontend development and help create fast, responsive single-page applications (SPAs) with modern UI.</p>
+            </div>
+          </div>
+          <p class="mb-0 fs-18">Use case: React is often preferred for product filtering, quick page loads, and dynamic carts in modern eCommerce platforms.</p>
+          </div>
+          <button class="read-more-btn">
+  Read More 
+  <span class="arrow">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg" class="arrow-icon">
+      <path d="M12.1338 5.94433C12.3919 5.77382 12.7434 5.80202 12.9707 6.02929C13.1979 6.25656 13.2261 6.60807 13.0556 6.8662L12.9707 6.9707L8.47067 11.4707C8.21097 11.7304 7.78896 11.7304 7.52926 11.4707L3.02926 6.9707L2.9443 6.8662C2.77379 6.60807 2.80199 6.25656 3.02926 6.02929C3.25653 5.80202 3.60804 5.77382 3.86617 5.94433L3.97067 6.02929L7.99996 10.0586L12.0293 6.02929L12.1338 5.94433Z"></path>
+    </svg>
+  </span>
+</button>
+
+        </div>
+      </div>
+      <div class="dir-arrow my-3">
+        <img src="https://brandstory.in/services/ecommerce-website-development-company-bangalore/assets/images/web-development-company/down-arrow.svg" class="img-fluid" alt="SEO Process Arrow">
+      </div>
+    </div>
+
+    <!-- ========= Block 02 ========= -->
+    <div class="process-sec" data-aos="fade-up">
+      <div class="row align-items-center inner-p-sec text-white p-2">
+        <div class="col-auto">
+          <span class="p-2 p-md-4 fs-88">02</span>
+        </div>
+        <div class="col">
+          <h5 class="fw-bold mb-1 fs-24">Backend Technologies (What happens behind the scenes)</h5>
+          <p class="mb-0 fs-18">
+            The backend is the brain of your eCommerce site. It helps handle things like managing products, processing orders, managing users, etc.
+          </p>
+
+          <div class="read-more-content">
+          <div class="tab-box">
+            <ul class="tab-list">
+              <li class="active" data-tab="intent-02">PHP (Laravel, CodeIgniter)</li>
+              <li data-tab="volume-02">Python (Django)</li>
+              <li data-tab="node-02">Node.js</li>
+              <li data-tab="java-02">Java (Spring Boot)</li>
+              <li data-tab="ruby-02">Ruby on Rails</li>
+            </ul>
+            <div class="tab-content">
+              <p data-tab="intent-02" class="active">Widely used in India, PHP based frameworks are cost effective and great for scalable eCommerce sites.</p>
+              <p data-tab="volume-02">Known for security and scalability. Used by marketplaces that expect growth.</p>
+              <p data-tab="node-02">Handles real time data (e.g. stock updates) and high speed performance efficiently.</p>
+              <p data-tab="java-02">Enterprise grade solution used by large scale eCommerce platforms.</p>
+              <p data-tab="ruby-02">Developer friendly and fast to build with, though less commonly used in India.</p>
+            </div>
+          </div>
+          <p class="mb-0 fs-18">Use case: Backend frameworks manage order processing, user login, and payment gateway communication.</p>
+          </div>
+          <button class="read-more-btn">
+  Read More 
+  <span class="arrow">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg" class="arrow-icon">
+      <path d="M12.1338 5.94433C12.3919 5.77382 12.7434 5.80202 12.9707 6.02929C13.1979 6.25656 13.2261 6.60807 13.0556 6.8662L12.9707 6.9707L8.47067 11.4707C8.21097 11.7304 7.78896 11.7304 7.52926 11.4707L3.02926 6.9707L2.9443 6.8662C2.77379 6.60807 2.80199 6.25656 3.02926 6.02929C3.25653 5.80202 3.60804 5.77382 3.86617 5.94433L3.97067 6.02929L7.99996 10.0586L12.0293 6.02929L12.1338 5.94433Z"></path>
+    </svg>
+  </span>
+</button>
+
+        </div>
+      </div>
+      <div class="dir-arrow my-3">
+        <img src="https://brandstory.in/services/ecommerce-website-development-company-bangalore/assets/images/web-development-company/down-arrow.svg" class="img-fluid" alt="SEO Process Arrow">
+      </div>
+    </div>
+
+    <!-- ========= Block 03 ========= -->
+    <div class="process-sec" data-aos="fade-up">
+      <div class="row align-items-center inner-p-sec text-white p-2">
+        <div class="col-auto">
+          <span class="p-2 p-md-4 fs-88">03</span>
+        </div>
+        <div class="col">
+          <h5 class="fw-bold mb-1 fs-24">Database Technologies (Where your data lives)</h5>
+          <p class="mb-0 fs-18">Your eCommerce store deals with thousands of data points—products, users, orders, reviews and all of it needs to be stored safely.</p>
+
+          <div class="read-more-content">
+          <div class="tab-box">
+            <ul class="tab-list">
+              <li class="active" data-tab="tech-03">MySQL / PostgreSQL</li>
+              <li data-tab="content-03">MongoDB </li>
+              <li data-tab="structure-03">Redis </li>
+            </ul>
+            <div class="tab-content">
+              <p data-tab="tech-03" class="active">Relational databases for structured data like product listings, user info, and order history.</p>
+              <p data-tab="content-03"> A flexible, NoSQL database used when you need to scale fast or deal with unstructured data.</p>
+              <p data-tab="structure-03">Used as a caching tool to improve performance and reduce load time.</p>
+            </div>
+          </div>
+          <p class="mb-0 fs-18">Use case: MongoDB is great for handling dynamic product catalogues, while MySQL is used in traditional eCommerce websites.</p>
+          </div>
+          <button class="read-more-btn">
+  Read More 
+  <span class="arrow">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg" class="arrow-icon">
+      <path d="M12.1338 5.94433C12.3919 5.77382 12.7434 5.80202 12.9707 6.02929C13.1979 6.25656 13.2261 6.60807 13.0556 6.8662L12.9707 6.9707L8.47067 11.4707C8.21097 11.7304 7.78896 11.7304 7.52926 11.4707L3.02926 6.9707L2.9443 6.8662C2.77379 6.60807 2.80199 6.25656 3.02926 6.02929C3.25653 5.80202 3.60804 5.77382 3.86617 5.94433L3.97067 6.02929L7.99996 10.0586L12.0293 6.02929L12.1338 5.94433Z"></path>
+    </svg>
+  </span>
+</button>
+
+        </div>
+      </div>
+      <div class="dir-arrow my-3"><img src="https://brandstory.in/services/ecommerce-website-development-company-bangalore/assets/images/web-development-company/down-arrow.svg" class="img-fluid"></div>
+    </div>
+
+    <!-- ========= Block 04 ========= -->
+    <div class="process-sec" data-aos="fade-up">
+      <div class="row align-items-center inner-p-sec text-white p-2">
+        <div class="col-auto"><span class="p-2 p-md-4 fs-88">04</span></div>
+        <div class="col">
+          <h5 class="fw-bold mb-1 fs-24">Payment Gateway Integration (To accept online payments)</h5>
+          <p class="mb-0 fs-18">This is crucial for any type of eCommerce website because it's important to process payments in a reliable and secure payment gateway.</p>
+          <div class="read-more-content">
+          <div class="tab-box">
+            <ul class="tab-list">
+              <li class="active" data-tab="meta-04">Razorpay / Paytm / CCAvenue</li>
+              <li data-tab="headers-04">Stripe / PayPal / Square</li>
+              <li data-tab="content-04">Google Pay / Apple Pay</li>
+            </ul>
+            <div class="tab-content">
+              <p data-tab="meta-04" class="active">Popular in India for UPI, card, wallet and net banking support.</p>
+              <p data-tab="headers-04">More common in global or export focused stores.</p>
+              <p data-tab="content-04">Mobile wallet options for a seamless checkout experience.</p>
+            </div>
+          </div>
+          <p class="mb-0 fs-18">Use case: Razorpay is widely used in Indian startups for its simple APIs and wide payment method support.</p>
+          </div>
+          <button class="read-more-btn">
+  Read More 
+  <span class="arrow">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg" class="arrow-icon">
+      <path d="M12.1338 5.94433C12.3919 5.77382 12.7434 5.80202 12.9707 6.02929C13.1979 6.25656 13.2261 6.60807 13.0556 6.8662L12.9707 6.9707L8.47067 11.4707C8.21097 11.7304 7.78896 11.7304 7.52926 11.4707L3.02926 6.9707L2.9443 6.8662C2.77379 6.60807 2.80199 6.25656 3.02926 6.02929C3.25653 5.80202 3.60804 5.77382 3.86617 5.94433L3.97067 6.02929L7.99996 10.0586L12.0293 6.02929L12.1338 5.94433Z"></path>
+    </svg>
+  </span>
+</button>
+
+        </div>
+      </div>
+      <div class="dir-arrow my-3"><img src="https://brandstory.in/services/ecommerce-website-development-company-bangalore/assets/images/web-development-company/down-arrow.svg" class="img-fluid"></div>
+    </div>
+
+    <!-- ========= Block 05 ========= -->
+    <div class="process-sec" data-aos="fade-up">
+      <div class="row align-items-center inner-p-sec text-white p-2">
+        <div class="col-auto"><span class="p-2 p-md-4 fs-88">05</span></div>
+        <div class="col">
+          <h5 class="fw-bold mb-1 fs-24">Security Tools (To keep your data safe)</h5>
+          <p class="mb-0 fs-18">Security is not optional, especially when customers are entering card and address details.</p>
+          <div class="read-more-content">
+          <div class="tab-box">
+            <ul class="tab-list">
+              <li class="active" data-tab="seo-05">SSL Certificates</li>
+              <li data-tab="engage-05">PCI-DSS Compliance</li>
+              <li data-tab="conversion-05">2FA (Two-Factor Authentication)</li>
+              <li data-tab="google-05">Google reCAPTCHA</li>
+            </ul>
+            <div class="tab-content">
+              <p data-tab="seo-05" class="active">Encrypts all user data exchanged between browser and server (the “HTTPS” you see in URLs).</p>
+              <p data-tab="engage-05">Ensures that your platform is following global standards for payment data protection.</p>
+              <p data-tab="conversion-05">Adding an extra confirmation for login security.</p>
+              <p data-tab="google-05">Helps prevent bots and spam on your forms.</p>
+            </div>
+          </div>
+          <p class="mb-0 fs-18">Use case: SSL is a must for all pages; PCI-DSS is essential if you’re storing card info.</p>
+          </div>
+          <button class="read-more-btn">
+  Read More 
+  <span class="arrow">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg" class="arrow-icon">
+      <path d="M12.1338 5.94433C12.3919 5.77382 12.7434 5.80202 12.9707 6.02929C13.1979 6.25656 13.2261 6.60807 13.0556 6.8662L12.9707 6.9707L8.47067 11.4707C8.21097 11.7304 7.78896 11.7304 7.52926 11.4707L3.02926 6.9707L2.9443 6.8662C2.77379 6.60807 2.80199 6.25656 3.02926 6.02929C3.25653 5.80202 3.60804 5.77382 3.86617 5.94433L3.97067 6.02929L7.99996 10.0586L12.0293 6.02929L12.1338 5.94433Z"></path>
+    </svg>
+  </span>
+</button>
+
+        </div>
+      </div>
+      <div class="dir-arrow my-3"><img src="https://brandstory.in/services/ecommerce-website-development-company-bangalore/assets/images/web-development-company/down-arrow.svg" class="img-fluid"></div>
+    </div>
+
+    <!-- ========= Block 06 ========= -->
+    <div class="process-sec" data-aos="fade-up">
+      <div class="row align-items-center inner-p-sec text-white p-2">
+        <div class="col-auto"><span class="p-2 p-md-4 fs-88">06</span></div>
+        <div class="col">
+          <h5 class="fw-bold mb-1 fs-24">E-commerce Platforms (Quick-start tools)</h5>
+          <p class="mb-0 fs-18">Instead of building from scratch, many businesses prefer using powerful eCommerce platforms.</p>
+          <div class="read-more-content">
+          <div class="tab-box">
+            <ul class="tab-list">
+              <li class="active" data-tab="speed-06">Shopify </li>
+              <li data-tab="mobile-06">Magento (Adobe Commerce)</li>
+              <li data-tab="secure-06">WooCommerce </li>
+              <li data-tab="presta-06">BigCommerce / OpenCart / PrestaShop</li>
+            </ul>
+            <div class="tab-content">
+              <p data-tab="speed-06" class="active">Best for small to medium businesses that want to launch quickly with minimal coding.</p>
+              <p data-tab="mobile-06">Robust, flexible and suited for enterprise level businesses.</p>
+              <p data-tab="secure-06">A WordPress plugin, ideal for those already using WordPress.</p>
+              <p data-tab="presta-06">Affordable and customizable alternatives.</p>
+            </div>
+          </div>
+          <p class="mb-0 fs-18">Use case: Shopify is great for lifestyle brands, while Magento is better for large retailers with custom workflows.</p>
+          </div>
+          <button class="read-more-btn">
+  Read More 
+  <span class="arrow">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg" class="arrow-icon">
+      <path d="M12.1338 5.94433C12.3919 5.77382 12.7434 5.80202 12.9707 6.02929C13.1979 6.25656 13.2261 6.60807 13.0556 6.8662L12.9707 6.9707L8.47067 11.4707C8.21097 11.7304 7.78896 11.7304 7.52926 11.4707L3.02926 6.9707L2.9443 6.8662C2.77379 6.60807 2.80199 6.25656 3.02926 6.02929C3.25653 5.80202 3.60804 5.77382 3.86617 5.94433L3.97067 6.02929L7.99996 10.0586L12.0293 6.02929L12.1338 5.94433Z"></path>
+    </svg>
+  </span>
+</button>
+
+        </div>
+      </div>
+      <div class="dir-arrow my-3"><img src="https://brandstory.in/services/ecommerce-website-development-company-bangalore/assets/images/web-development-company/down-arrow.svg" class="img-fluid"></div>
+    </div>
+
+    <!-- ========= Block 07 ========= -->
+    <div class="process-sec" data-aos="fade-up">
+      <div class="row align-items-center inner-p-sec text-white p-2">
+        <div class="col-auto"><span class="p-2 p-md-4 fs-88">07</span></div>
+        <div class="col">
+          <h5 class="fw-bold mb-1 fs-24">Mobile App Development (For mCommerce)</h5>
+          <p class="mb-0 fs-18">With mobile shopping on the rise in India, having a dedicated app can boost sales.</p>
+          <div class="read-more-content">
+          <div class="tab-box">
+            <ul class="tab-list">
+              <li class="active" data-tab="maps-07">Flutter / React Native</li>
+              <li data-tab="citations-07">Kotlin / Swift</li>
+            </ul>
+            <div class="tab-content">
+              <p data-tab="maps-07" class="active">Create apps for both Android and iOS from a single codebase.</p>
+              <p data-tab="citations-07">Used for native Android and iOS development respectively.</p>
+            </div>
+          </div>
+          <p class="mb-0 fs-18">Use case: React Native is perfect for startups launching quick, budget friendly shopping apps.</p>
+          </div>
+          <button class="read-more-btn">
+  Read More 
+  <span class="arrow">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg" class="arrow-icon">
+      <path d="M12.1338 5.94433C12.3919 5.77382 12.7434 5.80202 12.9707 6.02929C13.1979 6.25656 13.2261 6.60807 13.0556 6.8662L12.9707 6.9707L8.47067 11.4707C8.21097 11.7304 7.78896 11.7304 7.52926 11.4707L3.02926 6.9707L2.9443 6.8662C2.77379 6.60807 2.80199 6.25656 3.02926 6.02929C3.25653 5.80202 3.60804 5.77382 3.86617 5.94433L3.97067 6.02929L7.99996 10.0586L12.0293 6.02929L12.1338 5.94433Z"></path>
+    </svg>
+  </span>
+</button>
+
+        </div>
+      </div>
+      <div class="dir-arrow my-3"><img src="https://brandstory.in/services/ecommerce-website-development-company-bangalore/assets/images/web-development-company/down-arrow.svg" class="img-fluid"></div>
+    </div>
+
+    <!-- ========= Block 08 ========= -->
+    <div class="process-sec" data-aos="fade-up">
+      <div class="row align-items-center inner-p-sec text-white p-2">
+        <div class="col-auto"><span class="p-2 p-md-4 fs-88">08</span></div>
+        <div class="col">
+          <h5 class="fw-bold mb-1 fs-24">DevOps & Deployment (How you launch and manage your site)</h5>
+          <p class="mb-0 fs-18">These tools help you deploy, maintain, and scale your eCommerce website.</p>
+          <div class="read-more-content">
+          <div class="tab-box">
+            <ul class="tab-list">
+              <li class="active" data-tab="schema-08">Git / GitHub</li>
+              <li data-tab="snippets-08">Docker / Kubernetes</li>
+              <li data-tab="faq-08">AWS / Google Cloud / Azure</li>
+              <li data-tab="github-08">CI/CD (Jenkins, GitHub Actions)</li>
+            </ul>
+            <div class="tab-content">
+              <p data-tab="schema-08" class="active">Version control for tracking changes in code.</p>
+              <p data-tab="snippets-08">Makes it easy to scale your website or app as traffic increases.</p>
+              <p data-tab="faq-08">Cloud platforms to host your website reliably.</p>
+              <p data-tab="github-08">Automate deployment and testing.</p>
+            </div>
+          </div>
+          <p class="mb-0 fs-18">Use case: Docker + AWS combo is widely used for eCommerce apps expecting high traffic.</p>
+          </div>
+          <button class="read-more-btn">
+  Read More 
+  <span class="arrow">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg" class="arrow-icon">
+      <path d="M12.1338 5.94433C12.3919 5.77382 12.7434 5.80202 12.9707 6.02929C13.1979 6.25656 13.2261 6.60807 13.0556 6.8662L12.9707 6.9707L8.47067 11.4707C8.21097 11.7304 7.78896 11.7304 7.52926 11.4707L3.02926 6.9707L2.9443 6.8662C2.77379 6.60807 2.80199 6.25656 3.02926 6.02929C3.25653 5.80202 3.60804 5.77382 3.86617 5.94433L3.97067 6.02929L7.99996 10.0586L12.0293 6.02929L12.1338 5.94433Z"></path>
+    </svg>
+  </span>
+</button>
+
+        </div>
+      </div>
+      <div class="dir-arrow my-3"><img src="https://brandstory.in/services/ecommerce-website-development-company-bangalore/assets/images/web-development-company/down-arrow.svg" class="img-fluid"></div>
+    </div>
+
+    <!-- ========= Block 09 ========= -->
+    <div class="process-sec" data-aos="fade-up">
+      <div class="row align-items-center inner-p-sec text-white p-2">
+        <div class="col-auto"><span class="p-2 p-md-4 fs-88">09</span></div>
+        <div class="col">
+          <h5 class="fw-bold mb-1 fs-24">Analytics & Marketing Tools (To grow your business)</h5>
+          <p class="mb-0 fs-18">Once your site is live, you need data and tools to bring in traffic and improve conversions.</p>
+          <div class="read-more-content">
+          <div class="tab-box">
+            <ul class="tab-list">
+              <li class="active" data-tab="swot-09">Google Analytics / GA4</li>
+              <li data-tab="strategy-09">Google Tag Manager</li>
+              <li data-tab="gap-09">Hotjar / Crazy Egg</li>
+              <li data-tab="mail-09">Mailchimp / Klaviyo</li>
+              <li data-tab="chimp-09">Yoast SEO / SEMrush / Ahrefs</li>
+            </ul>
+            <div class="tab-content">
+              <p data-tab="swot-09" class="active">Understand user behavior, traffic sources, and sales funnels.</p>
+              <p data-tab="strategy-09">Add tracking scripts without needing a developer.</p>
+              <p data-tab="gap-09">See how users interact with your site through heatmaps and session recordings.</p>
+              <p data-tab="mail-09">Automate email campaigns and retargeting.</p>
+              <p data-tab="chimp-09">Optimize your website for Google search.</p>
+            </div>
+          </div>
+          <p class="mb-0 fs-18">Use case: GA4 + Tag Manager helps track every customer action on your website.</p>
+          </div>
+          <button class="read-more-btn">
+  Read More 
+  <span class="arrow">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg" class="arrow-icon">
+      <path d="M12.1338 5.94433C12.3919 5.77382 12.7434 5.80202 12.9707 6.02929C13.1979 6.25656 13.2261 6.60807 13.0556 6.8662L12.9707 6.9707L8.47067 11.4707C8.21097 11.7304 7.78896 11.7304 7.52926 11.4707L3.02926 6.9707L2.9443 6.8662C2.77379 6.60807 2.80199 6.25656 3.02926 6.02929C3.25653 5.80202 3.60804 5.77382 3.86617 5.94433L3.97067 6.02929L7.99996 10.0586L12.0293 6.02929L12.1338 5.94433Z"></path>
+    </svg>
+  </span>
+</button>
+
+        </div>
+      </div>
+      <div class="dir-arrow my-3"><img src="https://brandstory.in/services/ecommerce-website-development-company-bangalore/assets/images/web-development-company/down-arrow.svg" class="img-fluid"></div>
+    </div>
+
+    <!-- ========= Block 10 ========= -->
+    <div class="process-sec" data-aos="fade-up">
+      <div class="row align-items-center inner-p-sec text-white p-2">
+        <div class="col-auto"><span class="p-2 p-md-4 fs-88">10</span></div>
+        <div class="col">
+          <h5 class="fw-bold mb-1 fs-24">Testing & Performance Tools (For quality assurance)</h5>
+          <p class="mb-0 fs-18">Before launch and even after, testing is essential.</p>
+          <div class="read-more-content">
+          <div class="tab-box">
+            <ul class="tab-list">
+              <li class="active" data-tab="links-10">Selenium / Cypress</li>
+              <li data-tab="mentions-10">GTmetrix / Google Lighthouse</li>
+              <li data-tab="social-10">BrowserStack </li>
+            </ul>
+            <div class="tab-content">
+              <p data-tab="links-10" class="active">Automate testing to find bugs before customers do.</p>
+              <p data-tab="mentions-10">Audit your site speed, mobile friendliness, and SEO score.</p>
+              <p data-tab="social-10">Test how your site looks across different devices and browsers.</p>
+            </div>
+          </div>
+          <p class="mb-0 fs-18">Use case: Use GTmetrix to test loading time and improve performance on slower mobile connections.</p>
+          </div>
+          <button class="read-more-btn">
+  Read More 
+  <span class="arrow">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg" class="arrow-icon">
+      <path d="M12.1338 5.94433C12.3919 5.77382 12.7434 5.80202 12.9707 6.02929C13.1979 6.25656 13.2261 6.60807 13.0556 6.8662L12.9707 6.9707L8.47067 11.4707C8.21097 11.7304 7.78896 11.7304 7.52926 11.4707L3.02926 6.9707L2.9443 6.8662C2.77379 6.60807 2.80199 6.25656 3.02926 6.02929C3.25653 5.80202 3.60804 5.77382 3.86617 5.94433L3.97067 6.02929L7.99996 10.0586L12.0293 6.02929L12.1338 5.94433Z"></path>
+    </svg>
+  </span>
+</button>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  // ������ TAB SWITCHING (only one active at a time)
+  document.querySelectorAll(".tab-box").forEach(tabBox => {
+    const tabs = tabBox.querySelectorAll(".tab-list li");
+    const contents = tabBox.querySelectorAll(".tab-content p");
+
+    tabs.forEach(tab => {
+      tab.addEventListener("click", () => {
+        const target = tab.getAttribute("data-tab");
+
+        // Reset all tabs + contents
+        tabs.forEach(t => t.classList.remove("active"));
+        contents.forEach(c => c.classList.remove("active"));
+
+        // Activate clicked tab + target <p>
+        tab.classList.add("active");
+        const targetContent = tabBox.querySelector(\`.tab-content p[data-tab="\${target}"]\`);
+        if (targetContent) {
+          targetContent.classList.add("active");
+        }
+      });
+    });
+  });
+
+  // ������ READ MORE / LESS (only one open at a time)
+  document.querySelectorAll(".read-more-btn").forEach(btn => {
+    btn.addEventListener("click", function () {
+      const content = this.previousElementSibling; // the .read-more-content
+
+      if (content.classList.contains("open")) {
+        // Close the current one
+        content.style.maxHeight = null;
+        content.classList.remove("open");
+        this.classList.remove("less");
+        this.firstChild.textContent = "Read More ";
+      } else {
+        // Close ALL first (so only one is open)
+        document.querySelectorAll(".read-more-content").forEach(c => {
+          c.style.maxHeight = null;
+          c.classList.remove("open");
+        });
+        document.querySelectorAll(".read-more-btn").forEach(b => {
+          b.classList.remove("less");
+          if (b.firstChild) b.firstChild.textContent = "Read More ";
+        });
+
+        // Open the clicked one
+        content.style.maxHeight = content.scrollHeight + "px";
+        content.classList.add("open");
+        this.classList.add("less");
+        this.firstChild.textContent = "Read Less ";
+      }
+    });
+  });
+});
+</script>
+
+
+
+<!-- Start: Why is BrandStory Your Trusted Web Development  -->
+<section class="spb-100 cus-overflow-x">
+ <div class="container">
+  <h2 class="mb-5 text-white text-center" data-aos="fade-up">Next-Gen Technologies Shaping Ecommerce</h2>
+  <p class="text-white text-center">Ecommerce is evolving faster than ever with emerging technologies. We redefine how users browse, shop, and interact online. As a future-ready ecommerce website development company in Bangalore, we help you stay ahead by integrating intelligent, scalable innovations into your platform.</p>
+  <div class="row g-3">
+  <!-- 1-->
+   <div class="col-md-6" data-aos="fade-left">
+    <div class="card trusted-webdev-card shadow-lg" >
+     <div class="card-header gap-3 head-bg-main head-bg-indigo d-flex justify-content-start align-items-center py-4 px-3">
+      <div class="mb-0">
+       <img src="https://brandstory.in/services/ecommerce-website-development-company-bangalore/assets/images/scc/arfi.png" class="img-fluid mb-0" alt="Hosting & Domain Support">
+            </div>
+      <div class="mb-0">
+       <h5 class="card-title fs-22 fw-700 mb-0">Artificial Intelligence (AI)</h5>
+      </div>      
+     </div>
+     <div class="card-body py-4 px-4">
+      <p class="card-text text-dark mb-0"> AI is revolutionizing ecommerce through personalized product recommendations, smart search, and real-time customer behavior analysis. Our AI powered solutions enhance user experience, automate engagement, and boost overall conversion rates.</p>
+     </div>
+    </div>
+   </div>
+   <!-- 2-->
+   <div class="col-md-6" data-aos="fade-up">
+    <div class="card trusted-webdev-card shadow-lg">
+     <div class="card-header gap-3 head-bg-main head-bg-coral-red d-flex justify-content-start align-items-center py-4 px-3">
+      <div class="mb-0">
+       <img src="https://brandstory.in/services/ecommerce-website-development-company-bangalore/assets/images/scc/ar.png" class="img-fluid mb-0" alt="In-House Reliability & Skilled Teams">
+      </div>
+      <div class="mb-0">
+       <h5 class="card-title fs-22 fw-700 mb-0">Augmented Reality (AR)</h5>
+      </div>      
+     </div>
+     <div class="card-body py-4 px-4">
+      <p class="card-text text-dark mb-0">Give your customers a try before you buy experience. We implement AR tools that allow users to preview products like furniture, apparel, or cosmetics. It helps to improve decision-making and reduce returns.</p>
+     </div>
+    </div>
+   </div>
+   <!-- 3-->
+  <div class="col-md-6" data-aos="fade-right">
+    <div class="card trusted-webdev-card shadow-lg">
+     <div class="card-header gap-3 head-bg-main head-bg-soft-blue d-flex justify-content-start align-items-center py-4 px-3">
+      <div class="mb-0">
+       <img src="https://brandstory.in/services/ecommerce-website-development-company-bangalore/assets/images/scc/vecom.png" class="img-fluid mb-0" alt="Security & Backup Solutions">
+      </div>
+      <div class="mb-0">
+        <h5 class="card-title fs-22 fw-700 mb-0">Voice Commerce</h5>
+      </div>     
+     </div>
+     <div class="card-body py-4 px-4">
+      <p class="card-text text-dark mb-0">Voice enabled shopping is on the rise. We integrate your ecommerce platform with voice assistants like Alexa, Siri, and Google Assistant. It allows customers to search, shop, and reorder using simple voice commands.</p>
+     </div>
+    </div>
+   </div>
+    <!-- 4-->
+  <div class="col-md-6" data-aos="fade-left">
+    <div class="card trusted-webdev-card shadow-lg">
+     <div class="card-header gap-3 head-bg-main head-bg-teal d-flex justify-content-start align-items-center py-4 px-3">
+      <div class="mb-0">
+       <img src="https://brandstory.in/services/ecommerce-website-development-company-bangalore/assets/images/scc/blchain.png" loading="lazy" class="img-fluid mb-0" alt="Website Maintenance & Updates">
+      </div>
+      <div class="mb-0">
+       <h5 class="card-title fs-22 fw-700 mb-0">Blockchain for Secure Transactions</h5>
+      </div>      
+     </div>
+     <div class="card-body py-4 px-4">
+      <p class="card-text text-dark mb-0">Blockchain helps add a new layer of trust and transparency. We embed blockchain technology into ecommerce systems for secure payments, smart contracts and fraud proof transaction records to build trust where it matters most.</p>
+     </div>
+    </div>
+   </div>
+
+   </div>
+    
+  </div>
+ </div>
+</section>
+<!-- End: Why is BrandStory Your Trusted Web Development  -->
+
+
+<!-- Start :  Slider Explore -->
+<section class="explore-sec spb-70 cus-overflow-x">
+ <div class="container">
+  <div class="heading d-flex flex-column align-items-center" data-aos="fade-up">
+   <h2 class="text-center text-white mb-5">Industries That Trust Us</h2>
+   <p class="text-white text-center">BrandStory serves industries where digital experiences make or break outcomes. From startups to healthcare and banking, we build ecommerce websites that align with sector specific goals. It delivers performance, accessibility, and long term value.</p>
+  </div>
+  <div class="content-slider position-relative mt-5" data-aos="fade-up">
+    <div class="main-next-prev cus">
+        <div class="explore-swiper-button-prev"></div>
+        <div class="explore-swiper-button-next"></div>
+    </div>
+   <div class="swiper contentSwiper">
+    <div class="swiper-wrapper">
+     <div class="swiper-slide">
+      <div class="card shadow rounded-4 p-3 h-100">
+       <a href="https://brandstory.in/full-stack-development-company-in-bangalore/"><img src="	https://brandstory.in/services/ecommerce-website-development-company-bangalore/assets/images/scc/healthcare.png" loading="lazy" class="card-img-top rounded-top-4" alt="UX Animation"></a>
+       <div class="card-body p-0 mt-3 mb-2">
+        <h4 class="card-title fw-bold fs-24">Healthcare</h4>
+        <p class="card-text mb-4 fs-18">We offer support and solutions to your website with our expertise to make sure that users can access the clinic and hospital facilities faster and smoothly. </p>
+       </div>
+      </div>
+     </div>
+     <div class="swiper-slide">
+      <div class="card shadow rounded-4 p-3 h-100">
+      <a href="https://brandstory.in/custom-web-application-development-company-in-bangalore/"><img src="	https://brandstory.in/services/ecommerce-website-development-company-bangalore/assets/images/scc/media.png" loading="lazy" class="card-img-top rounded-top-4" alt="UX Animation"></a> 
+       <div class="card-body p-0 mt-3 mb-2">
+        <h4 class="card-title fw-bold fs-24">Media</h4>
+        <p class="card-text mb-4 fs-18">Our ecommerce design company in Bangalore has very promising teamwork to cater to media industries from all around the world whether for paid advertising or mere internet marketing. We do it all.</p>
+       </div>
+      </div>
+     </div>
+     <div class="swiper-slide">
+      <div class="card shadow rounded-4 p-3 h-100">
+       <a href="https://brandstory.in/website-development-company-in-bangalore/"><img src="	https://brandstory.in/services/ecommerce-website-development-company-bangalore/assets/images/scc/startup.png" loading="lazy" class="card-img-top rounded-top-4" alt="UX Animation"></a>
+       <div class="card-body p-0 mt-3 mb-2">
+        <h4 class="card-title fw-bold fs-24">Start-up</h4>
+        <p class="card-text mb-4 fs-18">We help start-ups build a strong business foundation so that the company can attract more customers and promote their services and products.</p>
+       </div>
+      </div>
+     </div>
+     <div class="swiper-slide">
+      <div class="card shadow rounded-4 p-3 h-100">
+       <a href="https://brandstory.in/services/ecommerce-website-development-company-bangalore/"><img src="https://brandstory.in/services/ecommerce-website-development-company-bangalore/assets/images/scc/banking.png" loading="lazy" class="card-img-top rounded-top-4" alt="UX Animation"></a>
+       <div class="card-body p-0 mt-3 mb-2">
+        <h4 class="card-title fw-bold fs-24">Banking</h4>
+        <p class="card-text mb-4 fs-18">Our ecommerce web development services in Bangalore help industries and companies to make their banking experiences smoother and to have ease in operating the various elements in the website. </p>
+       </div>
+      </div>
+     </div>
+     <div class="swiper-slide">
+      <div class="card shadow rounded-4 p-3 h-100">
+       <a href="https://brandstory.in/website-development-company-in-bangalore/"><img src="	https://brandstory.in/services/ecommerce-website-development-company-bangalore/assets/images/scc/ecomme.png" loading="lazy" class="card-img-top rounded-top-4" alt="UX Animation"></a>
+       <div class="card-body p-0 mt-3 mb-2">
+        <h4 class="card-title fw-bold fs-24">E-commerce</h4>
+        <p class="card-text mb-4 fs-18">We help e commerce websites by building and customizing a website that projects the brand well and invites more users into the business.</p>
+       </div>
+      </div>
+     </div>
+
+     
+    </div>
+   </div>
+  
+  </div>
+ </div>
+</section>
+<!--End:  Slider Explore -->
+
+
+<!-- Start : Testimonials -->
+<section class="spb-100">
+ <div class="container">
+   <h2 class="mb-5 mt-3 text-center text-white" data-aos="fade-up">Testimonials</h2>
+  <!-- Swiper -->
+  <div class="swiper bsd-testi-swiper" data-aos="fade-up">
+   <div class="swiper-wrapper">
+    <div class="swiper-slide">
+     <div class="card shadow rounded-4 p-4 h-100">
+      <img src="https://brandstory.in/services/ecommerce-website-development-company-bangalore/assets/images/web-development-company/quotes.svg" class="w-11" alt="UX Animation">
+      <div class="card-body p-0 mt-3 mb-2">
+       <p class="card-text mb-4 fs-18">I have been very picky about web development and design companies and finally came across their services. I am more than satisfied and I completely recommend it to those looking for their high-quality services.</p>
+              <p class="card-text mb-4 fs-18"><strong>Priya Menon, Retail Industry </strong></p>
+      </div>
+     </div>
+    </div>
+    <div class="swiper-slide">
+     <div class="card shadow rounded-4 p-4 h-100 ">
+      <img src="https://brandstory.in/services/ecommerce-website-development-company-bangalore/assets/images/web-development-company/quotes.svg" class="w-11" alt="UX Animation">
+      <div class="card-body p-0 mt-3 mb-2">
+       <p class="card-text mb-4 fs-18">They have been very patient with all my queries from time to time and were very helpful with their timely deliveries.</p>
+              <p class="card-text mb-4 fs-18"><strong>Rahul Verma, Health & Wellness</strong></p>
+      </div>
+     </div>
+    </div>
+    <div class="swiper-slide">
+     <div class="card shadow rounded-4 p-4 h-100 ">
+      <img src="https://brandstory.in/services/ecommerce-website-development-company-bangalore/assets/images/web-development-company/quotes.svg" class="w-11" alt="UX Animation">
+      <div class="card-body p-0 mt-3 mb-2">
+       <p class="card-text mb-4 fs-18">If you have a strict budget to stick to for e-commerce web development services, then you are at the right place for it. Simply phenomenal work done!</p>
+              <p class="card-text mb-4 fs-18"><strong>Neha Sinha, Fashion & Apparel</strong></p>
+      </div>
+     </div>
+    </div>
+        <div class="swiper-slide">
+     <div class="card shadow rounded-4 p-4 h-100 ">
+      <img src="https://brandstory.in/services/ecommerce-website-development-company-bangalore/assets/images/web-development-company/quotes.svg" class="w-11" alt="UX Animation">
+      <div class="card-body p-0 mt-3 mb-2">
+       <p class="card-text mb-4 fs-18">Highly professional and responsive. Every request, big or small, was handled efficiently. They went above and beyond to make sure the launch went flawlessly.</p>
+              <p class="card-text mb-4 fs-18"><strong>Siddharth Iyer, Technology Sector</strong></p>
+      </div>
+     </div>
+    </div>
+        <div class="swiper-slide">
+     <div class="card shadow rounded-4 p-4 h-100 ">
+      <img src="https://brandstory.in/services/ecommerce-website-development-company-bangalore/assets/images/web-development-company/quotes.svg" class="w-11" alt="UX Animation">
+      <div class="card-body p-0 mt-3 mb-2">
+       <p class="card-text mb-4 fs-18">As a small business owner, I was worried about managing a complex ecommerce backend. But BrandStory made it simple and intuitive. Great experience overall.</p>
+              <p class="card-text mb-4 fs-18"><strong>Meera Rao, Home Decor</strong></p>
+      </div>
+     </div>
+    </div>
+        <div class="swiper-slide">
+     <div class="card shadow rounded-4 p-4 h-100 ">
+      <img src="https://brandstory.in/services/ecommerce-website-development-company-bangalore/assets/images/web-development-company/quotes.svg" class="w-11" alt="UX Animation">
+      <div class="card-body p-0 mt-3 mb-2">
+       <p class="card-text mb-4 fs-18">Our previous website had performance issues. After working with BrandStory, we saw a 40% drop in bounce rate and a significant increase in transactions. Highly recommended!</p>
+              <p class="card-text mb-4 fs-18"><strong>Arjun Patel, Electronics & Gadgets </strong></p>
+      </div>
+     </div>
+    </div>
+   
+   </div>
+  </div>
+ </div>
+</section>
+<!-- Start : Testimonials -->
+
+
+ <!-- Start : Trending blogs -->
+<section class="explore-sec spb-70">
+ <div class="container">
+  <div class="heading d-flex flex-column align-items-center" data-aos="fade-up">
+   <h2 class="text-center text-white mb-5" data-aos="fade-up">BrandStory’s Ecommerce Marketing Solutions</h2>
+   <p class="text-white text-center">Drive measurable growth and lasting customer engagement. Our ecommerce marketing solutions in Bangalore are built to amplify visibility, attract quality traffic, and increase conversions across every stage of your buyer’s journey. From content to performance marketing, we help ecommerce brands grow smarter.</p>
+  </div>
+  <div class="content-slider position-relative mt-5" data-aos="fade-up">
+    <div class="trending-main-next-prev">
+    <div class="trend-swiper-button-prev"></div>
+    <div class="trend-swiper-button-next"></div>    
+   </div>
+   <div class="swiper trendingSwiper">
+    <div class="swiper-wrapper">
+     <div class="swiper-slide">
+      <div class="card shadow rounded-4 p-3 h-100">
+       <a href="https://brandstory.in/content-marketing/"><img src="https://brandstory.in/services/ecommerce-website-development-company-bangalore/assets/images/scc/contentw.png" loading="lazy" class="card-img-top rounded-top-4" alt="The Future of Web Development: Key Trends for 2025"></a>
+       <div class="card-body p-0 mt-3 mb-2">
+        <h4 class="card-title fw-bold fs-24">Content Marketing</h4>
+        <p class="card-text mb-4 fs-18">Simple. We create digital content. It’s the element that helps us to be the company we are and our ever growing client list is proof of that. Brandstory is one of the leading content marketing communications companies in Bangalore, India provides…</p>
+        <a href="https://brandstory.in/content-marketing/" class="txt-know fs-18" style="text-decoration: none;">Know more</a>
+       </div>
+      </div>
+     </div>
+     <div class="swiper-slide">
+      <div class="card shadow rounded-4 p-3 h-100">
+       <a href="https://brandstory.in/seo-company-bangalore/"><img src="	https://brandstory.in/services/ecommerce-website-development-company-bangalore/assets/images/scc/seos.png" loading="lazy" class="card-img-top rounded-top-4" alt="Top 10 E-Commerce Platforms for Your Business in 2025"></a>
+       <div class="card-body p-0 mt-3 mb-2">
+        <h4 class="card-title fw-bold fs-24">Search Engine Optimisation</h4>
+        <p class="card-text mb-4 fs-18">Search Engine Optimization (SEO) program increases the overall visibility of your business across all search engine platforms. It provides opportunities for brands to create acquisitions (sales, leads, inquiries etc.), and help consumers to…</p>
+        <a href="https://brandstory.in/seo-company-bangalore/" class="txt-know fs-18" style="text-decoration: none;">Know more</a>
+       </div>
+      </div>
+     </div>
+     <div class="swiper-slide">
+      <div class="card shadow rounded-4 p-3 h-100">
+       <a href="https://brandstory.in/pay-per-click-ppc-services-in-bangalore/"><img src="https://brandstory.in/services/ecommerce-website-development-company-bangalore/assets/images/scc/ppc.png" loading="lazy" class="card-img-top rounded-top-4" alt="Static vs. Dynamic Websites: Understanding the Key Differences in 2025 "></a>
+       <div class="card-body p-0 mt-3 mb-2">
+        <h4 class="card-title fw-bold fs-24">Pay Per Click (PPC)</h4>
+        <p class="card-text mb-4 fs-18">We increase your digital footprint with Pay Per Click campaigns or Google Adwords and Bing Adwords. A plan is sketched out and implemented accordingly, with this your campaign has begun. The plan includes specific important keywords…</p>
+        <a href="https://brandstory.in/pay-per-click-ppc-services-in-bangalore/" class="txt-know fs-18" style="text-decoration: none;">Know more</a>
+       </div>
+      </div>
+     </div>
+     <div class="swiper-slide">
+      <div class="card shadow rounded-4 p-3 h-100">
+       <a href="https://brandstory.in/services/social-media-marketing-agency-bangalore/"><img src="	https://brandstory.in/services/ecommerce-website-development-company-bangalore/assets/images/scc/smm.png" loading="lazy" class="card-img-top rounded-top-4" alt="Top 10 E-Commerce Platforms for Your Business in 2025"></a>
+       <div class="card-body p-0 mt-3 mb-2">
+        <h4 class="card-title fw-bold fs-24">Social Media Marketing</h4>
+        <p class="card-text mb-4 fs-18">We provide expertise in design implementation providing a full range of social media marketing services(SMM) bound in popular social media platforms, content generation, creative ideation and social branding techniques. Holding it all together…</p>
+        <a href="https://brandstory.in/services/social-media-marketing-agency-bangalore/" class="txt-know fs-18" style="text-decoration: none;">Know more</a>
+       </div>
+      </div>
+     </div>
+     <div class="swiper-slide">
+      <div class="card shadow rounded-4 p-3 h-100">
+       <a href="https://brandstory.in/email-marketing-services-in-bangalore/"><img src="	https://brandstory.in/services/ecommerce-website-development-company-bangalore/assets/images/scc/em.png" loading="lazy" class="card-img-top rounded-top-4" alt="Top 10 E-Commerce Platforms for Your Business in 2025"></a>
+       <div class="card-body p-0 mt-3 mb-2">
+        <h4 class="card-title fw-bold fs-24">Email Marketing</h4>
+        <p class="card-text mb-4 fs-18">Email Marketing It's not as easy as it may sound. It's not just composing an email draft, copying a list of contacts, and clicking the "send" button. Invariably, you will face struggles ranging from privacy issues, permission boundaries, technical glitches…</p>
+        <a href="https://brandstory.in/email-marketing-services-in-bangalore/" class="txt-know fs-18" style="text-decoration: none;">Know more</a>
+       </div>
+      </div>
+     </div>
+     <div class="swiper-slide">
+      <div class="card shadow rounded-4 p-3 h-100">
+       <a href="https://brandstory.in/orm-company-bangalore-india/"><img src="	https://brandstory.in/services/ecommerce-website-development-company-bangalore/assets/images/scc/orm.png" loading="lazy" class="card-img-top rounded-top-4" alt="Top 10 E-Commerce Platforms for Your Business in 2025"></a>
+       <div class="card-body p-0 mt-3 mb-2">
+        <h4 class="card-title fw-bold fs-24">Online Reputation Management</h4>
+        <p class="card-text mb-4 fs-18">Online reputation management includes managing your business and its brand value across every review and rating forum to every social media platform. It is ideally required for three major purposes adding to the growth of your business…</p>
+        <a href="https://brandstory.in/orm-company-bangalore-india/" class="txt-know fs-18" style="text-decoration: none;">Know more</a>
+       </div>
+      </div>
+     </div>
+     <div class="swiper-slide">
+      <div class="card shadow rounded-4 p-3 h-100">
+       <a href="https://brandstory.in/analytics-and-reporting/"><img src="	https://brandstory.in/services/ecommerce-website-development-company-bangalore/assets/images/scc/anr.png" loading="lazy" class="card-img-top rounded-top-4" alt="Top 10 E-Commerce Platforms for Your Business in 2025"></a>
+       <div class="card-body p-0 mt-3 mb-2">
+        <h4 class="card-title fw-bold fs-24">Analytics and Reporting</h4>
+        <p class="card-text mb-4 fs-18">Gripping content, catchy headlines, and constant updates will mean nothing if you can't see the returns on it. So after all the hard work is done, we send you a detailed report and statistics on how well you are doing on digital…</p>
+        <a href="https://brandstory.in/analytics-and-reporting/" class="txt-know fs-18" style="text-decoration: none;">Know more</a>
+       </div>
+      </div>
+     </div>  
+    </div>
+   </div>   
+  </div>
+  <div class="extra-cta text-center mt-4">
+      <a href="https://brandstory.in/contact-us/" class="btn btn-outline-light rounded-pill px-4 py-2">
+     Talk to an Expert Now →
+    </a>
+  </div>
+ </div>
+</section>
+<!--End:  Trending blogs -->
+<!-- Start : Faq Section -->
+<section class="spb-100">
+  <div class="container">
+    <h2 class="text-center text-white mb-5" data-aos="fade-up">FAQ’s</h2>
+    <div class="row g-4 d-flex align-items-center">
+      <div class="col-md-12">
+        <div class="accordion custom-accordion faq-cus-acc" id="faqAccordion">
+
+          <div class="accordion-item" data-aos="fade-up">
+            <h2 class="accordion-header" id="heading01">
+              <button class="accordion-button show fs-24 fw-700" type="button" data-bs-toggle="collapse" data-bs-target="#collapse01" aria-expanded="true" aria-controls="collapse01">
+               Do you provide Mobile integration for the website?
+              </button>
+            </h2>
+            <div id="collapse01" class="accordion-collapse collapse show" aria-labelledby="heading01" data-bs-parent="#faqAccordion">
+              <div class="accordion-body">
+                <p>Yes absolutely. We have an all-around approach when it comes to building and designing websites and we focus on making the experience smoother for the audience by making the website available for every screen.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="accordion-item" data-aos="fade-up">
+            <h2 class="accordion-header" id="heading02">
+              <button class="accordion-button collapsed fs-24 fw-700" type="button" data-bs-toggle="collapse" data-bs-target="#collapse02" aria-expanded="false" aria-controls="collapse02">
+                 What other services do you provide to support e-commerce websites?
+              </button>
+            </h2>
+            <div id="collapse02" class="accordion-collapse collapse" aria-labelledby="heading02" data-bs-parent="#faqAccordion">
+              <div class="accordion-body">
+                <ul class="text-white">
+                <li>Image sourcing</li>
+                <li>Logo designing</li>
+                <li>Corporate identity development</li>
+                <li>Online reputation management</li>
+                <li>Photography</li>
+                <li>Online advertising</li>
+                <li>Email marketing</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div class="accordion-item" data-aos="fade-up">
+            <h2 class="accordion-header" id="heading03">
+              <button class="accordion-button collapsed fs-24 fw-700" type="button" data-bs-toggle="collapse" data-bs-target="#collapse03" aria-expanded="false" aria-controls="collapse03">
+                How long does it take to build an e-commerce website in Bangalore?
+              </button>
+            </h2>
+            <div id="collapse03" class="accordion-collapse collapse" aria-labelledby="heading03" data-bs-parent="#faqAccordion">
+              <div class="accordion-body">
+                <p>Building a website depends on the work that is given to us. If a project requires a multi faceted approach then it can take more time than usual. So, approach us to get an exact time to know.</p>
+            </div>
+          </div>
+        </div>
+
+          <div class="accordion-item" data-aos="fade-up">
+            <h2 class="accordion-header" id="heading04">
+              <button class="accordion-button collapsed fs-24 fw-700" type="button" data-bs-toggle="collapse" data-bs-target="#collapse04" aria-expanded="false" aria-controls="collapse04">
+                Do you provide SEO services for e-commerce websites?
+              </button>
+            </h2>
+            <div id="collapse04" class="accordion-collapse collapse" aria-labelledby="heading04" data-bs-parent="#faqAccordion">
+              <div class="accordion-body">
+                <p>Yes. BrandStory provides full-scale ecommerce SEO services designed to boost your store’s visibility, drive qualified traffic, and increase conversions. From technical SEO and keyword optimization to content strategy and product page enhancements, we tailor every tactic to suit your ecommerce goals.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="accordion-item" data-aos="fade-up">
+            <h2 class="accordion-header" id="heading05">
+              <button class="accordion-button collapsed fs-24 fw-700" type="button" data-bs-toggle="collapse" data-bs-target="#collapse05" aria-expanded="false" aria-controls="collapse05">
+                What are the important factors for ecommerce web design in Bangalore?
+              </button>
+            </h2>
+            <div id="collapse05" class="accordion-collapse collapse" aria-labelledby="heading05" data-bs-parent="#faqAccordion">
+              <div class="accordion-body">
+                <ul class="text-white">
+                <li>Voice searches</li>
+                <li>AR and VR</li>
+                <li>Artificial Intelligence</li>
+                <li>Integrating mobile-friendliness</li>
+                <li>Faster speeds in scrolling and browsing</li>
+                </ul>                
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item" data-aos="fade-up">
+            <h2 class="accordion-header" id="heading06">
+              <button class="accordion-button collapsed fs-24 fw-700" type="button" data-bs-toggle="collapse" data-bs-target="#collapse06" aria-expanded="false" aria-controls="collapse06">
+                How can you build a web app?
+              </button>
+            </h2>
+            <div id="collapse06" class="accordion-collapse collapse" aria-labelledby="heading06" data-bs-parent="#faqAccordion">
+              <div class="accordion-body">
+                <p>We possess an all-around knowledge about web app development and our expertise and exposure lie in the research and the study that we conduct throughout the industry. We have a team that works regularly to invest in business objectives so that they can offer you the uniqueness of elements in a website. Our E-commerce development services in Bangalore have the most responsive back office and make use of tools to scale and manage data and the business.
+With web app development we provide -
+</p>
+<ul class="text-white">
+<li>Automated process</li>
+<li>A complete web form</li>
+<li>Impactful communication through mobile apps and portals</li>
+<li>Speed and responsiveness</li>
+<li>Value for money</li>
+<li>Reduced time for action</li>
+</ul>
+          </div>
+          </div>
+        </div>
+
+          <div class="accordion-item" data-aos="fade-up">
+            <h2 class="accordion-header" id="heading07">
+              <button class="accordion-button collapsed fs-24 fw-700" type="button" data-bs-toggle="collapse" data-bs-target="#collapse07" aria-expanded="false" aria-controls="collapse07">
+                What is the process of ecommerce mobile app development?
+              </button>
+            </h2>
+            <div id="collapse07" class="accordion-collapse collapse" aria-labelledby="heading07" data-bs-parent="#faqAccordion">
+              <div class="accordion-body">
+                <p> Over the years we have studied the works of a website on various screens and have contributed our innovative ideas and strategies to mobile devices. We believe in creative solutions that can provide customers with a total experience of a smooth-running website in their palms. We make sure that you coordinate with your ideas too. We focus on iOS, Android, Hybrid, RoR, Flutter, lot, and react native app development. Our experienced E-commerce developers in Bangalore offer you a strong presence for your clients. We have a complete process for Mobile application development and that consists of Planning, Development, Testing, Launching, and Support.</p>
+                <p>We provide you with -</p>
+                <ul class="text-white">
+                <li>Experienced and professional teamwork</li>
+                <li>Creating a reputation</li>
+                <li>Experienced staff according to industry standards</li>
+                <li>Face to face interaction</li>
+                <li>Development solutions</li>
+                <li>Agile methodology</li>
+                <li>Years of practice</li>
+                <li>Giving all rights to the client</li>
+                </ul>
+      </div>
+            </div>
+          </div>
+          <div class="accordion-item" data-aos="fade-up">
+            <h2 class="accordion-header" id="heading08">
+              <button class="accordion-button collapsed fs-24 fw-700" type="button" data-bs-toggle="collapse" data-bs-target="#collapse08" aria-expanded="false" aria-controls="collapse08">
+                How do I find the best ecommerce website development company in Bangalore?
+              </button>
+            </h2>
+            <div id="collapse08" class="accordion-collapse collapse" aria-labelledby="heading08" data-bs-parent="#faqAccordion">
+              <div class="accordion-body">
+                <p>Look for proven expertise in ecommerce platforms, user-friendly UI/UX, mobile responsiveness and industry-specific solutions. Our e-commerce web development in Bangalore provides scalable architecture, high performance and post-launch support for sustainable growth.</p>
+              </div>
+            </div>
+          </div>
+           <div class="accordion-item" data-aos="fade-up">
+            <h2 class="accordion-header" id="heading09">
+              <button class="accordion-button collapsed fs-24 fw-700" type="button" data-bs-toggle="collapse" data-bs-target="#collapse09" aria-expanded="false" aria-controls="collapse09">
+                 What is the cost of building an ecommerce website?
+              </button>
+            </h2>
+            <div id="collapse09" class="accordion-collapse collapse" aria-labelledby="heading09" data-bs-parent="#faqAccordion">
+              <div class="accordion-body">
+                <p>The cost of e-commerce web development services depends on your platform choice, feature requirements, design complexity, and integration needs. To get a tailored estimate that fits your business goals and budget, contact us for a detailed consultation.</p>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item" data-aos="fade-up">
+            <h2 class="accordion-header" id="heading10">
+              <button class="accordion-button collapsed fs-24 fw-700" type="button" data-bs-toggle="collapse" data-bs-target="#collapse10" aria-expanded="false" aria-controls="collapse10">
+                 What are the benefits of hiring an ecommerce website development agency in bangalore?
+              </button>
+            </h2>
+            <div id="collapse10" class="accordion-collapse collapse" aria-labelledby="heading10" data-bs-parent="#faqAccordion">
+              <div class="accordion-body">
+                <p>Partnering with an e-commerce web development agency like BrandStory gives you access to local expertise, faster communication and tailored strategies. Our expert team builds secure, scalable and conversion-ready e-commerce platforms according to your goal and preference.</p>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item" data-aos="fade-up">
+            <h2 class="accordion-header" id="heading11">
+              <button class="accordion-button collapsed fs-24 fw-700" type="button" data-bs-toggle="collapse" data-bs-target="#collapse11" aria-expanded="false" aria-controls="collapse11">
+                 Which website builder is best for ecommerce web development in Bangalore?
+              </button>
+            </h2>
+            <div id="collapse11" class="accordion-collapse collapse" aria-labelledby="heading11" data-bs-parent="#faqAccordion">
+              <div class="accordion-body">
+                <p>The best platform depends on your business needs. Shopify offers ease of use, WooCommerce provides flexibility, and Magento supports enterprise-level growth. As one of the top ecommerce web development companies in Bangalore, BrandStory helps you choose and customize the right one for long-term success.</p>
+              </div>
+            </div>
+          </div>
+          
+
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- End: Faq Section -->
+
+
+
+
+
+
+
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+<script src="https://brandstory.in/services/ecommerce-website-development-company-bangalore/assets/js/swiper-bundle.min.js"></script>
+<script src="https://brandstory.in/services/ecommerce-website-development-company-bangalore/assets/js/jquery.min.js"></script>
+<script src="https://brandstory.in/services/ecommerce-website-development-company-bangalore/assets/js/site.js"></script>
+<script src="https://brandstory.in/services/ecommerce-website-development-company-bangalore/assets/js/aos.js"></script>
+<script src="https://brandstory.in/services/ecommerce-website-development-company-bangalore/assets/js/menu.js"></script>
+<script src="https://brandstory.in/services/ecommerce-website-development-company-bangalore/assets/js/counter.js"></script>
+
+<!-- Initialize AOS -->
+<script>
+  AOS.init({
+    duration: 1000,
+    once: true
+  });
+</script>
+
+</footer>`
+
+  return (
+    <div dangerouslySetInnerHTML={{ __html: htmlContent }} />
+  )
+}

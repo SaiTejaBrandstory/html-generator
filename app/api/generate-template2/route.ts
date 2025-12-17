@@ -20,7 +20,7 @@ function escapeHtml(str: string): string {
     .replace(/'/g, '&#039;')
 }
 
-// Generate complete HTML page with all sections for landing-page-1
+// Generate complete HTML page with all sections for template2
 function generateHTMLPage(content: any): string {
   return `<!DOCTYPE html>
 <html lang="en">
@@ -695,7 +695,7 @@ CRITICAL: Generate ALL sections. All sections are required:
 1. Hero (title, cta_text, cta_link, trusted_text)
 2. Intro (paragraph_1, paragraph_2)
 3. Reviews (heading, description, logos array with image and alt)
-4. Track Record (heading, 4 stats with title and description)
+4. Track Record (heading, 4 stats with title and description - title must be 3-5 words, description must be 5-8 words)
 5. Key Benefits (heading, 6 benefits with icon, title, description)
 6. Services (heading, description, 6 services with title and description)
 7. Process (heading, description, 5 steps with number, title, subtitle, description)
@@ -709,6 +709,7 @@ IMPORTANT:
 - Generate ALL sections - do not skip any
 - Write detailed, comprehensive descriptions (3-4 sentences, 60-100 words minimum)
 - Make content rich and informative
+- Track Record stats: title (heading inside circle) must be 3-5 words, description must be 5-8 words
 - Return ONLY valid JSON, no markdown:
 
 {
@@ -943,7 +944,7 @@ CRITICAL REQUIREMENTS:
     return new NextResponse(zipBuffer, {
       headers: {
         'Content-Type': 'application/zip',
-        'Content-Disposition': `attachment; filename="generated-landing-page-1-${Date.now()}.zip"`,
+        'Content-Disposition': `attachment; filename="generated-template2-${Date.now()}.zip"`,
       },
     })
   } catch (error: any) {

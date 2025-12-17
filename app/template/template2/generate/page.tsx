@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 
-export default function GenerateLandingPage1() {
+export default function GenerateTemplate2() {
   const [content, setContent] = useState('')
   const [isGenerating, setIsGenerating] = useState(false)
   const [error, setError] = useState('')
@@ -19,7 +19,7 @@ export default function GenerateLandingPage1() {
     setError('')
 
     try {
-      const response = await fetch('/api/generate-landing-page-1', {
+      const response = await fetch('/api/generate-template2', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -39,7 +39,7 @@ export default function GenerateLandingPage1() {
       // Create a temporary anchor element and trigger download
       const a = document.createElement('a')
       a.href = url
-      a.download = `generated-landing-page-1-${Date.now()}.zip`
+      a.download = `generated-template2-${Date.now()}.zip`
       document.body.appendChild(a)
       a.click()
       document.body.removeChild(a)
@@ -62,7 +62,7 @@ export default function GenerateLandingPage1() {
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center">
               <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                Landing Page 1 Generator
+                Template 2 Generator
               </h1>
             </div>
             <button
@@ -78,7 +78,7 @@ export default function GenerateLandingPage1() {
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8">
           <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">
-            Generate Landing Page 1 Content
+            Generate Template 2 Content
           </h2>
           
           <div className="mb-6">
@@ -114,7 +114,7 @@ export default function GenerateLandingPage1() {
               {isGenerating ? 'Generating...' : 'Generate'}
             </button>
             <button
-              onClick={() => router.push('/template/landing-page-1')}
+              onClick={() => router.push('/template/template2')}
               disabled={isGenerating}
               className="px-6 py-3 bg-gray-500 hover:bg-gray-600 disabled:bg-gray-400 disabled:cursor-not-allowed text-white font-medium rounded-lg transition-colors shadow-md hover:shadow-lg"
             >

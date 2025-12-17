@@ -3,7 +3,7 @@
 import { useEffect } from 'react'
 import Script from 'next/script'
 
-export default function GeoTemplate() {
+export default function Template1() {
   useEffect(() => {
     // Add custom CSS for accordion to ensure it displays correctly
     const style = document.createElement('style')

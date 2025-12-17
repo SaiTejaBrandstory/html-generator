@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react'
 import Script from 'next/script'
 
-export default function LandingPage1() {
+export default function Template2() {
   const [openFaq, setOpenFaq] = useState<number | null>(0) // First FAQ open by default
   const [openAccordion, setOpenAccordion] = useState<number | null>(0) // First accordion open by default
   const [currentTestimonial, setCurrentTestimonial] = useState(0) // Current testimonial index

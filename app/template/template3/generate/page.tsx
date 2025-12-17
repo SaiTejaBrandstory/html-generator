@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 
-export default function GeneratePage() {
+export default function GenerateTemplate3() {
   const [content, setContent] = useState('')
   const [isGenerating, setIsGenerating] = useState(false)
   const [error, setError] = useState('')
@@ -19,7 +19,7 @@ export default function GeneratePage() {
     setError('')
 
     try {
-      const response = await fetch('/api/generate', {
+      const response = await fetch('/api/generate-template3', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -39,7 +39,7 @@ export default function GeneratePage() {
       // Create a temporary anchor element and trigger download
       const a = document.createElement('a')
       a.href = url
-      a.download = `generated-page-${Date.now()}.zip`
+      a.download = `generated-template3-${Date.now()}.zip`
       document.body.appendChild(a)
       a.click()
       document.body.removeChild(a)
@@ -62,7 +62,7 @@ export default function GeneratePage() {
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center">
               <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                HTML Generator
+                Template 3 Generator
               </h1>
             </div>
             <button
@@ -78,7 +78,7 @@ export default function GeneratePage() {
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8">
           <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">
-            Generate Content
+            Generate Template 3 Content
           </h2>
           
           <div className="mb-6">
@@ -86,7 +86,7 @@ export default function GeneratePage() {
               htmlFor="content-input" 
               className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
             >
-              Enter the content
+              Enter the content/topic
             </label>
             <textarea
               id="content-input"
@@ -95,7 +95,7 @@ export default function GeneratePage() {
                 setContent(e.target.value)
                 setError('')
               }}
-              placeholder="Enter your content here... (e.g., topic, keywords, or description for the page)"
+              placeholder="Enter your content here... (e.g., 'Ecommerce website development in Bangalore', 'PPC management services', etc.)"
               className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white resize-none"
               rows={10}
               disabled={isGenerating}
@@ -114,7 +114,7 @@ export default function GeneratePage() {
               {isGenerating ? 'Generating...' : 'Generate'}
             </button>
             <button
-              onClick={() => router.push('/')}
+              onClick={() => router.push('/template/template3')}
               disabled={isGenerating}
               className="px-6 py-3 bg-gray-500 hover:bg-gray-600 disabled:bg-gray-400 disabled:cursor-not-allowed text-white font-medium rounded-lg transition-colors shadow-md hover:shadow-lg"
             >

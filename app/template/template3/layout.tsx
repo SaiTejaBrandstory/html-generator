@@ -1,11 +1,11 @@
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'BrandStory - Generative Engine Optimization',
-  description: 'Landing Page Template',
+  title: 'Template 3 - HTML Generator',
+  description: 'Template 3 - HTML Generator',
 }
 
-export default function LandingPage1Layout({
+export default function Template3Layout({
   children,
 }: {
   children: React.ReactNode

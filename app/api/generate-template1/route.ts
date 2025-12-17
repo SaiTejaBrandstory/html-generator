@@ -589,7 +589,7 @@ CRITICAL: Generate ALL sections. All sections are required:
 1. Banner (title, cta_text, cta_link)
 2. Intro (paragraph_1, paragraph_2)
 3. Trusted brands (heading, description, image)
-4. Track record (heading, 4 stats)
+4. Track record (heading, 4 stats with title and description - title must be 3-5 words, description must be 5-8 words)
 5. Key benefits (heading, 6 benefits)
 6. Services (heading, description, 13 services)
 7. Process (heading, description, 5 steps, process_image)
@@ -607,6 +607,7 @@ IMPORTANT:
 - Write detailed, comprehensive descriptions (3-4 sentences, 60-100 words minimum)
 - Make content rich and informative - not just one line
 - Services, benefits, tools, FAQs should have substantial descriptions
+- Track Record stats: title (heading inside circle) must be 3-5 words, description must be 5-8 words
 - Return ONLY valid JSON, no markdown:
 
 {
@@ -659,20 +660,20 @@ IMPORTANT:
     "heading": "Generate a track record heading based on user input",
     "stats": [
       {
-        "title": "Generate a stat title based on user input (e.g., 'Years of Experience', 'Expert Team', etc.)",
-        "description": "Generate a stat description based on user input (e.g., 'Over 12 years of strategic expertise')"
+        "title": "Generate a stat title based on user input (3-5 words, e.g., 'Years of Experience', 'Expert Team', etc.)",
+        "description": "Generate a stat description based on user input (5-8 words, e.g., 'Over 12 years of strategic expertise')"
       },
       {
-        "title": "Generate another stat title based on user input",
-        "description": "Generate another stat description based on user input"
+        "title": "Generate another stat title based on user input (3-5 words)",
+        "description": "Generate another stat description based on user input (5-8 words)"
       },
       {
-        "title": "Generate another stat title based on user input",
-        "description": "Generate another stat description based on user input"
+        "title": "Generate another stat title based on user input (3-5 words)",
+        "description": "Generate another stat description based on user input (5-8 words)"
       },
       {
-        "title": "Generate another stat title based on user input",
-        "description": "Generate another stat description based on user input"
+        "title": "Generate another stat title based on user input (3-5 words)",
+        "description": "Generate another stat description based on user input (5-8 words)"
       }
     ]
   },
