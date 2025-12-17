@@ -779,7 +779,9 @@ export async function POST(request: NextRequest) {
 
 This is a general landing page template. Generate content based on the user's input topic - it can be about any service, product, or business. Adapt all content sections to match the user's specific topic and industry.
 
-CRITICAL: Generate ALL 17 sections. Every single section is MANDATORY and must be included in your JSON response. Do NOT skip any section. Do NOT use placeholders. Do NOT leave sections empty.
+CRITICAL: Generate ALL 16 sections. Every single section is MANDATORY and must be included in your JSON response. Do NOT skip any section. Do NOT use placeholders. Do NOT leave sections empty.
+
+NOTE: Marketing Solutions section is HARDCODED in the template and should NOT be included in your JSON response - it will be automatically added to the HTML.
 
 REQUIRED SECTIONS (ALL MUST BE GENERATED):
 1. Banner (title, subtitle, cta_text, cta_link) - MANDATORY
@@ -797,11 +799,10 @@ REQUIRED SECTIONS (ALL MUST BE GENERATED):
 13. Next-gen technologies (heading, description, technologies array with title, icon, description) - MANDATORY
 14. Industries (heading, description, industries_list with name, image, description) - MANDATORY - Generate at least 5 industries
 15. Testimonials (heading, testimonials_list with quote and author) - MANDATORY - Generate at least 6 testimonials
-16. Marketing solutions (heading, description, solutions array with title, image, description, cta_text, cta_link) - MANDATORY - Generate at least 7 solutions
-17. FAQs (heading, faqs_list with question and answer - answer can be string or array of strings for lists) - MANDATORY - Generate at least 10-15 FAQs
+16. FAQs (heading, faqs_list with question and answer - answer can be string or array of strings for lists) - MANDATORY - Generate at least 10-15 FAQs
 
 IMPORTANT: 
-- Generate ALL 18 sections - EVERY section is required, no exceptions
+- Generate ALL 16 sections listed above - EVERY section is required, no exceptions
 - Write detailed, comprehensive descriptions (3-4 sentences, 60-100 words minimum)
 - Make content rich and informative - not just one line
 - Services, benefits, tools, FAQs should have substantial descriptions
