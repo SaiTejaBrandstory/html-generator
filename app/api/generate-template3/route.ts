@@ -1069,7 +1069,7 @@ CRITICAL REQUIREMENTS:
     // Generate HTML
     const htmlContent = generateHTMLPage(contentData)
 
-    // Create ZIP file with HTML and assets
+    // Create ZIP file with HTML only (no assets needed for template 3)
     const archive = archiver('zip', { zlib: { level: 9 } })
     const chunks: Buffer[] = []
 
@@ -1077,12 +1077,8 @@ CRITICAL REQUIREMENTS:
       chunks.push(chunk)
     })
 
-    // Add HTML file
+    // Add HTML file only
     archive.append(htmlContent, { name: 'index.html' })
-
-    // Add assets directory
-    const assetsPath = join(process.cwd(), 'public', 'assets')
-    addDirectoryToZip(archive, assetsPath, 'assets')
 
     // Finalize the archive and wait for completion
     await new Promise<void>((resolve, reject) => {
