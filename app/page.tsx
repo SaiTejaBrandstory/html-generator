@@ -214,7 +214,7 @@ export default function Home() {
               <div className="p-8">
                 <h3 className="text-2xl font-bold text-gray-900 mb-2">Landing Page Template 5</h3>
                 <p className="text-gray-600 mb-6 leading-relaxed">
-                  A professional AngularJS development company template with modern design elements, interactive components, service showcases, technology stack highlights, testimonials, FAQs, and AI-powered content generation for tech service businesses.
+                  A professional landing page template with 10 content sections including banner, intro, services showcase, why choose us, edge highlights, benefits, testimonials, contact CTA, FAQs (15 questions), client logos, and AI-powered content generation for service-based businesses.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-3">
                   <a 
