@@ -216,7 +216,7 @@ function generateHTMLPage(content: any): string {
                             const heading = content.info.heading
                             if (heading.includes('<span>')) {
                                 const parts = heading.split(/(<span>.*?<\/span>)/)
-                                return parts.map(part => {
+                                return parts.map((part: string) => {
                                     if (part.startsWith('<span>')) {
                                         const inner = part.replace(/<\/?span>/g, '')
                                         return `<span>${escapeHtml(inner)}</span>`
