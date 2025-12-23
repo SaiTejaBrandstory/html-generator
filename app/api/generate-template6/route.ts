@@ -173,21 +173,27 @@ function generateHTMLPage(content: any): string {
                                 <img src="https://brandstory.in/website-development-company-in-bangalore/images/partner/3.png" alt="" />
                                 <img src="https://brandstory.in/website-development-company-in-bangalore/images/partner/4.png" alt="" />
                                 <img src="https://brandstory.in/website-development-company-in-bangalore/images/partner/5.png" alt="" />
-                                <img src="https://brandstory.in/website-development-company-in-bangalore/images/partner/8.png" alt="" />
-                                <img src="https://brandstory.in/website-development-company-in-bangalore/images/partner/9.png" alt="" />
-                                <img src="https://brandstory.in/website-development-company-in-bangalore/images/partner/10.png" alt="" />
                                 <img src="https://brandstory.in/website-development-company-in-bangalore/images/partner/1.png" alt="" />
                                 <img src="https://brandstory.in/website-development-company-in-bangalore/images/partner/2.png" alt="" />
                                 <img src="https://brandstory.in/website-development-company-in-bangalore/images/partner/3.png" alt="" />
                                 <img src="https://brandstory.in/website-development-company-in-bangalore/images/partner/4.png" alt="" />
                                 <img src="https://brandstory.in/website-development-company-in-bangalore/images/partner/5.png" alt="" />
-                                <img src="https://brandstory.in/website-development-company-in-bangalore/images/partner/8.png" alt="" />
-                                <img src="https://brandstory.in/website-development-company-in-bangalore/images/partner/9.png" alt="" />
-                                <img src="https://brandstory.in/website-development-company-in-bangalore/images/partner/10.png" alt="" />
+                                <img src="https://brandstory.in/website-development-company-in-bangalore/images/partner/1.png" alt="" />
+                                <img src="https://brandstory.in/website-development-company-in-bangalore/images/partner/2.png" alt="" />
+                                <img src="https://brandstory.in/website-development-company-in-bangalore/images/partner/3.png" alt="" />
+                                <img src="https://brandstory.in/website-development-company-in-bangalore/images/partner/4.png" alt="" />
+                                <img src="https://brandstory.in/website-development-company-in-bangalore/images/partner/5.png" alt="" />
                             </div>
                         </div>
                         <div class="right-to-left">
                             <div class="scroll">
+                                <img src="https://brandstory.in/website-development-company-in-bangalore/images/partner/8.png" alt="" />
+                                <img src="https://brandstory.in/website-development-company-in-bangalore/images/partner/9.png" alt="" />
+                                <img src="https://brandstory.in/website-development-company-in-bangalore/images/partner/10.png" alt="" />
+                                <img src="https://brandstory.in/website-development-company-in-bangalore/images/partner/11.png" alt="" />
+                                <img src="https://brandstory.in/website-development-company-in-bangalore/images/partner/12.png" alt="" />
+                                <img src="https://brandstory.in/website-development-company-in-bangalore/images/partner/13.png" alt="" />
+                                <img src="https://brandstory.in/website-development-company-in-bangalore/images/partner/14.png" alt="" />
                                 <img src="https://brandstory.in/website-development-company-in-bangalore/images/partner/8.png" alt="" />
                                 <img src="https://brandstory.in/website-development-company-in-bangalore/images/partner/9.png" alt="" />
                                 <img src="https://brandstory.in/website-development-company-in-bangalore/images/partner/10.png" alt="" />
@@ -454,37 +460,29 @@ function generateHTMLPage(content: any): string {
                                 return `
                             <div class="tab-pane fade ${idx === 0 ? 'show active' : ''}" id="pills-${tab.id}" role="tabpanel" aria-labelledby="pills-${tab.id}-tab">
                                 <div class="row g-3">
-                                    ${(tab.items || []).map((item: any, itemIdx: number) => `
+                                    ${(tab.items || []).slice(0, 6).map((item: any, itemIdx: number) => {
+                                        // For 3rd tab (hs-img), if it's the 6th item (index 5), use hs-img5.png instead of hs-img6.png
+                                        let imageNum = itemIdx + 1
+                                        if (idx === 2 && itemIdx === 5) {
+                                            imageNum = 5 // Use hs-img5.png for the 6th item
+                                        }
+                                        return `
                                     <div class="col-lg-2 col-md-4 col-6">
                                         <div>
                                             <div>
-                                                <img src="https://brandstory.in/website-development-company-in-bangalore/images/${prefix}${itemIdx + 1}.png" class="img-fluid" alt="${escapeHtml(item.name || '')}">
+                                                <img src="https://brandstory.in/website-development-company-in-bangalore/images/${prefix}${imageNum}.png" class="img-fluid" alt="${escapeHtml(item.name || '')}">
                                             </div>
                                             <h5 class="text-center mt-3">${escapeHtml(item.name || '')}</h5>
                                         </div>
                                     </div>
-                                    `).join('')}
+                                    `
+                                    }).join('')}
                                 </div>
                             </div>
                             `
                             }).join('')}
                         </div>
                     </div>
-                </div>
-            </div>
-            
-            <!-- Development Platforms Section -->
-            <div class="development-platfrom">
-                <div class="container">
-                    <h2 class="slide-up-down">${escapeHtml(content.development_platforms?.heading || 'Web Development Platforms We Excel')}</h2>
-                    <p class="slide-up-down">${escapeHtml(content.development_platforms?.description || '')}</p>
-                    <section class="tech-section slide-up-down">
-                        <div class="tech-wrap">
-                            ${(content.development_platforms?.platforms || []).map((platform: any) => `
-                            <div class="box"><img src="" loading="lazy" alt="${escapeHtml(platform.name || platform.alt || '')}"></div>
-                            `).join('')}
-                        </div>
-                    </section>
                 </div>
             </div>
             
@@ -1062,9 +1060,8 @@ NOTE: Trusted Brands section uses static content from template, no generation ne
 7. What's Standing (heading, items array with 4 items, each with title, description) - MANDATORY
 8. We Are Number One (heading, description, features array with at least 9 features, each with image, title, description) - MANDATORY
 9. Premium Design (heading, paragraphs array with 2 paragraphs, list_heading, list_items array with at least 8 items) - MANDATORY
-10. All-in-One (heading, description, tabs array with 4 tabs, each tab with id, name, items array with at least 6 items, each item with image, name) - MANDATORY
-11. Development Platforms (heading should be AI-generated based on the service, NOT hardcoded to "Web Development Platforms We Excel", description should be AI-generated and related to the service provided, platforms array with at least 12 platforms, each with name and alt text) - MANDATORY
-12. Development Process (heading should be AI-generated based on the service, NOT hardcoded to "Our Web Development Process", description should be AI-generated and related to the service provided, steps array with at least 9 steps, each with title, description) - MANDATORY
+10. All-in-One (heading, description, tabs array with 4 tabs, each tab with id, name, items array with EXACTLY 6 items (no more, no less), each item with image, name) - MANDATORY
+11. Development Process (heading should be AI-generated based on the service, NOT hardcoded to "Our Web Development Process", description should be AI-generated and related to the service provided, steps array with at least 9 steps, each with title, description) - MANDATORY
 13. Industry We Serve (heading, industries array with at least 6 industries, each with name, description) - MANDATORY - NOTE: Images will be auto-assigned, just provide name and description
 14. Why Choose (heading, image, description, cta_link, cta_text) - MANDATORY
 15. FAQs (heading, faqs_list array with at least 20 FAQs, each with question, answer which can be string or array of objects with tag and content) - MANDATORY
@@ -1180,17 +1177,8 @@ IMPORTANT:
         ]
       }
     ]
-  },
-  "development_platforms": {
-    "heading": "AI-generated heading based on the service (e.g., 'LinkedIn Marketing Platforms We Excel', 'SEO Tools We Master', etc.) - NOT hardcoded to 'Web Development Platforms We Excel'",
-    "description": "AI-generated description related to the service provided (3-4 sentences, 100-150 words) - must be relevant to the service, not generic web development",
-    "platforms": [
-      {
-        "image": "https://brandstory.in/website-development-company-in-bangalore/images/tech/wordpress.png",
-        "name": "Platform Name",
-        "alt": "Platform Name"
-      }
-    ]
+  }
+  NOTE: Each tab must have EXACTLY 6 items in the items array (no more, no less).
   },
   "development_process": {
     "heading": "AI-generated heading based on the service (e.g., 'Our LinkedIn Marketing Process', 'Our SEO Optimization Process', etc.) - NOT hardcoded to 'Our Web Development Process'",
@@ -1237,7 +1225,7 @@ NOTE: Generate at least 20 FAQs in the faqs_list array.
 CRITICAL REQUIREMENTS:
 - Generate ALL content sections based on user input: "${userInput}"
 - Fill EVERY field with real, specific content - NO placeholders
-- Generate minimum items: 6 case studies (first), 5 how_we_craft items, 4 whats_standing items, 9 features (first we_are_number_one), 8 list items, 4 tabs with 6+ items each, 12 development platforms, 9 development process steps, 6 industries, 20 FAQs
+- Generate minimum items: 6 case studies (first), 5 how_we_craft items, 4 whats_standing items, 9 features (first we_are_number_one), 8 list items, 4 tabs with EXACTLY 6 items each (no more, no less), 9 development process steps, 6 industries, 20 FAQs
 - All content must be specific to the user's input topic
 - Use SEO keywords naturally throughout
 - Write in professional, conversion-focused tone
@@ -1306,14 +1294,13 @@ CRITICAL REQUIREMENTS:
     const requiredSections = [
       'banner', 'trusted_brands', 'info', 'case_studies', 'how_we_craft', 
       'whats_standing', 'we_are_number_one', 'premium_design', 'all_in_one',
-      'development_platforms', 'development_process', 'industry_we_serve',
+      'development_process', 'industry_we_serve',
       'why_choose', 'faqs'
     ]
     
     const missingSections = requiredSections.filter(section => {
       if (section === 'case_studies') return !contentData.case_studies || contentData.case_studies.length === 0
       if (section === 'trusted_brands') return !contentData.trusted_brands // This is static now
-      if (section === 'development_platforms') return !contentData.development_platforms?.platforms || contentData.development_platforms.platforms.length === 0
       if (section === 'development_process') return !contentData.development_process?.steps || contentData.development_process.steps.length === 0
       if (section === 'industry_we_serve') return !contentData.industry_we_serve?.industries || contentData.industry_we_serve.industries.length === 0
       if (section === 'faqs') return !contentData.faqs?.faqs_list || contentData.faqs.faqs_list.length < 20

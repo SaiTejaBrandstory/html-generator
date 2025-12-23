@@ -41,6 +41,16 @@ export default function Template6() {
             const fixStyle = document.createElement('style')
             fixStyle.id = 'template6-fix-styles'
             fixStyle.textContent = `
+              /* Hide Development Platforms section */
+              .development-platfrom {
+                display: none !important;
+              }
+              
+              /* Limit All-in-One tabs to exactly 6 items */
+              .all-in-one-tab-section .tab-pane .row > div:nth-child(n+7) {
+                display: none !important;
+              }
+              
               /* Ensure FAQ functionality works */
               .faq-question {
                 display: flex;
