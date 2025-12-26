@@ -341,13 +341,13 @@ export async function POST(request: NextRequest) {
     // Create prompt for blog content generation
     const prompt = `Write a comprehensive, detailed blog post specifically about "${userInput}".
 
-Focus ONLY on the topic: "${userInput}". All content must be directly related to this topic.
-
-Write 3000-5000 words with Flesch-Kincaid readability 60-70 and Surfer SEO score 90+.
-
-Generate 15-20 sections, each with 6-10 detailed paragraphs (4-6 sentences each, 80-120 words per paragraph).
-
-Based on the topic, determine the appropriate category (e.g., Guide, Blog, Tutorial, Tips, etc.) and topic/category name.
+CRITICAL REQUIREMENTS:
+- Focus ONLY on the topic: "${userInput}". All content must be directly related to this topic.
+- Write accurate, factual content. Do not make up specific statistics, company names, or claims unless they are general knowledge.
+- Write 3000-5000 words with Flesch-Kincaid readability 60-70 and Surfer SEO score 90+.
+- Generate 15-20 sections, each with 6-10 detailed paragraphs (4-6 sentences each, 80-120 words per paragraph).
+- Based on the topic, determine the appropriate category (e.g., Guide, Blog, Tutorial, Tips, etc.) and topic/category name.
+- All headings, content, and examples must be relevant to "${userInput}" only.
 
 Use plain text only - NO HTML entities. Use regular apostrophes (') and quotes (").
 
@@ -400,7 +400,7 @@ Return ONLY valid JSON in this format:
           messages: [
             {
               role: 'system',
-              content: 'You are an expert content writer. Write comprehensive blog posts that are DIRECTLY and SPECIFICALLY about the user\'s topic. All content must be relevant to the exact topic provided. Generate 15-20 sections, each with 6-10 detailed paragraphs (4-6 sentences, 80-120 words each). Total 3000-5000 words. Achieve Flesch-Kincaid 60-70 and Surfer SEO 90+. Always return valid JSON format. Write ONLY about the specific topic - do not write generic or irrelevant content.',
+              content: 'You are an expert content writer. Write comprehensive, accurate blog posts that are DIRECTLY and SPECIFICALLY about the user\'s exact topic. All content must be relevant to the exact topic provided. Write factual, accurate content - avoid making up specific statistics, company names, or unverified claims. Generate 15-20 sections, each with 6-10 detailed paragraphs (4-6 sentences, 80-120 words each). Total 3000-5000 words. Achieve Flesch-Kincaid 60-70 and Surfer SEO 90+. Always return valid JSON format. Write ONLY about the specific topic - do not write generic, irrelevant, or hallucinated content.',
             },
             {
               role: 'user',
