@@ -18,8 +18,6 @@ function escapeHtml(str: string): string {
 
 // Generate complete blog HTML page
 function generateBlogHTML(content: any): string {
-  const currentYear = new Date().getFullYear()
-  
   return `<!doctype html>
 <html lang="en">
 <head>
@@ -59,7 +57,6 @@ function generateBlogHTML(content: any): string {
 <section class="blog-main-banner bg-white  d-flex align-items-center justify-content-center">
     <div class="container d-flex align-items-center flex-column">
         <span id="topic" class="d-none">${escapeHtml(content.banner?.topic || '')}</span>
-        <span id="year" class="d-none">${escapeHtml(content.banner?.year || currentYear.toString())}</span>
         <p class="pill-yellow text-center" id="category">${escapeHtml(content.banner?.category || 'Blog')}</p>
         <h1 class="text-center" id="title">${escapeHtml(content.banner?.title || '')}</h1>
         <p class="pill-purple text-center mt-4"><a class="text-decoration-none text-white" href="https://brandstory.in/contact-us/">Contact Us</a></p>
@@ -230,53 +227,15 @@ export async function POST(request: NextRequest) {
     }
 
     // Create prompt for blog content generation
-    const prompt = `Generate a comprehensive, detailed, and extensive blog post based on the user input: "${userInput}"
+    const prompt = `Write a comprehensive, detailed blog post specifically about "${userInput}".
 
-CRITICAL REQUIREMENTS:
-- Generate MINIMUM 7 sections (preferably 8-10 sections for comprehensive coverage)
-- Each section must have MULTIPLE paragraphs (3-5 paragraphs minimum per section)
-- Each paragraph should be 4-6 sentences long (80-120 words)
-- Include detailed subsections with headings, subheadings, lists, examples, and case studies
-- Make content rich, informative, and valuable - NOT brief or superficial
-- Total blog should be 3000-5000 words minimum
+Focus ONLY on the topic: "${userInput}". All content must be directly related to this topic.
 
-Generate a complete blog structure with the following sections:
+Write 3000-5000 words with Flesch-Kincaid readability 60-70 and Surfer SEO score 90+.
 
-1. Meta information:
-   - title: SEO-optimized blog title (60 characters max)
-   - description: Meta description (150-160 characters)
-   - keywords: Relevant keywords (comma-separated)
-   - canonical: Canonical URL
+Generate 15-20 sections, each with 6-10 detailed paragraphs (4-6 sentences each, 80-120 words per paragraph).
 
-2. Banner section:
-   - topic: Main topic/category
-   - year: Current year (2025)
-   - category: "Blog"
-   - title: Main blog headline (should match meta title)
-   - image: Blog banner image URL (use placeholder or suggest appropriate image)
-
-3. Content sections (generate 7-10 comprehensive sections):
-   Each section should have:
-   - heading: H2 heading for the section
-   - image: Optional image URL for the section
-   - subsections: Array of content elements that can be:
-     * type: "heading" (H3), "subheading" (H4), "paragraph", "list", "example"
-     * text: Content text (can include markdown links like [text](url))
-     * items: For lists, array of strings or objects with title/description
-     * ordered: For lists, boolean indicating if it's an ordered list
-
-CONTENT REQUIREMENTS FOR EACH SECTION:
-- Start with 2-3 introductory paragraphs (each 4-6 sentences)
-- Include at least 2-3 H3 headings with detailed content under each
-- Add H4 subheadings where appropriate
-- Include multiple detailed paragraphs (not just one sentence)
-- Add bulleted or numbered lists with 5-8 items each
-- Include examples, case studies, or real-world scenarios
-- Add actionable tips and strategies
-- Include statistics, data, or research findings where relevant
-- End sections with summary paragraphs
-
-Generate comprehensive, detailed, extensive content for each section. Make it informative, well-structured, SEO-friendly, and valuable to readers.
+Based on the topic, determine the appropriate category (e.g., Guide, Blog, Tutorial, Tips, etc.) and topic/category name.
 
 Return ONLY valid JSON in this format:
 {
@@ -287,9 +246,8 @@ Return ONLY valid JSON in this format:
     "canonical": "..."
   },
   "banner": {
-    "topic": "...",
-    "year": "2025",
-    "category": "Blog",
+    "topic": "Main topic/category based on the input",
+    "category": "Appropriate category based on the topic (e.g., Guide, Blog, Tutorial, etc.)",
     "title": "...",
     "image": "..."
   },
@@ -314,20 +272,7 @@ Return ONLY valid JSON in this format:
       ]
     }
   ]
-}
-
-CRITICAL REQUIREMENTS:
-- Generate at least 7-10 sections (preferably 8-10 for comprehensive coverage)
-- Each section MUST have 3-5 paragraphs minimum (each paragraph 4-6 sentences, 80-120 words)
-- Each section should have 2-3 H3 headings with detailed content
-- Include multiple lists (5-8 items each) with detailed descriptions
-- Add examples, case studies, statistics, and actionable tips
-- Total blog content should be 3000-5000 words minimum
-- Make content rich, detailed, and valuable - NOT brief summaries
-- Write in-depth, comprehensive content that provides real value to readers
-- Include multiple subsections per main section
-- Add detailed explanations, strategies, and insights
-- Use professional, engaging tone with specific examples and data`
+}`
 
     // Call OpenAI API with higher token limit for comprehensive content
     const models = [
@@ -346,7 +291,7 @@ CRITICAL REQUIREMENTS:
           messages: [
             {
               role: 'system',
-              content: 'You are an expert blog content writer specializing in creating comprehensive, detailed, and extensive SEO-optimized blog posts. Always generate in-depth, valuable content with multiple paragraphs, detailed explanations, examples, and actionable insights. Always return valid JSON format with all sections filled based on the user input. Generate extensive content - aim for 3000-5000 words total.',
+              content: 'You are an expert content writer. Write comprehensive blog posts that are DIRECTLY and SPECIFICALLY about the user\'s topic. All content must be relevant to the exact topic provided. Generate 15-20 sections, each with 6-10 detailed paragraphs (4-6 sentences, 80-120 words each). Total 3000-5000 words. Achieve Flesch-Kincaid 60-70 and Surfer SEO 90+. Always return valid JSON format. Write ONLY about the specific topic - do not write generic or irrelevant content.',
             },
             {
               role: 'user',

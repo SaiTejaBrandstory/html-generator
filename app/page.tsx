@@ -300,7 +300,7 @@ export default function Home() {
               <div className="p-8">
                 <h3 className="text-2xl font-bold text-gray-900 mb-2">Blog Template 1</h3>
                 <p className="text-gray-600 mb-6 leading-relaxed">
-                  A comprehensive blog template with engaging content sections, optimized for readability and SEO. Perfect for creating professional blog posts with structured content.
+                  A comprehensive blog template with sticky navigation sidebar, multiple content sections, and interactive table of contents. Features SEO-optimized structure, featured banner, and CTA sections. Perfect for long-form articles with structured content.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-3">
                   <a 
@@ -311,6 +311,44 @@ export default function Home() {
                   </a>
                   <a 
                     href="/blog/template1/generate" 
+                    className="flex-1 px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-semibold rounded-lg transition-all duration-300 text-center shadow-md hover:shadow-lg hover:scale-[1.02]"
+                  >
+                    Generate
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            {/* Blog Template 2 */}
+            <div className="group bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden border border-gray-100">
+              <div className="relative overflow-hidden bg-gradient-to-br from-purple-50 to-pink-50">
+                <div className="aspect-video w-full">
+                  <img 
+                    src="/assets/images/home-page/blog2-banner.png" 
+                    alt="Blog Template 2" 
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  />
+                </div>
+                <div className="absolute top-4 right-4">
+                  <span className="px-3 py-1 bg-white/90 backdrop-blur-sm rounded-full text-xs font-semibold text-gray-700">
+                    Blog Template 2
+                  </span>
+                </div>
+              </div>
+              <div className="p-8">
+                <h3 className="text-2xl font-bold text-gray-900 mb-2">Blog Template 2</h3>
+                <p className="text-gray-600 mb-6 leading-relaxed">
+                  A modern blog template with numbered content sections, integrated lead generation form sidebar, and clean two-column layout. Features SEO-optimized structure, featured banner, and CTA sections. Perfect for creating professional blog posts with lead capture functionality.
+                </p>
+                <div className="flex flex-col sm:flex-row gap-3">
+                  <a 
+                    href="/blog/template2" 
+                    className="flex-1 px-6 py-3 bg-gray-900 hover:bg-gray-800 text-white font-semibold rounded-lg transition-all duration-300 text-center shadow-md hover:shadow-lg hover:scale-[1.02]"
+                  >
+                    View Template
+                  </a>
+                  <a 
+                    href="/blog/template2/generate" 
                     className="flex-1 px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-semibold rounded-lg transition-all duration-300 text-center shadow-md hover:shadow-lg hover:scale-[1.02]"
                   >
                     Generate
