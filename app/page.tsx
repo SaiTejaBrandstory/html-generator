@@ -328,7 +328,7 @@ export default function Home() {
               <div className="p-8">
                 <h3 className="text-2xl font-bold text-gray-900 mb-2">Landing Page Template 8</h3>
                 <p className="text-gray-600 mb-6 leading-relaxed">
-                  A modern landing page template with comprehensive content sections, interactive elements, and AI-powered content generation. Perfect for businesses looking for a professional and conversion-focused landing page.
+                  A comprehensive service-based landing page template with 10 content sections including banner with CTA, multiple service showcases, design solutions, additional features, process workflow, why choose section, benefits showcase, testimonials, and comprehensive FAQs (20+ questions) with AI-powered content generation. Perfect for service-based businesses, contractors, and companies offering multiple service tiers.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-3">
                   <a 
