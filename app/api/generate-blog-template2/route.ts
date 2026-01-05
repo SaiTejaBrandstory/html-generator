@@ -134,6 +134,85 @@ function generateBlogHTML(content: any): string {
                      
                      return html
                    }).join('')}
+                   
+                   ${content.faq && Array.isArray(content.faq) && content.faq.length > 0 ? `
+                   <style>
+                   /* Ensure FAQ accordion content is visible when expanded - smooth slide and fade transition */
+                   #faqAccordion .accordion-collapse {
+                       visibility: visible !important;
+                       overflow: hidden !important;
+                       display: block !important;
+                   }
+                   
+                   #faqAccordion .accordion-collapse.collapse.show {
+                       visibility: visible !important;
+                       opacity: 1 !important;
+                       transform: translateY(0) !important;
+                       transition: opacity 0.3s ease, transform 0.3s ease !important;
+                       max-height: 2000px !important;
+                   }
+                   
+                   #faqAccordion .accordion-collapse.collapse:not(.show) {
+                       visibility: visible !important;
+                       opacity: 0 !important;
+                       transform: translateY(-10px) !important;
+                       transition: opacity 0.25s ease, transform 0.25s ease, max-height 0.3s ease !important;
+                       max-height: 0 !important;
+                       padding: 0 !important;
+                       margin: 0 !important;
+                   }
+                   
+                   #faqAccordion .accordion-body {
+                       display: block !important;
+                       visibility: visible !important;
+                       padding: 1rem 1.25rem;
+                       color: #333;
+                       transform: translateY(0);
+                       transition: transform 0.3s ease;
+                   }
+                   
+                   #faqAccordion .accordion-collapse:not(.show) .accordion-body {
+                       transform: translateY(-5px);
+                   }
+                   
+                   #faqAccordion .accordion-button {
+                       transition: all 0.2s ease !important;
+                       position: relative;
+                   }
+                   
+                   #faqAccordion .accordion-button:not(.collapsed) {
+                       box-shadow: none !important;
+                   }
+                   
+                   #faqAccordion .accordion-button::after {
+                       transition: transform 0.3s ease !important;
+                   }
+                   </style>
+                   <div class="faq-section mt-5">
+                       <h2 class="text-purple mb-4">Frequently Asked Questions</h2>
+                       <div class="accordion" id="faqAccordion">
+                           ${content.faq.map((faq: any, faqIndex: number) => {
+                             const questionId = `faq-${faqIndex}`
+                             const headingId = `heading-${faqIndex}`
+                             const collapseId = `collapse-${faqIndex}`
+                             return `
+                           <div class="accordion-item mb-3">
+                               <h3 class="accordion-header" id="${headingId}">
+                                   <button class="accordion-button ${faqIndex === 0 ? '' : 'collapsed'}" type="button" data-bs-toggle="collapse" data-bs-target="#${collapseId}" aria-expanded="${faqIndex === 0 ? 'true' : 'false'}" aria-controls="${collapseId}">
+                                       ${escapeHtmlContent(faq.question || '')}
+                                   </button>
+                               </h3>
+                               <div id="${collapseId}" class="accordion-collapse collapse ${faqIndex === 0 ? 'show' : ''}" aria-labelledby="${headingId}" data-bs-parent="#faqAccordion">
+                                   <div class="accordion-body">
+                                       ${processTextContent(faq.answer || '')}
+                                   </div>
+                               </div>
+                           </div>
+                           `
+                           }).join('')}
+                       </div>
+                   </div>
+                   ` : ''}
                 </div>  
             </div>
               <!-- index interlinking -->
@@ -316,13 +395,75 @@ document.addEventListener("click", function (e) {
 <script src="https://brandstory.in/blogs/assets/js/site.js?key=1766724887"></script>
 <script src="https://brandstory.in/blogs/assets/js/jquery.min.js?key=1766724887"></script>
 
+<script>
+// Fix FAQ accordion - prevent site.js interference
+// Run after all scripts load
+window.addEventListener('load', function() {
+    setTimeout(function() {
+        const faqButtons = document.querySelectorAll('#faqAccordion .accordion-button');
+        
+        faqButtons.forEach(function(button, index) {
+            // Create completely new button to remove all listeners
+            const newBtn = button.cloneNode(true);
+            button.parentNode.replaceChild(newBtn, button);
+            
+            // Add click handler that runs FIRST and prevents others
+            newBtn.addEventListener('click', function handler(e) {
+                e.stopImmediatePropagation();
+                e.stopPropagation();
+                e.preventDefault();
+                
+                const targetId = newBtn.getAttribute('data-bs-target');
+                if (!targetId) return;
+                
+                const target = document.querySelector(targetId);
+                if (!target) return;
+                
+                // Manually toggle - more reliable
+                const isCurrentlyExpanded = target.classList.contains('show');
+                
+                if (isCurrentlyExpanded) {
+                    // Collapse with smooth transition
+                    target.classList.remove('show');
+                    newBtn.classList.add('collapsed');
+                    newBtn.setAttribute('aria-expanded', 'false');
+                } else {
+                    // Expand with smooth transition
+                    // First close any other open items in this accordion
+                    const accordion = document.getElementById('faqAccordion');
+                    if (accordion) {
+                        const allCollapses = accordion.querySelectorAll('.accordion-collapse.show');
+                        allCollapses.forEach(function(collapse) {
+                            if (collapse !== target) {
+                                collapse.classList.remove('show');
+                                const btn = accordion.querySelector('[data-bs-target="#' + collapse.id + '"]');
+                                if (btn) {
+                                    btn.classList.add('collapsed');
+                                    btn.setAttribute('aria-expanded', 'false');
+                                }
+                            }
+                        });
+                    }
+                    
+                    // Expand this one
+                    target.style.display = 'block';
+                    target.classList.add('show');
+                    newBtn.classList.remove('collapsed');
+                    newBtn.setAttribute('aria-expanded', 'true');
+                }
+            }, true); // Capture phase - highest priority
+        });
+    }, 500);
+});
+</script>
+
 </body>
 </html>`
 }
 
 export async function POST(request: NextRequest) {
   try {
-    const { userInput } = await request.json()
+    const { userInput, wordCount = 3000 } = await request.json()
 
     if (!userInput || !userInput.trim()) {
       return NextResponse.json(
@@ -331,6 +472,19 @@ export async function POST(request: NextRequest) {
       )
     }
 
+    const targetWordCount = parseInt(wordCount) || 3000
+    
+    // Validate word count range
+    if (targetWordCount < 500 || targetWordCount > 4000) {
+      return NextResponse.json(
+        { error: 'Word count must be between 500 and 4,000 words' },
+        { status: 400 }
+      )
+    }
+    
+    const minWordCount = Math.max(500, Math.floor(targetWordCount * 0.9))
+    const maxWordCount = Math.min(4000, Math.floor(targetWordCount * 1.1))
+
     if (!process.env.OPENAI_API_KEY) {
       return NextResponse.json(
         { error: 'OpenAI API key is not configured' },
@@ -338,16 +492,42 @@ export async function POST(request: NextRequest) {
       )
     }
 
+    // Calculate number of sections based on word count
+    // For smaller word counts (500-1000), use fewer sections
+    // For larger word counts, use more sections
+    let estimatedSections
+    let paragraphDescription
+    let introDescription
+    
+    if (targetWordCount <= 1000) {
+      estimatedSections = Math.max(3, Math.min(6, Math.floor(targetWordCount / 150)))
+      paragraphDescription = "2-3 comprehensive paragraphs (each paragraph should be 6-10 sentences, 100-180 words per paragraph)"
+      introDescription = "Comprehensive introductory paragraph (8-12 sentences, 150-200 words)"
+    } else if (targetWordCount <= 3000) {
+      estimatedSections = Math.max(6, Math.min(12, Math.floor(targetWordCount / 200)))
+      paragraphDescription = "2-3 LONG, comprehensive paragraphs (each paragraph should be 8-12 sentences, 150-250 words per paragraph)"
+      introDescription = "Comprehensive introductory paragraph (10-15 sentences, 200-300 words)"
+    } else {
+      estimatedSections = Math.max(10, Math.min(20, Math.floor(targetWordCount / 250)))
+      paragraphDescription = "2-3 LONG, comprehensive paragraphs (each paragraph should be 10-15 sentences, 200-300 words per paragraph)"
+      introDescription = "Comprehensive introductory paragraph (12-18 sentences, 250-350 words)"
+    }
+    
     // Create prompt for blog content generation
-    const prompt = `Write a comprehensive, detailed blog post specifically about "${userInput}".
+    const prompt = `I need you to act like an expert SEO content writer who achieves humanized content with Flesch Kincaid's score between 60 to 70 and also with the Surfer SEO score of 90 and above.
+
+Write a comprehensive, detailed blog post specifically about "${userInput}".
 
 CRITICAL REQUIREMENTS:
 - Focus ONLY on the topic: "${userInput}". All content must be directly related to this topic.
 - Write accurate, factual content. Do not make up specific statistics, company names, or claims unless they are general knowledge.
-- Write 3000-5000 words with Flesch-Kincaid readability 60-70 and Surfer SEO score 90+.
-- Generate 15-20 sections, each with 6-10 detailed paragraphs (4-6 sentences each, 80-120 words per paragraph).
+- Write approximately ${targetWordCount} words (between ${minWordCount} and ${maxWordCount} words) with Flesch-Kincaid readability 60-70 and Surfer SEO score 90+.
+- Generate ${estimatedSections} sections, each with ${paragraphDescription}.
+- Each paragraph must be substantial, well-developed, and cohesive. Avoid short 2-4 line paragraphs. Write in-depth, detailed content that thoroughly explores each aspect of the topic.
+- Generate a comprehensive FAQ section with MINIMUM 20 frequently asked questions and detailed answers related to "${userInput}". Each FAQ should have a clear, specific question and a comprehensive answer (3-5 sentences, 50-100 words per answer). Questions should cover common concerns, important aspects, and practical information about the topic.
 - Based on the topic, determine the appropriate category (e.g., Guide, Blog, Tutorial, Tips, etc.) and topic/category name.
-- All headings, content, and examples must be relevant to "${userInput}" only.
+- All headings, content, examples, and FAQs must be relevant to "${userInput}" only.
+- Write naturally and conversationally, as a human expert would write. Use smooth transitions between ideas within paragraphs.
 
 Use plain text only - NO HTML entities. Use regular apostrophes (') and quotes (").
 
@@ -364,29 +544,33 @@ Return ONLY valid JSON in this format:
     "category": "Appropriate category based on the topic (e.g., Guide, Blog, Tutorial, etc.)",
     "title": "..."
   },
-  "intro": "Comprehensive introductory paragraph about the topic (6-8 sentences, 150-200 words)",
+  "intro": "${introDescription}",
   "sections": [
     {
       "heading": "Section heading directly related to the topic",
-      "content": "First detailed paragraph about this specific aspect of the topic (4-6 sentences, 80-120 words)",
+      "content": "First comprehensive, detailed paragraph about this specific aspect of the topic. This should be a substantial, well-developed paragraph that thoroughly explores the topic.",
       "paragraphs": [
-        "Second detailed paragraph about the topic (4-6 sentences, 80-120 words)",
-        "Third detailed paragraph about the topic (4-6 sentences, 80-120 words)",
-        "Fourth detailed paragraph about the topic (4-6 sentences, 80-120 words)",
-        "Fifth detailed paragraph about the topic (4-6 sentences, 80-120 words)",
-        "Sixth detailed paragraph about the topic (4-6 sentences, 80-120 words)",
-        "Seventh detailed paragraph about the topic (4-6 sentences, 80-120 words)",
-        "Eighth detailed paragraph about the topic (4-6 sentences, 80-120 words)"
+        "Second comprehensive, detailed paragraph continuing the discussion. Develop ideas fully with examples, explanations, and insights.",
+        "Third comprehensive, detailed paragraph if needed. Ensure each paragraph is substantial and adds significant value."
       ],
       "showImage": true
+    }
+  ],
+  "faq": [
+    {
+      "question": "A relevant question about the topic",
+      "answer": "A comprehensive answer (3-5 sentences, 50-100 words) that provides valuable information about the topic."
     }
   ]
 }`
 
-    // Call OpenAI API
+    // Always use maximum tokens - let the model handle allocation naturally
+    // This prevents truncation issues
     const models = [
-      { name: 'gpt-4o', maxTokens: 16384 },
-      { name: 'gpt-4-turbo', maxTokens: 4096 },
+      { 
+        name: 'gpt-4o', 
+        maxTokens: 16384 // Always use max tokens for gpt-4o
+      }
     ]
 
     let completion
@@ -394,20 +578,20 @@ Return ONLY valid JSON in this format:
 
     for (const modelConfig of models) {
       try {
-        console.log(`Trying model: ${modelConfig.name} with max_tokens: ${modelConfig.maxTokens}`)
+        console.log(`Using model: ${modelConfig.name} with max_tokens: ${modelConfig.maxTokens} (target: ${targetWordCount} words)`)
         completion = await openai.chat.completions.create({
           model: modelConfig.name,
           messages: [
             {
               role: 'system',
-              content: 'You are an expert content writer. Write comprehensive, accurate blog posts that are DIRECTLY and SPECIFICALLY about the user\'s exact topic. All content must be relevant to the exact topic provided. Write factual, accurate content - avoid making up specific statistics, company names, or unverified claims. Generate 15-20 sections, each with 6-10 detailed paragraphs (4-6 sentences, 80-120 words each). Total 3000-5000 words. Achieve Flesch-Kincaid 60-70 and Surfer SEO 90+. Always return valid JSON format. Write ONLY about the specific topic - do not write generic, irrelevant, or hallucinated content.',
+              content: `You are a person. A real human being. You are an expert SEO content writer who writes exactly like a human would write - naturally, conversationally, with imperfections and personality. Achieve Flesch Kincaid's score between 60 to 70 and Surfer SEO score of 90 and above. Write as a real person, not as an AI. Write comprehensive, accurate blog posts that are DIRECTLY and SPECIFICALLY about the user's exact topic. All content must be relevant to the exact topic provided. Write factual, accurate content - avoid making up specific statistics, company names, or unverified claims. Generate ${estimatedSections} sections, each with 2-3 LONG, comprehensive paragraphs (8-12 sentences each, 150-250 words per paragraph). Each paragraph must be substantial and well-developed - avoid short 2-4 line paragraphs. Generate a comprehensive FAQ section with MINIMUM 20 frequently asked questions and detailed answers (3-5 sentences, 50-100 words per answer). Total approximately ${targetWordCount} words. Always return valid JSON format. Write ONLY about the specific topic - do not write generic, irrelevant, or hallucinated content.`,
             },
             {
               role: 'user',
               content: prompt,
             },
           ],
-          temperature: 0.7,
+          temperature: 0.9,
           response_format: { type: 'json_object' },
           max_tokens: modelConfig.maxTokens,
         })
@@ -415,12 +599,49 @@ Return ONLY valid JSON in this format:
         responseContent = completion.choices[0]?.message?.content || ''
         
         if (completion.choices[0]?.finish_reason === 'length') {
-          console.warn(`⚠ Response was truncated (max_tokens reached) for model ${modelConfig.name}`)
-          if (modelConfig.name === 'gpt-4o') {
-            console.log('Using truncated response from gpt-4o')
-            break
+          console.warn(`⚠ Response was truncated (max_tokens: ${modelConfig.maxTokens} reached) for model ${modelConfig.name}`)
+          console.warn(`Target word count: ${targetWordCount}`)
+          
+          // Try to fix truncated JSON by closing any open structures
+          if (responseContent) {
+            try {
+              // Try to fix incomplete JSON
+              let fixedContent = responseContent.trim()
+              
+              // Count open braces and brackets
+              const openBraces = (fixedContent.match(/\{/g) || []).length
+              const closeBraces = (fixedContent.match(/\}/g) || []).length
+              const openBrackets = (fixedContent.match(/\[/g) || []).length
+              const closeBrackets = (fixedContent.match(/\]/g) || []).length
+              
+              // Close any unclosed strings (remove incomplete string at the end)
+              if (fixedContent.match(/"[^"]*$/)) {
+                fixedContent = fixedContent.replace(/"[^"]*$/, '"')
+              }
+              
+              // Close any unclosed arrays
+              for (let i = 0; i < openBrackets - closeBrackets; i++) {
+                fixedContent += ']'
+              }
+              
+              // Close any unclosed objects
+              for (let i = 0; i < openBraces - closeBraces; i++) {
+                fixedContent += '}'
+              }
+              
+              // Try parsing the fixed JSON
+              JSON.parse(fixedContent)
+              responseContent = fixedContent
+              console.log('✓ Fixed truncated JSON response')
+            } catch (fixError) {
+              console.warn('Could not fix truncated JSON')
+              throw new Error(`Response was truncated at maximum token limit (16384). The content is too long. Please try with a lower word count (suggested: ${Math.floor(targetWordCount * 0.7)} words).`)
+            }
+          } else {
+            throw new Error(`Response was truncated at maximum token limit (16384). The content is too long. Please try with a lower word count (suggested: ${Math.floor(targetWordCount * 0.7)} words).`)
           }
-          continue
+          
+          break
         }
         
         console.log(`✓ Successfully used model: ${modelConfig.name}`)
@@ -441,11 +662,46 @@ Return ONLY valid JSON in this format:
     let contentData
     try {
       const jsonMatch = responseContent.match(/```json\n([\s\S]*?)\n```/) || responseContent.match(/```\n([\s\S]*?)\n```/)
-      const jsonString = jsonMatch ? jsonMatch[1] : responseContent
+      let jsonString = jsonMatch ? jsonMatch[1] : responseContent
+      
+      // Try to fix any incomplete JSON
+      jsonString = jsonString.trim()
+      
+      // If JSON doesn't end properly, try to fix it
+      if (!jsonString.endsWith('}')) {
+        // Count braces to see if we need to close objects
+        const openBraces = (jsonString.match(/\{/g) || []).length
+        const closeBraces = (jsonString.match(/\}/g) || []).length
+        const openBrackets = (jsonString.match(/\[/g) || []).length
+        const closeBrackets = (jsonString.match(/\]/g) || []).length
+        
+        // Remove incomplete string at the end if present
+        if (jsonString.match(/"[^"]*$/)) {
+          jsonString = jsonString.replace(/"[^"]*$/, '"')
+        }
+        
+        // Close arrays first
+        for (let i = 0; i < openBrackets - closeBrackets; i++) {
+          jsonString += ']'
+        }
+        
+        // Then close objects
+        for (let i = 0; i < openBraces - closeBraces; i++) {
+          jsonString += '}'
+        }
+      }
+      
       contentData = JSON.parse(jsonString)
     } catch (parseError: any) {
       console.error('JSON Parse Error:', parseError)
-      console.error('Response content:', responseContent.substring(0, 1000))
+      console.error('Response content length:', responseContent.length)
+      console.error('Response content (first 2000 chars):', responseContent.substring(0, 2000))
+      
+      // If it's a truncation issue, suggest reducing word count
+      if (parseError.message.includes('Unterminated') || parseError.message.includes('Unexpected end')) {
+        throw new Error(`Response was truncated. The content is too long for the current token limit. Please try with a lower word count (suggested: ${Math.floor(targetWordCount * 0.7)} words) or the system will need more tokens.`)
+      }
+      
       throw new Error(`Failed to parse content from API response: ${parseError.message}`)
     }
 

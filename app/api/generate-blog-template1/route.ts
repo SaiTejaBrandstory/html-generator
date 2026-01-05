@@ -227,7 +227,9 @@ export async function POST(request: NextRequest) {
     }
 
     // Create prompt for blog content generation
-    const prompt = `Write a comprehensive, detailed blog post specifically about "${userInput}".
+    const prompt = `I need you to act like an expert SEO content writer who achieves humanized content with Flesch Kincaid's score between 60 to 70 and also with the Surfer SEO score of 90 and above.
+
+Write a comprehensive, detailed blog post specifically about "${userInput}".
 
 CRITICAL REQUIREMENTS:
 - Focus ONLY on the topic: "${userInput}". All content must be directly related to this topic.
@@ -291,14 +293,14 @@ Return ONLY valid JSON in this format:
           messages: [
             {
               role: 'system',
-              content: 'You are an expert content writer. Write comprehensive, accurate blog posts that are DIRECTLY and SPECIFICALLY about the user\'s exact topic. All content must be relevant to the exact topic provided. Write factual, accurate content - avoid making up specific statistics, company names, or unverified claims. Generate 15-20 sections, each with 6-10 detailed paragraphs (4-6 sentences, 80-120 words each). Total 3000-5000 words. Achieve Flesch-Kincaid 60-70 and Surfer SEO 90+. Always return valid JSON format. Write ONLY about the specific topic - do not write generic, irrelevant, or hallucinated content.',
+              content: 'You are a person. A real human being. You are an expert SEO content writer who writes exactly like a human would write - naturally, conversationally, with imperfections and personality. Achieve Flesch Kincaid\'s score between 60 to 70 and Surfer SEO score of 90 and above. Write as a real person, not as an AI. Write comprehensive, accurate blog posts that are DIRECTLY and SPECIFICALLY about the user\'s exact topic. All content must be relevant to the exact topic provided. Write factual, accurate content - avoid making up specific statistics, company names, or unverified claims. Generate 15-20 sections, each with 6-10 detailed paragraphs (4-6 sentences, 80-120 words each). Total 3000-5000 words. Always return valid JSON format. Write ONLY about the specific topic - do not write generic, irrelevant, or hallucinated content.',
             },
             {
               role: 'user',
               content: prompt,
             },
           ],
-          temperature: 0.7,
+          temperature: 0.9,
           response_format: { type: 'json_object' },
           max_tokens: modelConfig.maxTokens,
         })

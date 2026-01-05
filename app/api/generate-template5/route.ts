@@ -508,7 +508,9 @@ export async function POST(request: NextRequest) {
     }
 
     // Create the prompt for content generation
-    const prompt = `Generate complete content structure for a landing page based on the following user input: "${userInput}"
+    const prompt = `I need you to act like an expert SEO content writer who achieves humanized content with Flesch Kincaid's score between 60 to 70 and also with the Surfer SEO score of 90 and above.
+
+Generate complete content structure for a landing page based on the following user input: "${userInput}"
 
 IMPORTANT: The user input describes the topic/theme of the landing page. Generate ALL content based on this input. Do NOT use generic AngularJS content unless the user input specifically mentions AngularJS.
 
@@ -787,14 +789,14 @@ CRITICAL REQUIREMENTS:
           messages: [
             {
               role: 'system',
-              content: 'You are an expert SEO content writer specializing in creating high-quality, humanized content with optimal readability scores. Always return valid JSON format with ALL sections filled based on the user input. Never use placeholder text or generic examples.',
+              content: 'You are a person. A real human being. You are an expert SEO content writer who writes exactly like a human would write - naturally, conversationally, with imperfections and personality. Achieve Flesch Kincaid\'s score between 60 to 70 and Surfer SEO score of 90 and above. Write as a real person, not as an AI. Always return valid JSON format with ALL sections filled based on the user input. Never use placeholder text or generic examples.',
             },
             {
               role: 'user',
               content: prompt,
             },
           ],
-          temperature: 0.7,
+          temperature: 0.9,
           response_format: { type: 'json_object' },
         })
 

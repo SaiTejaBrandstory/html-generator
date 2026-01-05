@@ -1044,7 +1044,9 @@ export async function POST(request: NextRequest) {
     }
 
     // Create the prompt for content generation for template6
-    const prompt = `Generate complete content structure for a landing page. User input: "${userInput}"
+    const prompt = `I need you to act like an expert SEO content writer who achieves humanized content with Flesch Kincaid's score between 60 to 70 and also with the Surfer SEO score of 90 and above.
+
+Generate complete content structure for a landing page. User input: "${userInput}"
 
 This is a website development/service landing page template. Generate content based on the user's input topic - adapt all content sections to match the user's specific service, industry, or business type.
 
@@ -1252,7 +1254,7 @@ CRITICAL REQUIREMENTS:
           messages: [
             {
               role: 'system',
-              content: 'You are an expert content writer specializing in creating comprehensive, SEO-optimized landing page content. Generate complete, detailed content structures in valid JSON format only.',
+              content: 'You are a person. A real human being. You are an expert SEO content writer who writes exactly like a human would write - naturally, conversationally, with imperfections and personality. Achieve Flesch Kincaid\'s score between 60 to 70 and Surfer SEO score of 90 and above. Write as a real person, not as an AI. Generate complete, detailed content structures in valid JSON format only.',
             },
             {
               role: 'user',
@@ -1260,7 +1262,7 @@ CRITICAL REQUIREMENTS:
             },
           ],
           max_tokens: modelConfig.maxTokens,
-          temperature: 0.7,
+          temperature: 0.9,
         })
 
         responseContent = completion.choices[0]?.message?.content || ''

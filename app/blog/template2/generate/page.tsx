@@ -5,8 +5,10 @@ import { useRouter } from 'next/navigation'
 
 export default function GenerateBlogPage() {
   const [content, setContent] = useState('')
+  const [wordCount, setWordCount] = useState('3000')
   const [isGenerating, setIsGenerating] = useState(false)
   const [error, setError] = useState('')
+  const [wordCountError, setWordCountError] = useState('')
   const router = useRouter()
 
   const handleGenerate = async () => {
@@ -15,8 +17,16 @@ export default function GenerateBlogPage() {
       return
     }
 
+    // Validate word count
+    const wordCountNum = parseInt(wordCount) || 3000
+    if (wordCountNum < 500 || wordCountNum > 4000) {
+      setWordCountError('Word count must be between 500 and 4,000')
+      return
+    }
+
     setIsGenerating(true)
     setError('')
+    setWordCountError('')
 
     try {
       const response = await fetch('/api/generate-blog-template2', {
@@ -24,7 +34,10 @@ export default function GenerateBlogPage() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ userInput: content }),
+        body: JSON.stringify({ 
+          userInput: content,
+          wordCount: Math.max(500, Math.min(4000, parseInt(wordCount) || 3000))
+        }),
       })
 
       if (!response.ok) {
@@ -102,6 +115,53 @@ export default function GenerateBlogPage() {
             />
             {error && (
               <p className="mt-2 text-sm text-red-600 dark:text-red-400">{error}</p>
+            )}
+          </div>
+
+          <div className="mb-6">
+            <label 
+              htmlFor="word-count-input" 
+              className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+            >
+              Target Word Count
+            </label>
+            <input
+              id="word-count-input"
+              type="number"
+              value={wordCount}
+              onChange={(e) => {
+                const value = e.target.value
+                // Allow any input while typing (including empty or partial numbers)
+                setWordCount(value)
+                setWordCountError('')
+                setError('')
+              }}
+              onBlur={(e) => {
+                // Validate on blur
+                const value = parseInt(e.target.value) || 0
+                if (value < 500 || value > 4000) {
+                  setWordCountError('Word count must be between 500 and 4,000')
+                } else {
+                  setWordCountError('')
+                }
+              }}
+              placeholder="3000"
+              min="500"
+              max="4000"
+              step="100"
+              className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white ${
+                wordCountError 
+                  ? 'border-red-500 dark:border-red-500' 
+                  : 'border-gray-300 dark:border-gray-600'
+              }`}
+              disabled={isGenerating}
+            />
+            {wordCountError ? (
+              <p className="mt-1 text-sm text-red-600 dark:text-red-400">{wordCountError}</p>
+            ) : (
+              <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
+                Enter a word count between 500 and 4,000 words (recommended: 1,500-4,000 words)
+              </p>
             )}
           </div>
 
