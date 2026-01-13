@@ -1044,13 +1044,56 @@ export async function POST(request: NextRequest) {
     }
 
     // Create the prompt for content generation for template6
-    const prompt = `I need you to act like an expert SEO content writer who achieves humanized content with Flesch Kincaid's score between 60 to 70 and also with the Surfer SEO score of 90 and above.
+    const prompt = `
 
-Generate complete content structure for a landing page. User input: "${userInput}"
+    You are writing as a senior practitioner with real delivery experience.
+This is not marketing copy.
+This is an explanation of how the work is actually done.
 
-This is a website development/service landing page template. Generate content based on the user's input topic - adapt all content sections to match the user's specific service, industry, or business type.
+Audience:
+A smart client who has worked with agencies before and is skeptical.
 
-CRITICAL: Generate ALL sections. Every single section is MANDATORY and must be included in your JSON response. Do NOT skip any section. Do NOT use placeholders. Do NOT leave sections empty.
+Task:
+Create a complete landing page based strictly on this input:
+"${userInput}"
+
+Core rules:
+Say what matters. Skip what doesn’t.
+Be specific where possible.
+If something is common industry talk, rephrase it plainly.
+Include trade-offs, constraints, or limits where relevant.
+Avoid grand claims unless they are concrete.
+Write the way you would explain this on a real call.
+
+Writing style:
+Uneven sentence lengths.
+Some short, direct lines.
+Some longer explanations.
+Slight repetition is fine.
+Do not polish every sentence.
+Do not sound “brand-perfect.”
+
+Language rules:
+Avoid buzzwords like: seamless, cutting-edge, world-class, best-in-class, user-centric.
+Prefer practical wording over abstract language.
+If a sentence feels like marketing, rewrite it like advice.
+
+Structure:
+Generate ALL of the following sections.
+Do not skip any.
+Do not use placeholders.
+
+Depth control:
+Some sections can be tight.
+Some can be more detailed.
+Do not make everything equal length.
+
+Output rules:
+Return ONLY valid JSON.
+No explanations.
+No markdown.
+Start with { and end with }.
+
 
 REQUIRED SECTIONS (ALL MUST BE GENERATED):
 1. Page Meta (page_title, meta_description, meta_keywords, canonical_url) - MANDATORY
@@ -1254,7 +1297,7 @@ CRITICAL REQUIREMENTS:
           messages: [
             {
               role: 'system',
-              content: 'You are a person. A real human being. You are an expert SEO content writer who writes exactly like a human would write - naturally, conversationally, with imperfections and personality. Achieve Flesch Kincaid\'s score between 60 to 70 and Surfer SEO score of 90 and above. Write as a real person, not as an AI. Generate complete, detailed content structures in valid JSON format only.',
+              content: 'You are a person. A real human being. You are an expert SEO content writer who writes exactly like a human would write - naturally, conversationally, with imperfections and personality. Achieve Flesch Kincaid\'s score between 60 to 70 and Surfer SEO score of 90 and above. Write as a real person, not as an AI. Generate complete, detailed content structures in valid JSON format only. You MUST return valid JSON only - no apologies, no explanations, just the JSON object.',
             },
             {
               role: 'user',
@@ -1263,6 +1306,7 @@ CRITICAL REQUIREMENTS:
           ],
           max_tokens: modelConfig.maxTokens,
           temperature: 0.9,
+          response_format: { type: 'json_object' },
         })
 
         responseContent = completion.choices[0]?.message?.content || ''
@@ -1284,12 +1328,36 @@ CRITICAL REQUIREMENTS:
     // Parse JSON from response
     let contentData
     try {
+      // Check if response starts with an error message
+      if (responseContent.trim().startsWith("I'm sorry") || 
+          responseContent.trim().startsWith("I cannot") ||
+          responseContent.trim().startsWith("Sorry") ||
+          responseContent.trim().toLowerCase().includes("i cannot") ||
+          responseContent.trim().toLowerCase().includes("i'm unable")) {
+        console.error('API returned error message instead of JSON:', responseContent.substring(0, 200))
+        throw new Error('The API returned an error message instead of content. This may be due to content policy restrictions or invalid input. Please try with different content or check your input.')
+      }
+      
+      // Try to extract JSON from markdown code blocks first
       const jsonMatch = responseContent.match(/```json\n([\s\S]*?)\n```/) || responseContent.match(/```\n([\s\S]*?)\n```/)
       let jsonString = jsonMatch ? jsonMatch[1] : responseContent
+      
+      // Remove any leading/trailing whitespace
+      jsonString = jsonString.trim()
+      
+      // If it doesn't start with {, try to find the JSON object
+      if (!jsonString.startsWith('{')) {
+        const jsonStart = jsonString.indexOf('{')
+        if (jsonStart !== -1) {
+          jsonString = jsonString.substring(jsonStart)
+        }
+      }
+      
       contentData = JSON.parse(jsonString)
     } catch (parseError: any) {
       console.error('JSON Parse Error:', parseError)
-      throw new Error(`Failed to parse content from API response: ${parseError.message}. Please try again.`)
+      console.error('Response content (first 500 chars):', responseContent.substring(0, 500))
+      throw new Error(`Failed to parse content from API response: ${parseError.message}. The API may have returned an error message instead of JSON. Please try again with different input.`)
     }
 
     // Validate that we have all required content sections for template6

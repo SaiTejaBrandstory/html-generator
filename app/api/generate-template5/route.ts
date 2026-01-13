@@ -508,11 +508,55 @@ export async function POST(request: NextRequest) {
     }
 
     // Create the prompt for content generation
-    const prompt = `I need you to act like an expert SEO content writer who achieves humanized content with Flesch Kincaid's score between 60 to 70 and also with the Surfer SEO score of 90 and above.
+    const prompt = `
 
-Generate complete content structure for a landing page based on the following user input: "${userInput}"
+    You are writing as a senior practitioner with real delivery experience.
+This is not marketing copy.
+This is an explanation of how the work is actually done.
 
-IMPORTANT: The user input describes the topic/theme of the landing page. Generate ALL content based on this input. Do NOT use generic AngularJS content unless the user input specifically mentions AngularJS.
+Audience:
+A smart client who has worked with agencies before and is skeptical.
+
+Task:
+Create a complete landing page based strictly on this input:
+"${userInput}"
+
+Core rules:
+Say what matters. Skip what doesn’t.
+Be specific where possible.
+If something is common industry talk, rephrase it plainly.
+Include trade-offs, constraints, or limits where relevant.
+Avoid grand claims unless they are concrete.
+Write the way you would explain this on a real call.
+
+Writing style:
+Uneven sentence lengths.
+Some short, direct lines.
+Some longer explanations.
+Slight repetition is fine.
+Do not polish every sentence.
+Do not sound “brand-perfect.”
+
+Language rules:
+Avoid buzzwords like: seamless, cutting-edge, world-class, best-in-class, user-centric.
+Prefer practical wording over abstract language.
+If a sentence feels like marketing, rewrite it like advice.
+
+Structure:
+Generate ALL of the following sections.
+Do not skip any.
+Do not use placeholders.
+
+Depth control:
+Some sections can be tight.
+Some can be more detailed.
+Do not make everything equal length.
+
+Output rules:
+Return ONLY valid JSON.
+No explanations.
+No markdown.
+Start with { and end with }.
 
 CRITICAL: Generate ALL sections with EXACT counts. All sections are required:
 1. Banner (title, description, cta_text, cta_link, image)

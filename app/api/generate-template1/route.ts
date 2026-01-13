@@ -583,11 +583,55 @@ export async function POST(request: NextRequest) {
 
     // Create the prompt for content generation
     // Goal: Generate ALL content sections based on user input, matching content-config.php structure
-    const prompt = `I need you to act like an expert SEO content writer who achieves humanized content with Flesch Kincaid's score between 60 to 70 and also with the Surfer SEO score of 90 and above.
+    const prompt = `You are writing as a senior practitioner with real delivery experience.
+This is not marketing copy.
+This is an explanation of how the work is actually done.
 
-Generate complete content structure. User input: "${userInput}"
+Audience:
+A smart client who has worked with agencies before and is skeptical.
 
-CRITICAL: Generate ALL sections. All sections are required:
+Task:
+Create a complete landing page based strictly on this input:
+"${userInput}"
+
+Core rules:
+Say what matters. Skip what doesn't.
+Be specific where possible.
+If something is common industry talk, rephrase it plainly.
+Include trade-offs, constraints, or limits where relevant.
+Avoid grand claims unless they are concrete.
+Write the way you would explain this on a real call.
+
+Writing style:
+Uneven sentence lengths.
+Some short, direct lines.
+Some longer explanations.
+Slight repetition is fine.
+Do not polish every sentence.
+Do not sound "brand-perfect."
+
+Language rules:
+Avoid buzzwords like: seamless, cutting-edge, world-class, best-in-class, user-centric.
+Prefer practical wording over abstract language.
+If a sentence feels like marketing, rewrite it like advice.
+
+Structure:
+Generate ALL of the following sections.
+Do not skip any.
+Do not use placeholders.
+
+Depth control:
+Some sections can be tight.
+Some can be more detailed.
+Do not make everything equal length.
+
+Output rules:
+Return ONLY valid JSON.
+No explanations.
+No markdown.
+Start with { and end with }.
+
+REQUIRED SECTIONS (ALL MUST BE GENERATED):
 1. Banner (title, cta_text, cta_link)
 2. Intro (paragraph_1, paragraph_2)
 3. Trusted brands (heading, description, image)
@@ -1019,14 +1063,14 @@ IMPORTANT:
 }
 
 CRITICAL REQUIREMENTS:
-- Generate ALL content sections based on user input: "${userInput}"
-- Fill EVERY field with real, specific content - NO placeholders like "Service 1 Title"
+- Generate ALL content sections based strictly on user input: "${userInput}"
+- Fill EVERY field with real, specific content - NO placeholders
 - Generate minimum items: 13 services, 16 FAQs, 6 key benefits, 5 process steps, 4 track record stats, 3 testimonials, 9 industries, 8 AI tools, 4 benefits of working, 5 why essential points
 - All content must be specific to the user's input topic
 - Use SEO keywords naturally throughout
-- Write in professional, conversion-focused tone
-- Descriptions should be 3-4 sentences (60-100 words minimum) - make content rich and detailed
-- Return ONLY valid JSON, no markdown, no code blocks
+- Write as a practitioner explaining real work - not marketing copy
+- Descriptions should vary in length - some tight, some detailed (60-150 words)
+- Return ONLY valid JSON, no markdown, no code blocks, no explanations
 - Generate complete content - do not leave any section empty`
 
     // Call OpenAI API
@@ -1050,7 +1094,7 @@ CRITICAL REQUIREMENTS:
           messages: [
             {
               role: 'system',
-              content: 'You are a person. A real human being. You are an expert SEO content writer who writes exactly like a human would write - naturally, conversationally, with imperfections and personality. Achieve Flesch Kincaid\'s score between 60 to 70 and Surfer SEO score of 90 and above. Write as a real person, not as an AI. Always return valid JSON format with ALL sections filled based on the user input. Never use placeholder text or generic examples.',
+              content: 'You are writing as a senior practitioner with real delivery experience. This is not marketing copy. This is an explanation of how the work is actually done. Write for a smart client who has worked with agencies before and is skeptical. Avoid buzzwords like seamless, cutting-edge, world-class, best-in-class, user-centric. Prefer practical wording over abstract language. Write the way you would explain this on a real call. You MUST return valid JSON only - no apologies, no explanations, just the JSON object.',
             },
             {
               role: 'user',
@@ -1062,6 +1106,28 @@ CRITICAL REQUIREMENTS:
         })
 
         responseContent = completion.choices[0]?.message?.content || ''
+        
+        // Log response details for debugging
+        console.log(`Response from ${modelConfig.name}:`, {
+          contentLength: responseContent.length,
+          finishReason: completion.choices[0]?.finish_reason,
+          hasContent: !!responseContent,
+          firstChars: responseContent.substring(0, 100)
+        })
+        
+        // Check if response is empty
+        if (!responseContent || responseContent.trim().length === 0) {
+          console.warn(`⚠ Empty response from model ${modelConfig.name}`)
+          console.warn(`Finish reason: ${completion.choices[0]?.finish_reason}`)
+          console.warn(`Completion object:`, JSON.stringify(completion, null, 2).substring(0, 500))
+          const currentIndex = models.findIndex(m => m.name === modelConfig.name)
+          if (currentIndex < models.length - 1) {
+            console.log(`Empty response, trying next model...`)
+            continue
+          } else {
+            throw new Error('API returned empty response. This may be due to content policy restrictions or invalid input. Please try with different content.')
+          }
+        }
         
         // Check if response was truncated
         if (completion.choices[0]?.finish_reason === 'length') {
@@ -1085,8 +1151,24 @@ CRITICAL REQUIREMENTS:
       }
     }
 
-    if (!responseContent && lastError) {
-      throw new Error(`All models failed. Last error: ${lastError.message || 'Unknown error'}. Please check your API key and model access.`)
+    if (!responseContent || responseContent.trim().length === 0) {
+      if (lastError) {
+        throw new Error(`All models failed. Last error: ${lastError.message || 'Unknown error'}. Please check your API key and model access.`)
+      } else {
+        throw new Error('API returned empty response. This may be due to content policy restrictions or invalid input. Please try with different content.')
+      }
+    }
+
+    // Check if response starts with an error message
+    const trimmedContent = responseContent.trim()
+    if (trimmedContent.startsWith("I'm sorry") || 
+        trimmedContent.startsWith("I cannot") ||
+        trimmedContent.startsWith("Sorry") ||
+        trimmedContent.toLowerCase().includes("i cannot") ||
+        trimmedContent.toLowerCase().includes("i'm unable") ||
+        trimmedContent.toLowerCase().includes("i apologize")) {
+      console.error('API returned error message instead of JSON:', trimmedContent.substring(0, 200))
+      throw new Error('The API returned an error message instead of content. This may be due to content policy restrictions or invalid input. Please try with different content or check your input.')
     }
 
     // Parse JSON from response
@@ -1094,6 +1176,19 @@ CRITICAL REQUIREMENTS:
     try {
       const jsonMatch = responseContent.match(/```json\n([\s\S]*?)\n```/) || responseContent.match(/```\n([\s\S]*?)\n```/)
       let jsonString = jsonMatch ? jsonMatch[1] : responseContent
+      
+      // Remove any leading/trailing whitespace
+      jsonString = jsonString.trim()
+      
+      // If it doesn't start with {, try to find the JSON object
+      if (!jsonString.startsWith('{')) {
+        const jsonStart = jsonString.indexOf('{')
+        if (jsonStart !== -1) {
+          jsonString = jsonString.substring(jsonStart)
+        } else {
+          throw new Error('No JSON object found in response. Response may be empty or invalid.')
+        }
+      }
       
       // Try to fix truncated JSON by finding the last complete structure
       if (!jsonString.trim().endsWith('}')) {
@@ -1402,15 +1497,22 @@ CRITICAL REQUIREMENTS:
       console.log('Sample content - key_benefits count:', contentData.key_benefits?.benefits?.length)
     } catch (parseError: any) {
       console.error('JSON Parse Error:', parseError)
+      console.error('JSON Parse Error:', parseError)
       console.error('Response content length:', responseContent.length)
       console.error('Response content (first 1000 chars):', responseContent.substring(0, 1000))
       console.error('Response content (last 500 chars):', responseContent.substring(Math.max(0, responseContent.length - 500)))
       
-      // If parsing failed and we got a response, it might be truncated
-      if (responseContent.length > 0) {
-        throw new Error(`Failed to parse content from API response. The response may have been truncated due to token limits. Response length: ${responseContent.length} chars. Error: ${parseError.message}. Please try with a shorter input or use a model with higher token limits.`)
+      // If response is empty
+      if (responseContent.length === 0) {
+        throw new Error('API returned empty response. This may be due to content policy restrictions or invalid input. Please try with different content.')
       }
-      throw new Error(`Failed to parse content from API response: ${parseError.message}. Please try again.`)
+      
+      // If it's a truncation issue
+      if (parseError.message.includes('Unexpected end') || parseError.message.includes('Unterminated')) {
+        throw new Error(`Response was truncated. The content is too long for the current token limit. Please try with a shorter input or the system will need more tokens.`)
+      }
+      
+      throw new Error(`Failed to parse content from API response: ${parseError.message}. The API may have returned an error message instead of JSON. Please try again with different input.`)
     }
 
     // Validate that we have all required content sections

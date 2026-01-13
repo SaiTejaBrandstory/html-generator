@@ -514,9 +514,36 @@ export async function POST(request: NextRequest) {
     }
     
     // Create prompt for blog content generation
-    const prompt = `I need you to act like an expert SEO content writer who achieves humanized content with Flesch Kincaid's score between 60 to 70 and also with the Surfer SEO score of 90 and above.
+    const prompt = `You are writing as a senior practitioner with real delivery experience.
+This is not marketing copy.
+This is an explanation of how the work is actually done.
 
+Audience:
+A smart client who has worked with agencies before and is skeptical.
+
+Task:
 Write a comprehensive, detailed blog post specifically about "${userInput}".
+
+Core rules:
+Say what matters. Skip what doesn't.
+Be specific where possible.
+If something is common industry talk, rephrase it plainly.
+Include trade-offs, constraints, or limits where relevant.
+Avoid grand claims unless they are concrete.
+Write the way you would explain this on a real call.
+
+Writing style:
+Uneven sentence lengths.
+Some short, direct lines.
+Some longer explanations.
+Slight repetition is fine.
+Do not polish every sentence.
+Do not sound "brand-perfect."
+
+Language rules:
+Avoid buzzwords like: seamless, cutting-edge, world-class, best-in-class, user-centric.
+Prefer practical wording over abstract language.
+If a sentence feels like marketing, rewrite it like advice.
 
 CRITICAL REQUIREMENTS:
 - Focus ONLY on the topic: "${userInput}". All content must be directly related to this topic.
@@ -527,11 +554,17 @@ CRITICAL REQUIREMENTS:
 - Generate a comprehensive FAQ section with MINIMUM 20 frequently asked questions and detailed answers related to "${userInput}". Each FAQ should have a clear, specific question and a comprehensive answer (3-5 sentences, 50-100 words per answer). Questions should cover common concerns, important aspects, and practical information about the topic.
 - Based on the topic, determine the appropriate category (e.g., Guide, Blog, Tutorial, Tips, etc.) and topic/category name.
 - All headings, content, examples, and FAQs must be relevant to "${userInput}" only.
-- Write naturally and conversationally, as a human expert would write. Use smooth transitions between ideas within paragraphs.
+- Write as a practitioner explaining real work - not marketing copy. Use smooth transitions between ideas within paragraphs.
 
 Use plain text only - NO HTML entities. Use regular apostrophes (') and quotes (").
 
-Return ONLY valid JSON in this format:
+Output rules:
+Return ONLY valid JSON.
+No explanations.
+No markdown.
+Start with { and end with }.
+
+JSON Format:
 {
   "meta": {
     "title": "...",
@@ -584,7 +617,7 @@ Return ONLY valid JSON in this format:
           messages: [
             {
               role: 'system',
-              content: `You are a person. A real human being. You are an expert SEO content writer who writes exactly like a human would write - naturally, conversationally, with imperfections and personality. Achieve Flesch Kincaid's score between 60 to 70 and Surfer SEO score of 90 and above. Write as a real person, not as an AI. Write comprehensive, accurate blog posts that are DIRECTLY and SPECIFICALLY about the user's exact topic. All content must be relevant to the exact topic provided. Write factual, accurate content - avoid making up specific statistics, company names, or unverified claims. Generate ${estimatedSections} sections, each with 2-3 LONG, comprehensive paragraphs (8-12 sentences each, 150-250 words per paragraph). Each paragraph must be substantial and well-developed - avoid short 2-4 line paragraphs. Generate a comprehensive FAQ section with MINIMUM 20 frequently asked questions and detailed answers (3-5 sentences, 50-100 words per answer). Total approximately ${targetWordCount} words. Always return valid JSON format. Write ONLY about the specific topic - do not write generic, irrelevant, or hallucinated content.`,
+              content: `You are writing as a senior practitioner with real delivery experience. This is not marketing copy. This is an explanation of how the work is actually done. Write for a smart client who has worked with agencies before and is skeptical. Avoid buzzwords like seamless, cutting-edge, world-class, best-in-class, user-centric. Prefer practical wording over abstract language. Write the way you would explain this on a real call. Write comprehensive, accurate blog posts that are DIRECTLY and SPECIFICALLY about the user's exact topic. All content must be relevant to the exact topic provided. Write factual, accurate content - avoid making up specific statistics, company names, or unverified claims. Generate ${estimatedSections} sections, each with 2-3 LONG, comprehensive paragraphs (8-12 sentences each, 150-250 words per paragraph). Each paragraph must be substantial and well-developed - avoid short 2-4 line paragraphs. Generate a comprehensive FAQ section with MINIMUM 20 frequently asked questions and detailed answers (3-5 sentences, 50-100 words per answer). Total approximately ${targetWordCount} words. You MUST return valid JSON only - no apologies, no explanations, just the JSON object. Write ONLY about the specific topic - do not write generic, irrelevant, or hallucinated content.`,
             },
             {
               role: 'user',

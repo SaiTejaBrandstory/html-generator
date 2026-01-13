@@ -689,11 +689,55 @@ export async function POST(request: NextRequest) {
     }
 
     // Create the prompt for content generation
-    const prompt = `I need you to act like an expert SEO content writer who achieves humanized content with Flesch Kincaid's score between 60 to 70 and also with the Surfer SEO score of 90 and above.
+    const prompt = `You are writing as a senior practitioner with real delivery experience.
+This is not marketing copy.
+This is an explanation of how the work is actually done.
 
-Generate complete content structure for a landing page. User input: "${userInput}"
+Audience:
+A smart client who has worked with agencies before and is skeptical.
 
-CRITICAL: Generate ALL sections. All sections are required:
+Task:
+Create a complete landing page based strictly on this input:
+"${userInput}"
+
+Core rules:
+Say what matters. Skip what doesn't.
+Be specific where possible.
+If something is common industry talk, rephrase it plainly.
+Include trade-offs, constraints, or limits where relevant.
+Avoid grand claims unless they are concrete.
+Write the way you would explain this on a real call.
+
+Writing style:
+Uneven sentence lengths.
+Some short, direct lines.
+Some longer explanations.
+Slight repetition is fine.
+Do not polish every sentence.
+Do not sound "brand-perfect."
+
+Language rules:
+Avoid buzzwords like: seamless, cutting-edge, world-class, best-in-class, user-centric.
+Prefer practical wording over abstract language.
+If a sentence feels like marketing, rewrite it like advice.
+
+Structure:
+Generate ALL of the following sections.
+Do not skip any.
+Do not use placeholders.
+
+Depth control:
+Some sections can be tight.
+Some can be more detailed.
+Do not make everything equal length.
+
+Output rules:
+Return ONLY valid JSON.
+No explanations.
+No markdown.
+Start with { and end with }.
+
+REQUIRED SECTIONS (ALL MUST BE GENERATED):
 1. Hero (title, cta_text, cta_link, trusted_text)
 2. Intro (paragraph_1, paragraph_2)
 3. Reviews (heading, description, logos array with image and alt)
@@ -842,13 +886,13 @@ IMPORTANT:
 }
 
 CRITICAL REQUIREMENTS:
-- Generate ALL content sections based on user input: "${userInput}"
+- Generate ALL content sections based strictly on user input: "${userInput}"
 - Fill EVERY field with real, specific content - NO placeholders
 - All content must be specific to the user's input topic
 - Use SEO keywords naturally throughout
-- Write in professional, conversion-focused tone
-- Descriptions should be 3-4 sentences (60-100 words minimum)
-- Return ONLY valid JSON, no markdown, no code blocks`
+- Write as a practitioner explaining real work - not marketing copy
+- Descriptions should vary in length - some tight, some detailed (60-150 words)
+- Return ONLY valid JSON, no markdown, no code blocks, no explanations`
 
     // Call OpenAI API
     const models = [
@@ -870,7 +914,7 @@ CRITICAL REQUIREMENTS:
           messages: [
             {
               role: 'system',
-              content: 'You are a person. A real human being. You are an expert SEO content writer who writes exactly like a human would write - naturally, conversationally, with imperfections and personality. Achieve Flesch Kincaid\'s score between 60 to 70 and Surfer SEO score of 90 and above. Write as a real person, not as an AI. Always return valid JSON format with ALL sections filled based on the user input. Never use placeholder text or generic examples.',
+              content: 'You are writing as a senior practitioner with real delivery experience. This is not marketing copy. This is an explanation of how the work is actually done. Write for a smart client who has worked with agencies before and is skeptical. Avoid buzzwords like seamless, cutting-edge, world-class, best-in-class, user-centric. Prefer practical wording over abstract language. Write the way you would explain this on a real call. You MUST return valid JSON only - no apologies, no explanations, just the JSON object.',
             },
             {
               role: 'user',

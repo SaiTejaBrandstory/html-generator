@@ -364,13 +364,55 @@ export async function POST(request: NextRequest) {
     }
 
     // Create the prompt for content generation for template4
-    const prompt = `I need you to act like an expert SEO content writer who achieves humanized content with Flesch Kincaid's score between 60 to 70 and also with the Surfer SEO score of 90 and above.
+    const prompt = `You are writing as a senior practitioner with real delivery experience.
+This is not marketing copy.
+This is an explanation of how the work is actually done.
 
-Generate complete content structure for a landing page. User input: "${userInput}"
+Audience:
+A smart client who has worked with agencies before and is skeptical.
 
-This is a PR agency/service landing page template. Generate content based on the user's input topic - adapt all content sections to match the user's specific service, industry, or business type.
+Task:
+Create a complete landing page based strictly on this input:
+"${userInput}"
 
-CRITICAL: Generate ALL 8 sections. Every single section is MANDATORY and must be included in your JSON response. Do NOT skip any section. Do NOT use placeholders. Do NOT leave sections empty.
+Core rules:
+Say what matters. Skip what doesn't.
+Be specific where possible.
+If something is common industry talk, rephrase it plainly.
+Include trade-offs, constraints, or limits where relevant.
+Avoid grand claims unless they are concrete.
+Write the way you would explain this on a real call.
+
+Writing style:
+Uneven sentence lengths.
+Some short, direct lines.
+Some longer explanations.
+Slight repetition is fine.
+Do not polish every sentence.
+Do not sound "brand-perfect."
+
+Language rules:
+Avoid buzzwords like: seamless, cutting-edge, world-class, best-in-class, user-centric.
+Prefer practical wording over abstract language.
+If a sentence feels like marketing, rewrite it like advice.
+
+Structure:
+Generate ALL of the following sections.
+Do not skip any.
+Do not use placeholders.
+
+Depth control:
+Some sections can be tight.
+Some can be more detailed.
+Do not make everything equal length.
+
+Output rules:
+Return ONLY valid JSON.
+No explanations.
+No markdown.
+Start with { and end with }.
+
+REQUIRED SECTIONS (ALL MUST BE GENERATED):
 
 REQUIRED SECTIONS (ALL MUST BE GENERATED):
 1. Hero (title, subtitle, description, cta_text, cta_link) - MANDATORY
@@ -485,14 +527,14 @@ IMPORTANT:
 }
 
 CRITICAL REQUIREMENTS:
-- Generate ALL content sections based on user input: "${userInput}"
+- Generate ALL content sections based strictly on user input: "${userInput}"
 - Fill EVERY field with real, specific content - NO placeholders
 - Generate minimum items: 5-7 challenges, 5 services, 5 partner items, 12-18 industries, 8-10 FAQs
 - All content must be specific to the user's input topic
 - Use SEO keywords naturally throughout
-- Write in professional, conversion-focused tone
-- Descriptions should be 3-4 sentences (60-100 words minimum) - make content rich and detailed
-- Return ONLY valid JSON, no markdown, no code blocks
+- Write as a practitioner explaining real work - not marketing copy
+- Descriptions should vary in length - some tight, some detailed (60-150 words)
+- Return ONLY valid JSON, no markdown, no code blocks, no explanations
 - Generate complete content - do not leave any section empty`
 
     // Call OpenAI API
@@ -514,7 +556,7 @@ CRITICAL REQUIREMENTS:
           messages: [
             {
               role: 'system',
-              content: 'You are a person. A real human being. You are an expert SEO content writer who writes exactly like a human would write - naturally, conversationally, with imperfections and personality. Achieve Flesch Kincaid\'s score between 60 to 70 and Surfer SEO score of 90 and above. Write as a real person, not as an AI. Generate complete, detailed content structures in valid JSON format only.',
+              content: 'You are a person. A real human being. You are an expert SEO content writer who writes exactly like a human would write - naturally, conversationally, with imperfections and personality. Achieve Flesch Kincaid\'s score between 60 to 70 and Surfer SEO score of 90 and above. Write as a real person, not as an AI. Generate complete, detailed content structures in valid JSON format only. You MUST return valid JSON only - no apologies, no explanations, just the JSON object.',
             },
             {
               role: 'user',
@@ -523,6 +565,7 @@ CRITICAL REQUIREMENTS:
           ],
           max_tokens: modelConfig.maxTokens,
           temperature: 0.9,
+          response_format: { type: 'json_object' },
         })
 
         responseContent = completion.choices[0]?.message?.content || ''
