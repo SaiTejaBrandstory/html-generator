@@ -29,9 +29,20 @@ function generateHTMLPage(content: any, companyName?: string, ctaLink?: string):
   // Replace ALL hardcoded content with AI-generated content
   // This preserves the exact HTML structure, all styles, and all scripts
   
-  // 1. Page title
+  // 1. Page title and meta tags
   if (content.page_title) {
     html = html.replace(/<title>Motor Insurance - PolicyBazaar<\/title>/, `<title>${escapeHtml(content.page_title)}</title>`)
+  }
+  
+  // Meta description
+  if (content.meta_description) {
+    // Add meta description if it doesn't exist, or replace existing one
+    if (html.includes('<meta name="description"')) {
+      html = html.replace(/(<meta name="description"[^>]*content=["'])([^"']*)(["'][^>]*>)/, `$1${escapeHtml(content.meta_description)}$3`)
+    } else {
+      // Insert after viewport meta tag
+      html = html.replace(/(<meta name="viewport"[^>]*>)/, `$1\n    <meta name="description" content="${escapeHtml(content.meta_description)}">`)
+    }
   }
   
   // 2. Header section
@@ -1028,25 +1039,55 @@ function generateHTMLPage(content: any, companyName?: string, ctaLink?: string):
     html = html.replace(/(<p class="reviews-subtitle">)(.*?)(<\/p>)/, `$1${escapeHtml(content.reviews.subtitle)}$3`)
   }
   if (content.reviews?.items && content.reviews.items.length > 0) {
-    // Calculate review year (current year - 1, e.g., if 2026, use 2025)
-    const currentYear = new Date().getFullYear()
-    const reviewYear = currentYear - 1
+    // Calculate current date and ensure review dates are within 30 days from current date
+    const now = new Date()
+    const currentYear = now.getFullYear()
+    const currentMonth = now.getMonth() // 0-11
+    const currentDay = now.getDate()
     
-    const reviewsHTML = content.reviews.items.map((review: any) => {
-      // Process location to ensure it uses the correct year
+    // Calculate date 30 days ago
+    const thirtyDaysAgo = new Date(now)
+    thirtyDaysAgo.setDate(now.getDate() - 30)
+    const minYear = thirtyDaysAgo.getFullYear()
+    const minMonth = thirtyDaysAgo.getMonth()
+    const minDay = thirtyDaysAgo.getDate()
+    
+    const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+    
+    const reviewsHTML = content.reviews.items.map((review: any, index: number) => {
+      // Process location to ensure dates are within 30 days from current date
       let locationText = review.location || ''
-      // Replace any 4-digit years in the location with the calculated review year
-      locationText = locationText.replace(/\b(19|20)\d{2}\b/g, reviewYear.toString())
-      // If no year found, append a date with the review year (format: "Location, Month DD, YYYY")
-      if (!/\b(19|20)\d{2}\b/.test(locationText)) {
-        const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
-        const randomMonth = months[Math.floor(Math.random() * months.length)]
-        const randomDay = Math.floor(Math.random() * 28) + 1
-        locationText = locationText.replace(/,\s*Date/i, `, ${randomMonth} ${randomDay}, ${reviewYear}`)
-        if (!locationText.includes(',')) {
-          locationText = `${locationText}, ${randomMonth} ${randomDay}, ${reviewYear}`
-        }
+      
+      // Generate a random date within the last 30 days
+      // Distribute reviews across the 30-day period
+      const daysAgo = Math.floor(Math.random() * 30) // 0-29 days ago
+      const reviewDate = new Date(now)
+      reviewDate.setDate(now.getDate() - daysAgo)
+      
+      const reviewYear = reviewDate.getFullYear()
+      const reviewMonthIndex = reviewDate.getMonth()
+      const reviewDay = reviewDate.getDate()
+      const reviewMonthName = monthNames[reviewMonthIndex]
+      
+      // Extract location name (text before comma or before date)
+      let locationName = locationText
+      const locationMatch = locationText.match(/^([^,]+)/)
+      if (locationMatch) {
+        locationName = locationMatch[1].trim()
+      } else {
+        // Remove any existing date patterns
+        locationName = locationText.replace(/\b(January|February|March|April|May|June|July|August|September|October|November|December)\s+\d{1,2},\s+\d{4}\b/i, '').trim()
+        locationName = locationName.replace(/\b(19|20)\d{2}\b/, '').trim()
+        locationName = locationName.replace(/,\s*$/, '').trim()
       }
+      
+      // If location name is empty or just numbers, use a default
+      if (!locationName || locationName.match(/^\d+$/)) {
+        locationName = 'Location'
+      }
+      
+      // Build the final location text with date within 30 days
+      locationText = `${locationName}, ${reviewMonthName} ${reviewDay}, ${reviewYear}`
       
       const stars = Array(review.rating || 5).fill(0).map(() => `
                             <svg class="review-card-star" viewBox="0 0 24 24" fill="currentColor">
@@ -1166,7 +1207,24 @@ export async function POST(request: NextRequest) {
     const companyContext = companyName ? `\nCompany Name: "${companyName}" - Use this company name in descriptions and benefits sections where appropriate.` : ''
     const ctaContext = ctaLink ? `\nCTA Link: "${ctaLink}" - This is the link for all call-to-action buttons.` : ''
     
+    // Get current date information for year calculations
+    const now = new Date()
+    const currentYear = now.getFullYear()
+    const currentMonth = now.getMonth() + 1 // 1-12
+    const currentDay = now.getDate()
+    const previousYear = currentYear - 1
+    const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+    const currentMonthName = monthNames[now.getMonth()]
+    
     const prompt = `You are writing content for a comprehensive pillar/service page. This can be for ANY topic - services, products, agencies, industries, etc.
+
+CURRENT DATE INFORMATION:
+- Current Year: ${currentYear}
+- Current Month: ${currentMonthName} ${currentDay}, ${currentYear}
+- Previous Year: ${previousYear}
+- IMPORTANT: When generating dates in reviews or comparison sections, use ${previousYear} or earlier for comparison/previous versions, and ${currentYear} for current versions. NEVER use dates that exceed ${currentMonthName} ${currentDay}, ${currentYear}.
+- REVIEWS DATES: For reviews section, only provide location names (e.g., 'New York', 'Bangalore'). Dates will be automatically calculated to be within the last 30 days from current date (${currentMonthName} ${currentDay}, ${currentYear}). Do NOT include dates in review locations.
+- TRENDS & CONTENT: When comparing ${previousYear} vs ${currentYear}, ensure content reflects LATEST industry trends, technologies, features, and improvements. Column 2 (${previousYear}) should show what was standard/available then, Column 3 (${currentYear}) should show current state-of-the-art, latest features, and modern capabilities that reflect 2024-${currentYear} trends.
 
 User Input: "${userInput}"${companyContext}${ctaContext}
 
@@ -1206,6 +1264,7 @@ IMPORTANT NOTE ABOUT EXCLUSIVE BENEFITS SECTION:
 REQUIRED SECTIONS (generate ALL of these - 21+ sections):
 {
   "page_title": "SEO-optimized page title based on user input (60 characters max, include main keyword)",
+  "meta_description": "SEO-optimized meta description based on user input (150-160 characters, include main keyword and compelling description)",
   "header": {
     "title": "Main page title based on user input",
     "description_short": "Short description (1-2 sentences, 100-150 characters) - first part visible by default",
@@ -1671,20 +1730,35 @@ REQUIRED SECTIONS (generate ALL of these - 21+ sections):
   },
   "motor_rules": {
     "title": "Section title - adapt to user input topic (can be about updates, comparisons, features, timeline, etc. - NOT just regulations unless topic is about regulations)",
-    "intro": "Introduction paragraph (2-3 sentences) - adapt to user input topic, explain what this section is about",
+    "intro": "Introduction paragraph (2-3 sentences) - adapt to user input topic, explain that this section compares [CURRENT_YEAR - 1] vs [CURRENT_YEAR] to show latest trends, improvements, and what's new in the industry",
     "table_header_1": "First column header - adapt to topic (e.g., 'Category', 'Type', 'Feature', 'Plan', 'Version')",
-    "table_header_2": "Second column header - adapt to topic (e.g., 'Previous Version', 'Basic Plan', 'Standard', '2020 Update')",
-    "table_header_3": "Third column header - adapt to topic (e.g., 'Current Version', 'Premium Plan', 'Advanced', '2024 Update')",
+    "table_header_2": "Second column header - adapt to topic (e.g., 'Previous Version', 'Basic Plan', 'Standard', '[CURRENT_YEAR - 1] Update' - use current year minus 1, e.g., if current year is 2025, use '2024 Update')",
+    "table_header_3": "Third column header - adapt to topic (e.g., 'Current Version', 'Premium Plan', 'Advanced', '[CURRENT_YEAR] Update' - use current year, e.g., if current year is 2025, use '2025 Update')",
     "table_rows": [
       {
-        "column1": "Row 1, Column 1 value - MUST be relevant to user input topic",
-        "column2": "Row 1, Column 2 value - MUST be relevant to user input topic",
-        "column3": "Row 1, Column 3 value - MUST be relevant to user input topic"
+        "column1": "Row 1, Column 1 value - MUST be relevant to user input topic (e.g., feature name, category, aspect)",
+        "column2": "Row 1, Column 2 value for [CURRENT_YEAR - 1] - MUST show what was available/used in previous year, reflect trends and capabilities from that time",
+        "column3": "Row 1, Column 3 value for [CURRENT_YEAR] - MUST show what is available/used in current year, reflect LATEST trends, improvements, and modern capabilities"
       },
       {
-        "column1": "Row 2, Column 1 value - MUST be relevant to user input topic",
-        "column2": "Row 2, Column 2 value - MUST be relevant to user input topic",
-        "column3": "Row 2, Column 3 value - MUST be relevant to user input topic (generate 2-5 table rows total, can be more or fewer based on topic)"
+        "column1": "Row 2, Column 1 value - MUST be relevant to user input topic (e.g., feature name, category, aspect)",
+        "column2": "Row 2, Column 2 value for [CURRENT_YEAR - 1] - MUST show what was available/used in previous year, reflect trends and capabilities from that time",
+        "column3": "Row 2, Column 3 value for [CURRENT_YEAR] - MUST show what is available/used in current year, reflect LATEST trends, improvements, and modern capabilities"
+      },
+      {
+        "column1": "Row 3, Column 1 value - MUST be relevant to user input topic (e.g., feature name, category, aspect)",
+        "column2": "Row 3, Column 2 value for [CURRENT_YEAR - 1] - MUST show what was available/used in previous year, reflect trends and capabilities from that time",
+        "column3": "Row 3, Column 3 value for [CURRENT_YEAR] - MUST show what is available/used in current year, reflect LATEST trends, improvements, and modern capabilities"
+      },
+      {
+        "column1": "Row 4, Column 1 value - MUST be relevant to user input topic (e.g., feature name, category, aspect)",
+        "column2": "Row 4, Column 2 value for [CURRENT_YEAR - 1] - MUST show what was available/used in previous year, reflect trends and capabilities from that time",
+        "column3": "Row 4, Column 3 value for [CURRENT_YEAR] - MUST show what is available/used in current year, reflect LATEST trends, improvements, and modern capabilities"
+      },
+      {
+        "column1": "Row 5, Column 1 value - MUST be relevant to user input topic (e.g., feature name, category, aspect)",
+        "column2": "Row 5, Column 2 value for [CURRENT_YEAR - 1] - MUST show what was available/used in previous year, reflect trends and capabilities from that time",
+        "column3": "Row 5, Column 3 value for [CURRENT_YEAR] - MUST show what is available/used in current year, reflect LATEST trends, improvements, and modern capabilities (generate MINIMUM 5 table rows, can be more up to 7-10 rows based on topic - each row MUST show clear differences between previous year and current year)"
       }
     ],
     "intro_second": "Additional intro paragraph (2-3 sentences) - adapt to user input topic",
@@ -1957,28 +2031,28 @@ REQUIRED SECTIONS (generate ALL of these - 21+ sections):
     "items": [
       {
         "name": "Reviewer name",
-        "location": "Location, Month DD, YYYY (use current year - 1, e.g., if current year is 2026, use 2025)",
+        "location": "Location name (e.g., 'New York', 'Bangalore', 'London') - date will be automatically set within last 30 days from current date",
         "rating": 5,
         "title": "Review title - MUST be relevant to user input topic",
         "text": "Review text (2-3 sentences, 40-60 words) - MUST be relevant to user input topic"
       },
       {
         "name": "Reviewer name 2",
-        "location": "Location, Month DD, YYYY (use current year - 1, e.g., if current year is 2026, use 2025)",
+        "location": "Location name (e.g., 'New York', 'Bangalore', 'London') - date will be automatically set within last 30 days from current date",
         "rating": 4,
         "title": "Review title 2 - MUST be relevant to user input topic",
         "text": "Review text (2-3 sentences, 40-60 words) - MUST be relevant to user input topic"
       },
       {
         "name": "Reviewer name 3",
-        "location": "Location, Month DD, YYYY (use current year - 1, e.g., if current year is 2026, use 2025)",
+        "location": "Location name (e.g., 'New York', 'Bangalore', 'London') - date will be automatically set within last 30 days from current date",
         "rating": 5,
         "title": "Review title 3 - MUST be relevant to user input topic",
         "text": "Review text (2-3 sentences, 40-60 words) - MUST be relevant to user input topic"
       },
       {
         "name": "Reviewer name 4",
-        "location": "Location, Month DD, YYYY (use current year - 1, e.g., if current year is 2026, use 2025 or 2024) - generate MINIMUM 4 review items, can be more up to 6-12 items based on topic - ALL reviews MUST be placed in the carousel",
+        "location": "Location, Month DD, YYYY (use current year - 1 or earlier, e.g., if current year is 2025, use 2024 or 2023. IMPORTANT: Date must NEVER exceed current date/month - if current date is March 15, 2025, use dates up to March 15, 2024 or earlier) - generate MINIMUM 4 review items, can be more up to 6-12 items based on topic - ALL reviews MUST be placed in the carousel",
         "rating": 4,
         "title": "Review title 4 - MUST be relevant to user input topic",
         "text": "Review text (2-3 sentences, 40-60 words) - MUST be relevant to user input topic"
@@ -1999,7 +2073,7 @@ CRITICAL REQUIREMENTS:
 - Generate at least 12 additional services/features items for addons_explore section (can be more) - each item should have a name that is relevant to the user's topic, NOT generic "Add-on X" placeholders
 - Generate at least 12 explore more items (can be more) - first 6 visible by default, rest hidden (shown on "View more" click) - each item should have a title that is relevant to the user's topic
 - Generate at least 3-6 items for documents_required section (can be about requirements, features, components, steps, etc. - NOT just documents unless topic is about documents) - each item should have a title and description that are related and relevant to the user's topic
-- Generate motor_rules section: at least 2-5 table rows (with dynamic column headers) and 3-6 list items - this section can be about updates, comparisons, features, timeline, etc. based on topic, NOT just regulations unless topic is about regulations - all content MUST be relevant to user input topic
+- Generate motor_rules section: MINIMUM 5 table rows (with dynamic column headers showing [CURRENT_YEAR - 1] vs [CURRENT_YEAR] comparison) and 3-6 list items - this section can be about updates, comparisons, features, timeline, etc. based on topic, NOT just regulations unless topic is about regulations - all content MUST be relevant to user input topic - CRITICAL: Each table row MUST show clear, meaningful differences between previous year and current year, reflecting LATEST trends, technologies, features, and improvements in the industry - Column 2 should reflect what was available/standard in [CURRENT_YEAR - 1], Column 3 should reflect what is available/standard in [CURRENT_YEAR] with latest trends and modern capabilities
 - Generate at least 4-8 process steps for how_to_buy section - each step should have a title and description that are related and relevant to the user's topic
 - Generate EXACTLY 6 promise_stats: first 3 for 'Our promise to you' card (company achievements/credentials/track record), last 3 for 'Advantage you get' card (customer benefits/services/advantages - MUST be different from left card, focus on what customers get)
 - Generate coverage items: covered_items (MINIMUM 5 items, typically 5-10 items for right card - Our Agency) and not_covered_items (typically 3-6 items for left card - Other Agencies) - each item should have a title and description that are related and relevant to the user's topic
