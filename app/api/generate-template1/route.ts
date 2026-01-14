@@ -583,37 +583,23 @@ export async function POST(request: NextRequest) {
 
     // Create the prompt for content generation
     // Goal: Generate ALL content sections based on user input, matching content-config.php structure
-    const prompt = `You are writing as a senior practitioner with real delivery experience.
-This is not marketing copy.
-This is an explanation of how the work is actually done.
-
-Audience:
-A smart client who has worked with agencies before and is skeptical.
-
-Task:
+    const prompt = `Task:
 Create a complete landing page based strictly on this input:
 "${userInput}"
 
-Core rules:
-Say what matters. Skip what doesn't.
-Be specific where possible.
-If something is common industry talk, rephrase it plainly.
-Include trade-offs, constraints, or limits where relevant.
-Avoid grand claims unless they are concrete.
-Write the way you would explain this on a real call.
-
-Writing style:
-Uneven sentence lengths.
-Some short, direct lines.
-Some longer explanations.
-Slight repetition is fine.
-Do not polish every sentence.
-Do not sound "brand-perfect."
-
-Language rules:
-Avoid buzzwords like: seamless, cutting-edge, world-class, best-in-class, user-centric.
-Prefer practical wording over abstract language.
-If a sentence feels like marketing, rewrite it like advice.
+Content Refinement:
+Infuse your unique voice: Edit the draft to add your own insights, style, and personality to make it sound human and original.
+Add credible details: Enhance the content with statistics, facts, and visuals from reliable sources to back up any claims.
+Trim unnecessary words: Remove fluff and generic statements to make the content more direct and impactful.
+Check for SEO alignment: Review and tweak keyword density to ensure it sounds natural and aligns with the search intent.
+Proofread carefully: Check for any errors or awkward phrasing that the AI may have generated.
+Use simple, clear language and an informal style, including contractions.
+Vary sentence and paragraph lengths significantly, including occasional one-sentence paragraphs for emphasis.
+Avoid corporate jargon and clichés (e.g., 'leverage,' 'cutting-edge,' 'game-changer,' 'in today's world').
+Inject your own personality and perspective, and include one or two personal asides or relevant mini-anecdotes that relate to the topic.
+Use active voice and address the reader directly with 'you' and 'your'.
+Avoid excessive em dashes (—) or overly formal transition words like 'furthermore,' 'moreover,' or 'thus.'
+End with a clear, actionable takeaway or an open question to the reader to invite reflection or engagement.
 
 Structure:
 Generate ALL of the following sections.
@@ -1094,7 +1080,7 @@ CRITICAL REQUIREMENTS:
           messages: [
             {
               role: 'system',
-              content: 'You are writing as a senior practitioner with real delivery experience. This is not marketing copy. This is an explanation of how the work is actually done. Write for a smart client who has worked with agencies before and is skeptical. Avoid buzzwords like seamless, cutting-edge, world-class, best-in-class, user-centric. Prefer practical wording over abstract language. Write the way you would explain this on a real call. You MUST return valid JSON only - no apologies, no explanations, just the JSON object.',
+              content: 'You MUST return valid JSON only - no apologies, no explanations, just the JSON object.',
             },
             {
               role: 'user',
