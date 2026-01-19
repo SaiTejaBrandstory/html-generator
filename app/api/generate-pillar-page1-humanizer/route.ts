@@ -19,11 +19,11 @@ function escapeHtml(str: string): string {
     .replace(/'/g, '&#039;')
 }
 
-// Helper function to humanize text using Rephrasy API
-async function humanizeText(text: string, delay: number = 100): Promise<string> {
+// Helper function to humanize text using Rephrasy API with timeout
+async function humanizeText(text: string, delay: number = 50): Promise<string> {
   if (!text || !text.trim()) return text
   
-  // Add delay to avoid rate limiting
+  // Add delay to avoid rate limiting (reduced from 100ms to 50ms)
   if (delay > 0) {
     await new Promise(resolve => setTimeout(resolve, delay))
   }
@@ -35,6 +35,10 @@ async function humanizeText(text: string, delay: number = 100): Promise<string> 
   }
 
   try {
+    // Add timeout to prevent hanging requests
+    const controller = new AbortController()
+    const timeoutId = setTimeout(() => controller.abort(), 30000) // 30 second timeout
+    
     const response = await fetch('https://v2-humanizer.rephrasy.ai/api', {
       method: 'POST',
       headers: {
@@ -48,7 +52,10 @@ async function humanizeText(text: string, delay: number = 100): Promise<string> 
         costs: false,
         language: 'English',
       }),
+      signal: controller.signal,
     })
+
+    clearTimeout(timeoutId)
 
     if (!response.ok) {
       const errorText = await response.text()
@@ -59,7 +66,11 @@ async function humanizeText(text: string, delay: number = 100): Promise<string> 
     const data = await response.json()
     return data.output || text
   } catch (error: any) {
-    console.error('Humanizer API request failed:', error.message)
+    if (error.name === 'AbortError') {
+      console.error('Humanizer API request timed out')
+    } else {
+      console.error('Humanizer API request failed:', error.message)
+    }
     return text // Return original text if request fails
   }
 }
@@ -91,32 +102,53 @@ function shouldHumanize(key: string, value: string): boolean {
   return humanizeKeys.some(humanizeKey => key.toLowerCase().includes(humanizeKey.toLowerCase()))
 }
 
-// Recursively humanize all string values in an object
-async function humanizeContentData(data: any, parentKey: string = '', delay: number = 200): Promise<any> {
-  if (typeof data === 'string') {
-    // Only humanize substantial text content
-    if (shouldHumanize(parentKey, data)) {
-      console.log(`🔄 Humanizing: ${parentKey.substring(0, 50)}...`)
-      return await humanizeText(data, delay)
+// Recursively humanize all string values in an object with batching and error handling
+async function humanizeContentData(data: any, parentKey: string = '', delay: number = 50, maxItems: number = 50): Promise<any> {
+  // Limit the number of items to humanize to prevent timeout
+  let itemCount = 0
+  
+  async function processData(data: any, parentKey: string = ''): Promise<any> {
+    if (itemCount >= maxItems) {
+      console.warn(`⚠ Reached max humanization limit (${maxItems}), skipping remaining items`)
+      return data
+    }
+    
+    if (typeof data === 'string') {
+      // Only humanize substantial text content
+      if (shouldHumanize(parentKey, data)) {
+        itemCount++
+        console.log(`🔄 Humanizing (${itemCount}/${maxItems}): ${parentKey.substring(0, 50)}...`)
+        return await humanizeText(data, delay)
+      }
+      return data
+    } else if (Array.isArray(data)) {
+      const humanizedArray = []
+      for (let i = 0; i < data.length && itemCount < maxItems; i++) {
+        humanizedArray.push(await processData(data[i], `${parentKey}[${i}]`))
+      }
+      // Add remaining items without humanization if limit reached
+      for (let i = humanizedArray.length; i < data.length; i++) {
+        humanizedArray.push(data[i])
+      }
+      return humanizedArray
+    } else if (data && typeof data === 'object') {
+      const humanizedObj: any = {}
+      const keys = Object.keys(data)
+      for (let i = 0; i < keys.length && itemCount < maxItems; i++) {
+        const key = keys[i]
+        const currentKey = parentKey ? `${parentKey}.${key}` : key
+        humanizedObj[key] = await processData(data[key], currentKey)
+      }
+      // Add remaining keys without humanization if limit reached
+      for (let i = Object.keys(humanizedObj).length; i < keys.length; i++) {
+        humanizedObj[keys[i]] = data[keys[i]]
+      }
+      return humanizedObj
     }
     return data
-  } else if (Array.isArray(data)) {
-    const humanizedArray = []
-    for (let i = 0; i < data.length; i++) {
-      humanizedArray.push(await humanizeContentData(data[i], `${parentKey}[${i}]`, delay))
-    }
-    return humanizedArray
-  } else if (data && typeof data === 'object') {
-    const humanizedObj: any = {}
-    const keys = Object.keys(data)
-    for (let i = 0; i < keys.length; i++) {
-      const key = keys[i]
-      const currentKey = parentKey ? `${parentKey}.${key}` : key
-      humanizedObj[key] = await humanizeContentData(data[key], currentKey, delay)
-    }
-    return humanizedObj
   }
-  return data
+  
+  return processData(data, parentKey)
 }
 
 // Generate complete HTML page with all sections - returns full HTML like template6
@@ -2251,10 +2283,16 @@ CRITICAL REQUIREMENTS:
       throw new Error(`Failed to parse content from API response: ${parseError.message}`)
     }
 
-    // Humanize the content data
+    // Humanize the content data (with timeout protection)
     console.log('🔄 Starting humanization process...')
     try {
-      contentData = await humanizeContentData(contentData)
+      // Set a maximum time limit for humanization (5 minutes)
+      const humanizationPromise = humanizeContentData(contentData, '', 50, 100)
+      const timeoutPromise = new Promise((_, reject) => 
+        setTimeout(() => reject(new Error('Humanization timeout')), 300000) // 5 minutes
+      )
+      
+      contentData = await Promise.race([humanizationPromise, timeoutPromise]) as any
       console.log('✓ Content humanized successfully')
     } catch (humanizeError: any) {
       console.error('Humanization error:', humanizeError)
