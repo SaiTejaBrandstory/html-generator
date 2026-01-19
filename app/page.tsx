@@ -466,13 +466,51 @@ export default function Home() {
                 </p>
                 <div className="flex flex-col sm:flex-row gap-3">
                   <a 
-                    href="/pillar-page/pillar-page1.html" 
+                    href="/pillar-page1" 
                     className="flex-1 px-6 py-3 bg-gray-900 hover:bg-gray-800 text-white font-semibold rounded-lg transition-all duration-300 text-center shadow-md hover:shadow-lg hover:scale-[1.02]"
                   >
                     View Template
                   </a>
                   <a 
                     href="/pillar-page1/generate" 
+                    className="flex-1 px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-semibold rounded-lg transition-all duration-300 text-center shadow-md hover:shadow-lg hover:scale-[1.02]"
+                  >
+                    Generate
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            {/* Pillar Page 1 - Humanizer */}
+            <div className="group bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden border border-gray-100">
+              <div className="relative overflow-hidden bg-gradient-to-br from-blue-50 to-indigo-50">
+                <div className="aspect-video w-full">
+                  <img 
+                    src="/assets/images/home-page/pillar1-banner.png" 
+                    alt="Pillar Page 1 - Humanizer" 
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  />
+                </div>
+                <div className="absolute top-4 right-4">
+                  <span className="px-3 py-1 bg-white/90 backdrop-blur-sm rounded-full text-xs font-semibold text-gray-700">
+                    Pillar Page 1 - Humanizer
+                  </span>
+                </div>
+              </div>
+              <div className="p-8">
+                <h3 className="text-2xl font-bold text-gray-900 mb-2">Pillar Page 1 - Humanizer</h3>
+                <p className="text-gray-600 mb-6 leading-relaxed">
+                  A comprehensive pillar page template designed for SEO and content marketing. Features structured content sections, internal linking opportunities, and AI-powered content generation for maximum search visibility and user engagement.
+                </p>
+                <div className="flex flex-col sm:flex-row gap-3">
+                  <a 
+                    href="/pillar-page1-humanizer" 
+                    className="flex-1 px-6 py-3 bg-gray-900 hover:bg-gray-800 text-white font-semibold rounded-lg transition-all duration-300 text-center shadow-md hover:shadow-lg hover:scale-[1.02]"
+                  >
+                    View Template
+                  </a>
+                  <a 
+                    href="/pillar-page1-humanizer/generate" 
                     className="flex-1 px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-semibold rounded-lg transition-all duration-300 text-center shadow-md hover:shadow-lg hover:scale-[1.02]"
                   >
                     Generate
