@@ -10,17 +10,25 @@ export default function Home() {
                 HTML Generator
               </h1>
             </div>
-            <nav className="hidden md:flex items-center space-x-8">
-              <a href="#" className="text-gray-700 hover:text-blue-600 transition-colors font-medium">
-                Home
+            <div className="flex items-center gap-4">
+              <nav className="hidden md:flex items-center space-x-8">
+                <a href="#" className="text-gray-700 hover:text-blue-600 transition-colors font-medium">
+                  Home
+                </a>
+                <a href="#" className="text-gray-700 hover:text-blue-600 transition-colors font-medium">
+                  About
+                </a>
+                <a href="#" className="text-gray-700 hover:text-blue-600 transition-colors font-medium">
+                  Contact
+                </a>
+              </nav>
+              <a
+                href="/generate"
+                className="px-5 py-2.5 rounded-lg bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-semibold transition-all duration-300 shadow-md hover:shadow-lg hover:scale-[1.02]"
+              >
+                Generate
               </a>
-              <a href="#" className="text-gray-700 hover:text-blue-600 transition-colors font-medium">
-                About
-              </a>
-              <a href="#" className="text-gray-700 hover:text-blue-600 transition-colors font-medium">
-                Contact
-              </a>
-            </nav>
+            </div>
           </div>
         </div>
       </header>
