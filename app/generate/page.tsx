@@ -4,6 +4,7 @@ import { useMemo, useState } from 'react'
 import { useRouter } from 'next/navigation'
 
 type Mode = 'zip' | 'html'
+type Action = 'generate' | 'humanise'
 
 export default function GenerateDynamic() {
   const router = useRouter()
@@ -16,6 +17,7 @@ export default function GenerateDynamic() {
   const [tone, setTone] = useState('')
   const [location, setLocation] = useState('')
   const [isGenerating, setIsGenerating] = useState(false)
+  const [activeAction, setActiveAction] = useState<Action | null>(null)
   const [error, setError] = useState<string>('')
 
   const canGenerate = useMemo(() => {
@@ -42,6 +44,7 @@ export default function GenerateDynamic() {
       return
     }
 
+    setActiveAction(humanize ? 'humanise' : 'generate')
     setIsGenerating(true)
     try {
       const form = new FormData()
@@ -79,6 +82,7 @@ export default function GenerateDynamic() {
       setError(e?.message || 'An error occurred while generating the ZIP.')
     } finally {
       setIsGenerating(false)
+      setActiveAction(null)
     }
   }
 
@@ -312,21 +316,33 @@ export default function GenerateDynamic() {
             <button
               onClick={() => handleGenerate(false)}
               disabled={isGenerating || !canGenerate}
-              className="px-6 py-3 bg-purple-600 hover:bg-purple-700 disabled:bg-gray-400 disabled:cursor-not-allowed text-white font-medium rounded-lg transition-colors shadow-md hover:shadow-lg"
+              className="px-6 py-3 rounded-xl font-semibold text-white shadow-lg transition-all
+              bg-gradient-to-r from-indigo-600 via-purple-600 to-fuchsia-600
+              hover:from-indigo-700 hover:via-purple-700 hover:to-fuchsia-700 hover:shadow-xl hover:scale-[1.01]
+              focus:outline-none focus:ring-2 focus:ring-fuchsia-400/60 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-gray-900
+              disabled:opacity-60 disabled:hover:scale-100 disabled:hover:shadow-lg disabled:cursor-not-allowed"
             >
-              {isGenerating ? 'Generating...' : 'Generate'}
+              {isGenerating && activeAction === 'generate' ? 'Generating...' : 'Generate'}
             </button>
             <button
               onClick={() => handleGenerate(true)}
               disabled={isGenerating || !canGenerate}
-              className="px-6 py-3 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 disabled:bg-gray-200 dark:disabled:bg-gray-700 disabled:cursor-not-allowed text-gray-900 dark:text-white font-medium rounded-lg transition-colors shadow-md hover:shadow-lg border border-gray-300 dark:border-gray-600"
+              className="px-6 py-3 rounded-xl font-semibold text-white shadow-lg transition-all
+              bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500
+              hover:from-emerald-600 hover:via-teal-600 hover:to-cyan-600 hover:shadow-xl hover:scale-[1.01]
+              focus:outline-none focus:ring-2 focus:ring-cyan-400/60 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-gray-900
+              disabled:opacity-60 disabled:hover:scale-100 disabled:hover:shadow-lg disabled:cursor-not-allowed"
             >
-              {isGenerating ? 'Generating...' : 'Humanise'}
+              {isGenerating && activeAction === 'humanise' ? 'Generating...' : 'Humanise'}
             </button>
             <button
               onClick={() => router.push('/')}
               disabled={isGenerating}
-              className="px-6 py-3 bg-gray-500 hover:bg-gray-600 disabled:bg-gray-400 disabled:cursor-not-allowed text-white font-medium rounded-lg transition-colors shadow-md hover:shadow-lg"
+              className="px-6 py-3 rounded-xl font-semibold text-white shadow-lg transition-all
+              bg-gradient-to-r from-slate-700 to-slate-900
+              hover:from-slate-800 hover:to-slate-950 hover:shadow-xl hover:scale-[1.01]
+              focus:outline-none focus:ring-2 focus:ring-slate-400/60 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-gray-900
+              disabled:opacity-60 disabled:hover:scale-100 disabled:hover:shadow-lg disabled:cursor-not-allowed"
             >
               Cancel
             </button>
