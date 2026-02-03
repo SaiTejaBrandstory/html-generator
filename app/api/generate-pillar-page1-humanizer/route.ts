@@ -19,25 +19,29 @@ function escapeHtml(str: string): string {
     .replace(/'/g, '&#039;')
 }
 
-// Helper function to humanize text using Rephrasy API with timeout
-async function humanizeText(text: string, delay: number = 50): Promise<string> {
-  if (!text || !text.trim()) return text
-  
-  // Add delay to avoid rate limiting (reduced from 100ms to 50ms)
-  if (delay > 0) {
-    await new Promise(resolve => setTimeout(resolve, delay))
-  }
+// Helper function to humanize multiple texts in a single batch API call
+async function humanizeBatch(texts: string[], delay: number = 50): Promise<string[]> {
+  if (!texts || texts.length === 0) return texts
   
   const apiKey = process.env.REPHRASY_API_KEY
   if (!apiKey) {
     console.warn('REPHRASY_API_KEY not found, skipping humanization')
-    return text
+    return texts
+  }
+
+  // Add delay to avoid rate limiting
+  if (delay > 0) {
+    await new Promise(resolve => setTimeout(resolve, delay))
   }
 
   try {
-    // Add timeout to prevent hanging requests
+    // Combine texts with a unique separator that won't appear in content
+    const separator = '\n\n---REPHRASY_BATCH_SEPARATOR---\n\n'
+    const combinedText = texts.join(separator)
+    
+    // Add timeout to prevent hanging requests (90 seconds for larger batches)
     const controller = new AbortController()
-    const timeoutId = setTimeout(() => controller.abort(), 30000) // 30 second timeout
+    const timeoutId = setTimeout(() => controller.abort(), 90000) // 90 second timeout for batches
     
     const response = await fetch('https://v2-humanizer.rephrasy.ai/api', {
       method: 'POST',
@@ -46,7 +50,7 @@ async function humanizeText(text: string, delay: number = 50): Promise<string> {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        text: text,
+        text: combinedText,
         model: 'undetectable',
         words: true,
         costs: false,
@@ -60,32 +64,50 @@ async function humanizeText(text: string, delay: number = 50): Promise<string> {
     if (!response.ok) {
       const errorText = await response.text()
       console.error(`Humanizer API error (${response.status}):`, errorText)
-      return text // Return original text if API fails
+      return texts // Return original texts if API fails
     }
 
     const data = await response.json()
-    return data.output || text
+    const humanizedCombined = data.output || combinedText
+    
+    // Split back using the separator
+    const humanizedTexts = humanizedCombined.split(separator)
+    
+    // Ensure we return the same number of texts
+    if (humanizedTexts.length !== texts.length) {
+      console.warn(`⚠ Batch split mismatch: expected ${texts.length}, got ${humanizedTexts.length}`)
+      // Return original if count doesn't match
+      return texts
+    }
+    
+    return humanizedTexts.map((text: string, index: number) => text.trim() || texts[index])
   } catch (error: any) {
     if (error.name === 'AbortError') {
-      console.error('Humanizer API request timed out')
+      console.error('Humanizer API batch request timed out')
     } else {
-      console.error('Humanizer API request failed:', error.message)
+      console.error('Humanizer API batch request failed:', error.message)
     }
-    return text // Return original text if request fails
+    return texts // Return original texts if request fails
   }
 }
 
 // Check if a field should be humanized based on key name and content
 function shouldHumanize(key: string, value: string): boolean {
-  // Skip short strings (less than 20 characters)
-  if (value.length < 20) return false
+  // Skip short strings (less than 25 characters)
+  if (value.length < 25) return false
   
-  // Skip fields that are typically not content
+  // Skip promise_stats.text fields - these are short labels (2-4 words per line, format "Line 1|Line 2")
+  if (key.includes('promise_stats') && key.includes('text')) {
+    return false
+  }
+  
+  // Skip fields that are typically not content (including short badge/label text)
   const skipKeys = [
     'rating', 'rating_text', 'title', 'name', 'location', 
     'button_text', 'cta_button_text', 'price_text', 'tab_label',
     'table_header_1', 'table_header_2', 'table_header_3',
-    'type1_name', 'type2_name', 'type3_name', 'column1', 'column2', 'column3'
+    'type1_name', 'type2_name', 'type3_name', 'column1', 'column2', 'column3',
+    'manager_badge_text', 'value' // Skip stat values (like "10K+", "99%")
   ]
   
   if (skipKeys.some(skipKey => key.toLowerCase().includes(skipKey.toLowerCase()))) {
@@ -102,53 +124,83 @@ function shouldHumanize(key: string, value: string): boolean {
   return humanizeKeys.some(humanizeKey => key.toLowerCase().includes(humanizeKey.toLowerCase()))
 }
 
-// Recursively humanize all string values in an object with batching and error handling
-async function humanizeContentData(data: any, parentKey: string = '', delay: number = 50, maxItems: number = 50): Promise<any> {
-  // Limit the number of items to humanize to prevent timeout
-  let itemCount = 0
+// Collect all texts that need humanization with their paths
+function collectTextsToHumanize(data: any, parentKey: string = '', texts: Array<{path: string, value: string}> = []): Array<{path: string, value: string}> {
+  if (typeof data === 'string') {
+    if (shouldHumanize(parentKey, data)) {
+      texts.push({ path: parentKey, value: data })
+    }
+  } else if (Array.isArray(data)) {
+    for (let i = 0; i < data.length; i++) {
+      collectTextsToHumanize(data[i], `${parentKey}[${i}]`, texts)
+    }
+  } else if (data && typeof data === 'object') {
+    const keys = Object.keys(data)
+    for (const key of keys) {
+      const currentKey = parentKey ? `${parentKey}.${key}` : key
+      collectTextsToHumanize(data[key], currentKey, texts)
+    }
+  }
+  return texts
+}
+
+// Set a value in nested object using dot notation path
+function setNestedValue(obj: any, path: string, value: string): void {
+  const keys = path.split(/[\.\[\]]+/).filter(k => k !== '')
+  let current = obj
+  for (let i = 0; i < keys.length - 1; i++) {
+    const key = keys[i]
+    if (!(key in current) || typeof current[key] !== 'object') {
+      current[key] = {}
+    }
+    current = current[key]
+  }
+  const lastKey = keys[keys.length - 1]
+  current[lastKey] = value
+}
+
+// Recursively humanize all string values in an object with smart batching
+async function humanizeContentData(data: any, parentKey: string = '', delay: number = 50, batchSize: number = 25): Promise<any> {
+  // First, collect all texts that need humanization
+  const textsToHumanize = collectTextsToHumanize(data, parentKey)
   
-  async function processData(data: any, parentKey: string = ''): Promise<any> {
-    if (itemCount >= maxItems) {
-      console.warn(`⚠ Reached max humanization limit (${maxItems}), skipping remaining items`)
-      return data
-    }
-    
-    if (typeof data === 'string') {
-      // Only humanize substantial text content
-      if (shouldHumanize(parentKey, data)) {
-        itemCount++
-        console.log(`🔄 Humanizing (${itemCount}/${maxItems}): ${parentKey.substring(0, 50)}...`)
-        return await humanizeText(data, delay)
-      }
-      return data
-    } else if (Array.isArray(data)) {
-      const humanizedArray = []
-      for (let i = 0; i < data.length && itemCount < maxItems; i++) {
-        humanizedArray.push(await processData(data[i], `${parentKey}[${i}]`))
-      }
-      // Add remaining items without humanization if limit reached
-      for (let i = humanizedArray.length; i < data.length; i++) {
-        humanizedArray.push(data[i])
-      }
-      return humanizedArray
-    } else if (data && typeof data === 'object') {
-      const humanizedObj: any = {}
-      const keys = Object.keys(data)
-      for (let i = 0; i < keys.length && itemCount < maxItems; i++) {
-        const key = keys[i]
-        const currentKey = parentKey ? `${parentKey}.${key}` : key
-        humanizedObj[key] = await processData(data[key], currentKey)
-      }
-      // Add remaining keys without humanization if limit reached
-      for (let i = Object.keys(humanizedObj).length; i < keys.length; i++) {
-        humanizedObj[keys[i]] = data[keys[i]]
-      }
-      return humanizedObj
-    }
+  if (textsToHumanize.length === 0) {
+    console.log('✓ No texts to humanize')
     return data
   }
   
-  return processData(data, parentKey)
+  console.log(`🔄 Collected ${textsToHumanize.length} texts to humanize. Batching into groups of ${batchSize}...`)
+  
+  // Process in batches
+  const totalBatches = Math.ceil(textsToHumanize.length / batchSize)
+  let processedCount = 0
+  
+  for (let batchIndex = 0; batchIndex < totalBatches; batchIndex++) {
+    const startIdx = batchIndex * batchSize
+    const endIdx = Math.min(startIdx + batchSize, textsToHumanize.length)
+    const batch = textsToHumanize.slice(startIdx, endIdx)
+    
+    console.log(`🔄 Processing batch ${batchIndex + 1}/${totalBatches} (${batch.length} texts)...`)
+    
+    try {
+      const texts = batch.map(item => item.value)
+      const humanizedTexts = await humanizeBatch(texts, delay)
+      
+      // Map humanized texts back to their paths
+      for (let i = 0; i < batch.length; i++) {
+        setNestedValue(data, batch[i].path, humanizedTexts[i])
+        processedCount++
+      }
+      
+      console.log(`✓ Batch ${batchIndex + 1}/${totalBatches} completed (${processedCount}/${textsToHumanize.length} total)`)
+    } catch (error: any) {
+      console.error(`✗ Batch ${batchIndex + 1} failed:`, error.message)
+      // Continue with remaining batches even if one fails
+    }
+  }
+  
+  console.log(`✓ Humanization complete: ${processedCount}/${textsToHumanize.length} texts processed`)
+  return data
 }
 
 // Generate complete HTML page with all sections - returns full HTML like template6
@@ -2283,11 +2335,12 @@ CRITICAL REQUIREMENTS:
       throw new Error(`Failed to parse content from API response: ${parseError.message}`)
     }
 
-    // Humanize the content data (with timeout protection)
+    // Humanize the content data (with timeout protection and smart batching)
     console.log('🔄 Starting humanization process...')
     try {
       // Set a maximum time limit for humanization (5 minutes)
-      const humanizationPromise = humanizeContentData(contentData, '', 50, 100)
+      // Batch size of 25 means ~4 API calls instead of 100+ individual calls (96% cost reduction)
+      const humanizationPromise = humanizeContentData(contentData, '', 50, 25)
       const timeoutPromise = new Promise((_, reject) => 
         setTimeout(() => reject(new Error('Humanization timeout')), 300000) // 5 minutes
       )

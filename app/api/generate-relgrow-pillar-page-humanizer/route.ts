@@ -19,25 +19,29 @@ function escapeHtml(str: string): string {
     .replace(/'/g, '&#039;')
 }
 
-// Helper function to humanize text using Rephrasy API with timeout
-async function humanizeText(text: string, delay: number = 50): Promise<string> {
-  if (!text || !text.trim()) return text
-  
-  // Add delay to avoid rate limiting (reduced from 100ms to 50ms)
-  if (delay > 0) {
-    await new Promise(resolve => setTimeout(resolve, delay))
-  }
+// Helper function to humanize multiple texts in a single batch API call
+async function humanizeBatch(texts: string[], delay: number = 50): Promise<string[]> {
+  if (!texts || texts.length === 0) return texts
   
   const apiKey = process.env.REPHRASY_API_KEY
   if (!apiKey) {
     console.warn('REPHRASY_API_KEY not found, skipping humanization')
-    return text
+    return texts
+  }
+
+  // Add delay to avoid rate limiting
+  if (delay > 0) {
+    await new Promise(resolve => setTimeout(resolve, delay))
   }
 
   try {
-    // Add timeout to prevent hanging requests
+    // Combine texts with a unique separator that won't appear in content
+    const separator = '\n\n---REPHRASY_BATCH_SEPARATOR---\n\n'
+    const combinedText = texts.join(separator)
+    
+    // Add timeout to prevent hanging requests (90 seconds for larger batches)
     const controller = new AbortController()
-    const timeoutId = setTimeout(() => controller.abort(), 30000) // 30 second timeout
+    const timeoutId = setTimeout(() => controller.abort(), 90000) // 90 second timeout for batches
     
     const response = await fetch('https://v2-humanizer.rephrasy.ai/api', {
       method: 'POST',
@@ -46,7 +50,7 @@ async function humanizeText(text: string, delay: number = 50): Promise<string> {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        text: text,
+        text: combinedText,
         model: 'undetectable',
         words: true,
         costs: false,
@@ -60,25 +64,42 @@ async function humanizeText(text: string, delay: number = 50): Promise<string> {
     if (!response.ok) {
       const errorText = await response.text()
       console.error(`Humanizer API error (${response.status}):`, errorText)
-      return text // Return original text if API fails
+      return texts // Return original texts if API fails
     }
 
     const data = await response.json()
-    return data.output || text
+    const humanizedCombined = data.output || combinedText
+    
+    // Split back using the separator
+    const humanizedTexts = humanizedCombined.split(separator)
+    
+    // Ensure we return the same number of texts
+    if (humanizedTexts.length !== texts.length) {
+      console.warn(`⚠ Batch split mismatch: expected ${texts.length}, got ${humanizedTexts.length}`)
+      // Return original if count doesn't match
+      return texts
+    }
+    
+    return humanizedTexts.map((text: string, index: number) => text.trim() || texts[index])
   } catch (error: any) {
     if (error.name === 'AbortError') {
-      console.error('Humanizer API request timed out')
+      console.error('Humanizer API batch request timed out')
     } else {
-      console.error('Humanizer API request failed:', error.message)
+      console.error('Humanizer API batch request failed:', error.message)
     }
-    return text // Return original text if request fails
+    return texts // Return original texts if request fails
   }
 }
 
 // Check if a field should be humanized based on key name and content
 function shouldHumanize(key: string, value: string): boolean {
-  // Skip short strings (less than 20 characters)
-  if (value.length < 20) return false
+  // Skip short strings (less than 25 characters)
+  if (value.length < 25) return false
+  
+  // Skip promise_stats.text fields - these are short labels (2-4 words per line, format "Line 1|Line 2")
+  if (key.includes('promise_stats') && key.includes('text')) {
+    return false
+  }
   
   // Skip fields that are typically not content (including short badge/label text)
   const skipKeys = [
@@ -86,7 +107,7 @@ function shouldHumanize(key: string, value: string): boolean {
     'button_text', 'cta_button_text', 'price_text', 'tab_label',
     'table_header_1', 'table_header_2', 'table_header_3',
     'type1_name', 'type2_name', 'type3_name', 'column1', 'column2', 'column3',
-    'manager_badge_text'
+    'manager_badge_text', 'value' // Skip stat values (like "10K+", "99%")
   ]
   
   if (skipKeys.some(skipKey => key.toLowerCase().includes(skipKey.toLowerCase()))) {
@@ -103,53 +124,83 @@ function shouldHumanize(key: string, value: string): boolean {
   return humanizeKeys.some(humanizeKey => key.toLowerCase().includes(humanizeKey.toLowerCase()))
 }
 
-// Recursively humanize all string values in an object with batching and error handling
-async function humanizeContentData(data: any, parentKey: string = '', delay: number = 50, maxItems: number = 50): Promise<any> {
-  // Limit the number of items to humanize to prevent timeout
-  let itemCount = 0
+// Collect all texts that need humanization with their paths
+function collectTextsToHumanize(data: any, parentKey: string = '', texts: Array<{path: string, value: string}> = []): Array<{path: string, value: string}> {
+  if (typeof data === 'string') {
+    if (shouldHumanize(parentKey, data)) {
+      texts.push({ path: parentKey, value: data })
+    }
+  } else if (Array.isArray(data)) {
+    for (let i = 0; i < data.length; i++) {
+      collectTextsToHumanize(data[i], `${parentKey}[${i}]`, texts)
+    }
+  } else if (data && typeof data === 'object') {
+    const keys = Object.keys(data)
+    for (const key of keys) {
+      const currentKey = parentKey ? `${parentKey}.${key}` : key
+      collectTextsToHumanize(data[key], currentKey, texts)
+    }
+  }
+  return texts
+}
+
+// Set a value in nested object using dot notation path
+function setNestedValue(obj: any, path: string, value: string): void {
+  const keys = path.split(/[\.\[\]]+/).filter(k => k !== '')
+  let current = obj
+  for (let i = 0; i < keys.length - 1; i++) {
+    const key = keys[i]
+    if (!(key in current) || typeof current[key] !== 'object') {
+      current[key] = {}
+    }
+    current = current[key]
+  }
+  const lastKey = keys[keys.length - 1]
+  current[lastKey] = value
+}
+
+// Recursively humanize all string values in an object with smart batching
+async function humanizeContentData(data: any, parentKey: string = '', delay: number = 50, batchSize: number = 10): Promise<any> {
+  // First, collect all texts that need humanization
+  const textsToHumanize = collectTextsToHumanize(data, parentKey)
   
-  async function processData(data: any, parentKey: string = ''): Promise<any> {
-    if (itemCount >= maxItems) {
-      console.warn(`⚠ Reached max humanization limit (${maxItems}), skipping remaining items`)
-      return data
-    }
-    
-    if (typeof data === 'string') {
-      // Only humanize substantial text content
-      if (shouldHumanize(parentKey, data)) {
-        itemCount++
-        console.log(`🔄 Humanizing (${itemCount}/${maxItems}): ${parentKey.substring(0, 50)}...`)
-        return await humanizeText(data, delay)
-      }
-      return data
-    } else if (Array.isArray(data)) {
-      const humanizedArray = []
-      for (let i = 0; i < data.length && itemCount < maxItems; i++) {
-        humanizedArray.push(await processData(data[i], `${parentKey}[${i}]`))
-      }
-      // Add remaining items without humanization if limit reached
-      for (let i = humanizedArray.length; i < data.length; i++) {
-        humanizedArray.push(data[i])
-      }
-      return humanizedArray
-    } else if (data && typeof data === 'object') {
-      const humanizedObj: any = {}
-      const keys = Object.keys(data)
-      for (let i = 0; i < keys.length && itemCount < maxItems; i++) {
-        const key = keys[i]
-        const currentKey = parentKey ? `${parentKey}.${key}` : key
-        humanizedObj[key] = await processData(data[key], currentKey)
-      }
-      // Add remaining keys without humanization if limit reached
-      for (let i = Object.keys(humanizedObj).length; i < keys.length; i++) {
-        humanizedObj[keys[i]] = data[keys[i]]
-      }
-      return humanizedObj
-    }
+  if (textsToHumanize.length === 0) {
+    console.log('✓ No texts to humanize')
     return data
   }
   
-  return processData(data, parentKey)
+  console.log(`🔄 Collected ${textsToHumanize.length} texts to humanize. Batching into groups of ${batchSize}...`)
+  
+  // Process in batches
+  const totalBatches = Math.ceil(textsToHumanize.length / batchSize)
+  let processedCount = 0
+  
+  for (let batchIndex = 0; batchIndex < totalBatches; batchIndex++) {
+    const startIdx = batchIndex * batchSize
+    const endIdx = Math.min(startIdx + batchSize, textsToHumanize.length)
+    const batch = textsToHumanize.slice(startIdx, endIdx)
+    
+    console.log(`🔄 Processing batch ${batchIndex + 1}/${totalBatches} (${batch.length} texts)...`)
+    
+    try {
+      const texts = batch.map(item => item.value)
+      const humanizedTexts = await humanizeBatch(texts, delay)
+      
+      // Map humanized texts back to their paths
+      for (let i = 0; i < batch.length; i++) {
+        setNestedValue(data, batch[i].path, humanizedTexts[i])
+        processedCount++
+      }
+      
+      console.log(`✓ Batch ${batchIndex + 1}/${totalBatches} completed (${processedCount}/${textsToHumanize.length} total)`)
+    } catch (error: any) {
+      console.error(`✗ Batch ${batchIndex + 1} failed:`, error.message)
+      // Continue with remaining batches even if one fails
+    }
+  }
+  
+  console.log(`✓ Humanization complete: ${processedCount}/${textsToHumanize.length} texts processed`)
+  return data
 }
 
 // Generate complete HTML page with all sections - returns full HTML like template6
@@ -244,7 +295,12 @@ function generateHTMLPage(content: any, companyName?: string, ctaLink?: string):
         }
         if (promiseTextMatches[i] && stat.text) {
           const textParts = stat.text.split('|')
-          const textHTML = textParts.map((part: string) => `<span>${escapeHtml(part.trim())}</span>`).join('\n                                ')
+          // Limit each part to max 4 words (2-4 words per line)
+          const textHTML = textParts.map((part: string) => {
+            const trimmed = part.trim()
+            const words = trimmed.split(/\s+/).slice(0, 4) // Max 4 words
+            return `<span>${escapeHtml(words.join(' '))}</span>`
+          }).join('\n                                ')
           promiseCardHTML = promiseCardHTML.replace(promiseTextMatches[i][0], `<div class="benefit-text">\n                                ${textHTML}\n                            </div>`)
         }
       }
@@ -276,7 +332,12 @@ function generateHTMLPage(content: any, companyName?: string, ctaLink?: string):
         }
         if (advantageTextMatches[advantageIndex] && stat.text) {
           const textParts = stat.text.split('|')
-          const textHTML = textParts.map((part: string) => `<span>${escapeHtml(part.trim())}</span>`).join('\n                                ')
+          // Limit each part to max 4 words (2-4 words per line)
+          const textHTML = textParts.map((part: string) => {
+            const trimmed = part.trim()
+            const words = trimmed.split(/\s+/).slice(0, 4) // Max 4 words
+            return `<span>${escapeHtml(words.join(' '))}</span>`
+          }).join('\n                                ')
           advantageCardHTML = advantageCardHTML.replace(advantageTextMatches[advantageIndex][0], `<div class="benefit-text">\n                                ${textHTML}\n                            </div>`)
         }
       }
@@ -1424,27 +1485,27 @@ REQUIRED SECTIONS (generate ALL of these - 21+ sections):
     "promise_stats": [
       {
         "value": "Stat value for 'Our promise to you' card - company achievements/credentials (e.g., '10K+', '500+', '15+ Years', '99%', 'ISO Certified')",
-        "text": "Stat label line 1|Stat label line 2"
+        "text": "MUST be format 'Line 1|Line 2' where EACH line is 2-4 words ONLY (e.g., 'Happy Customers|Trusted Partner', 'Years Experience|Proven Track')"
       },
       {
         "value": "Stat value 2 for 'Our promise to you' card - company track record/experience",
-        "text": "Stat label line 1|Stat label line 2"
+        "text": "MUST be format 'Line 1|Line 2' where EACH line is 2-4 words ONLY (e.g., 'Expert Team|Quality Service', 'Global Reach|Local Expertise')"
       },
       {
         "value": "Stat value 3 for 'Our promise to you' card - company scale/reach",
-        "text": "Stat label line 1|Stat label line 2"
+        "text": "MUST be format 'Line 1|Line 2' where EACH line is 2-4 words ONLY (e.g., 'Wide Coverage|Nationwide Service', 'Large Network|Trusted Brand')"
       },
       {
         "value": "Stat value 1 for 'Advantage you get' card - customer service benefit (e.g., '24/7 Support', 'Same-Day Response', 'Free Consultation', 'Lifetime Access', '30-Day Trial')",
-        "text": "Stat label line 1|Stat label line 2"
+        "text": "MUST be format 'Line 1|Line 2' where EACH line is 2-4 words ONLY (e.g., '24/7 Support|Always Available', 'Free Consultation|Expert Advice')"
       },
       {
         "value": "Stat value 2 for 'Advantage you get' card - delivery/service speed benefit (e.g., 'Fast Delivery', 'Quick Turnaround', 'Express Service', 'Instant Setup')",
-        "text": "Stat label line 1|Stat label line 2"
+        "text": "MUST be format 'Line 1|Line 2' where EACH line is 2-4 words ONLY (e.g., 'Fast Delivery|Quick Response', 'Express Service|Same Day')"
       },
       {
         "value": "Stat value 3 for 'Advantage you get' card - value-added benefit (e.g., 'Free Updates', 'Money-Back Guarantee', 'No Hidden Fees', 'Free Training')",
-        "text": "Stat label line 1|Stat label line 2"
+        "text": "MUST be format 'Line 1|Line 2' where EACH line is 2-4 words ONLY (e.g., 'Free Updates|No Hidden Fees', 'Money Back|Full Refund')"
       }
     ],
     "manager_badge_text": "MUST be 2-3 words only - badge for dedicated support/manager (e.g., 'Dedicated Project Manager', 'Personal Account Manager', 'Expert Consultant', 'Assigned Support Team') - NO sentences or paragraphs"
@@ -2202,7 +2263,7 @@ CRITICAL REQUIREMENTS:
 - Generate at least 3-6 items for documents_required section (can be about requirements, features, components, steps, etc. - NOT just documents unless topic is about documents) - each item should have a title and description that are related and relevant to the user's topic
 - Generate motor_rules section: MINIMUM 5 table rows (with dynamic column headers showing [CURRENT_YEAR - 1] vs [CURRENT_YEAR] comparison) and 3-6 list items - this section can be about updates, comparisons, features, timeline, etc. based on topic, NOT just regulations unless topic is about regulations - all content MUST be relevant to user input topic - CRITICAL: Each table row MUST show clear, meaningful differences between previous year and current year, reflecting LATEST trends, technologies, features, and improvements in the industry - Column 2 should reflect what was available/standard in [CURRENT_YEAR - 1], Column 3 should reflect what is available/standard in [CURRENT_YEAR] with latest trends and modern capabilities
 - Generate at least 4-8 process steps for how_to_buy section - each step should have a title and description that are related and relevant to the user's topic
-- Generate EXACTLY 6 promise_stats: first 3 for 'Our promise to you' card (company achievements/credentials/track record), last 3 for 'Advantage you get' card (customer benefits/services/advantages - MUST be different from left card, focus on what customers get). exclusive_benefits.manager_badge_text MUST be 2-3 words only (e.g. "Dedicated Project Manager", "Expert Consultant") - never a sentence or paragraph
+- Generate EXACTLY 6 promise_stats: first 3 for 'Our promise to you' card (company achievements/credentials/track record), last 3 for 'Advantage you get' card (customer benefits/services/advantages - MUST be different from left card, focus on what customers get). Each promise_stats[].text should have format "Line 1|Line 2" where EACH line is 2-4 words ONLY (e.g., "Happy Customers|Trusted Partner", "Fast Delivery|Quick Response") - NO long sentences. exclusive_benefits.manager_badge_text MUST be 2-3 words only (e.g. "Dedicated Project Manager", "Expert Consultant") - never a sentence or paragraph
 - Generate coverage items: covered_items (MINIMUM 5 items, typically 5-10 items for right card - Our Agency) and not_covered_items (typically 3-6 items for left card - Other Agencies) - each item should have a title and description that are related and relevant to the user's topic
 - Generate types items (can be any number, typically 3-6 items) - each item should have a title and description that are related and relevant to the user's topic
 - Generate vehicle_types items (can be any number, typically 2-5 items) - each item should have a title and description that are related and relevant to the user's topic
@@ -2278,11 +2339,12 @@ CRITICAL REQUIREMENTS:
       throw new Error(`Failed to parse content from API response: ${parseError.message}`)
     }
 
-    // Humanize the content data (with timeout protection)
+    // Humanize the content data (with timeout protection and smart batching)
     console.log('🔄 Starting humanization process...')
     try {
       // Set a maximum time limit for humanization (5 minutes)
-      const humanizationPromise = humanizeContentData(contentData, '', 50, 100)
+      // Batch size of 25 means ~4 API calls instead of 100+ individual calls (75% cost reduction)
+      const humanizationPromise = humanizeContentData(contentData, '', 50, 25)
       const timeoutPromise = new Promise((_, reject) => 
         setTimeout(() => reject(new Error('Humanization timeout')), 300000) // 5 minutes
       )
