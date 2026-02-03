@@ -526,6 +526,44 @@ export default function Home() {
                 </div>
               </div>
             </div>
+
+            {/* Relgrow Pillar Page (Humanizer) */}
+            <div className="group bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden border border-gray-100">
+              <div className="relative overflow-hidden bg-gradient-to-br from-teal-50 to-cyan-50">
+                <div className="aspect-video w-full">
+                  <img 
+                    src="/assets/images/home-page/relgrow-pillar-humanizer-banner.png" 
+                    alt="Relgrow Pillar Page (Humanizer)" 
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  />
+                </div>
+                <div className="absolute top-4 right-4">
+                  <span className="px-3 py-1 bg-white/90 backdrop-blur-sm rounded-full text-xs font-semibold text-gray-700">
+                    Relgrow Pillar Page (Humanizer)
+                  </span>
+                </div>
+              </div>
+              <div className="p-8">
+                <h3 className="text-2xl font-bold text-gray-900 mb-2">Relgrow Pillar Page (Humanizer)</h3>
+                <p className="text-gray-600 mb-6 leading-relaxed">
+                  A pillar page template for real estate life cycle management and construction in Bangalore. Covers land acquisition to facility management, residential, commercial & industrial properties, RERA compliance, and on-time delivery. AI-humanized content for SEO and maximum search visibility.
+                </p>
+                <div className="flex flex-col sm:flex-row gap-3">
+                  <a 
+                    href="/relgrow-pillar-page-humanizer" 
+                    className="flex-1 px-6 py-3 bg-gray-900 hover:bg-gray-800 text-white font-semibold rounded-lg transition-all duration-300 text-center shadow-md hover:shadow-lg hover:scale-[1.02]"
+                  >
+                    View Template
+                  </a>
+                  <a 
+                    href="/relgrow-pillar-page-humanizer/generate" 
+                    className="flex-1 px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-semibold rounded-lg transition-all duration-300 text-center shadow-md hover:shadow-lg hover:scale-[1.02]"
+                  >
+                    Generate
+                  </a>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
