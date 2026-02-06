@@ -565,24 +565,24 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Brandstory Pillar Page (Humanizer) */}
+            {/* BrandStory Pillar Page (Humanizer) */}
             <div className="group bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden border border-gray-100">
               <div className="relative overflow-hidden bg-gradient-to-br from-indigo-50 to-violet-50">
                 <div className="aspect-video w-full">
                   <img 
                     src="/assets/images/home-page/brandstory-pillar-humanizer-banner.png" 
-                    alt="Brandstory Pillar Page (Humanizer)" 
+                    alt="BrandStory Pillar Page (Humanizer)" 
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   />
                 </div>
                 <div className="absolute top-4 right-4">
                   <span className="px-3 py-1 bg-white/90 backdrop-blur-sm rounded-full text-xs font-semibold text-gray-700">
-                    Brandstory Pillar Page (Humanizer)
+                    BrandStory Pillar Page (Humanizer)
                   </span>
                 </div>
               </div>
               <div className="p-8">
-                <h3 className="text-2xl font-bold text-gray-900 mb-2">Brandstory Pillar Page (Humanizer)</h3>
+                <h3 className="text-2xl font-bold text-gray-900 mb-2">BrandStory Pillar Page (Humanizer)</h3>
                 <p className="text-gray-600 mb-6 leading-relaxed">
                   BrandStory is a design-led digital agency (Bengaluru, Chennai, Dubai, Singapore) serving 600+ clients. UI/UX, SEO & SEM, Social Media, Web & App Development, PR, Employer Branding, and Performance Marketing. AI-humanized content for SEO.
                 </p>

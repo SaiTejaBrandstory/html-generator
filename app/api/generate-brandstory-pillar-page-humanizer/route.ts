@@ -284,7 +284,7 @@ function generateHTMLPage(content: any, companyName?: string, ctaLink?: string):
   
   // 8. Exclusive benefits section
   if (content.exclusive_benefits?.title) {
-    html = html.replace(/<h2 class="exclusive-benefits-title">Brandstory Exclusive Benefits<\/h2>/, `<h2 class="exclusive-benefits-title">${escapeHtml(content.exclusive_benefits.title)}</h2>`)
+    html = html.replace(/<h2 class="exclusive-benefits-title">BrandStory Exclusive Benefits<\/h2>/, `<h2 class="exclusive-benefits-title">${escapeHtml(content.exclusive_benefits.title)}</h2>`)
   }
   if (content.exclusive_benefits?.promise_stats && content.exclusive_benefits.promise_stats.length >= 6) {
     // Replace "Our promise to you" card (first 3 stats)

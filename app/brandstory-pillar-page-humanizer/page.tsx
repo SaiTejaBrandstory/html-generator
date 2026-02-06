@@ -2,9 +2,9 @@
 
 import { useEffect } from 'react'
 
-export default function BrandstoryPillarPageHumanizerPreview() {
+export default function BrandStoryPillarPageHumanizerPreview() {
   useEffect(() => {
-    document.title = 'Brandstory Pillar Page (Humanizer)'
+    document.title = 'BrandStory Pillar Page (Humanizer)'
   }, [])
 
   return (
@@ -17,7 +17,7 @@ export default function BrandstoryPillarPageHumanizerPreview() {
           border: 'none',
           display: 'block'
         }}
-        title="Brandstory Pillar Page (Humanizer) Preview"
+        title="BrandStory Pillar Page (Humanizer) Preview"
       />
     </div>
   )

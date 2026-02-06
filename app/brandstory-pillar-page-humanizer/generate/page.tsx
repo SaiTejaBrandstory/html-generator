@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 
 export default function GeneratePage() {
   const [content, setContent] = useState('')
-  const [companyName, setCompanyName] = useState('Brandstory')
+  const [companyName, setCompanyName] = useState('BrandStory')
   const [ctaLink, setCtaLink] = useState('https://brandstory.in/contact-us/')
   const [isGenerating, setIsGenerating] = useState(false)
   const [error, setError] = useState('')
@@ -64,7 +64,7 @@ export default function GeneratePage() {
       URL.revokeObjectURL(url)
 
       // Show success message
-      alert('Brandstory pillar page HTML file with humanized content and assets generated and downloaded successfully!')
+      alert('BrandStory pillar page HTML file with humanized content and assets generated and downloaded successfully!')
     } catch (err: any) {
       setError(err.message || 'An error occurred while generating the content')
       console.error('Generation error:', err)
@@ -96,7 +96,7 @@ export default function GeneratePage() {
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8">
           <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">
-            Generate Brandstory Pillar Page Content (Humanizer)
+            Generate BrandStory Pillar Page Content (Humanizer)
           </h2>
           <div className="mb-6 p-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg">
             <p className="text-sm text-blue-800 dark:text-blue-300">
@@ -124,7 +124,7 @@ export default function GeneratePage() {
               disabled={isGenerating}
             />
             <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
-              This content will be used to generate all sections of the Brandstory pillar page. Use topics like marketing, PR, content, digital services, or brand building. Be specific about the topic.
+              This content will be used to generate all sections of the BrandStory pillar page. Use topics like marketing, PR, content, digital services, or brand building. Be specific about the topic.
             </p>
           </div>
 
@@ -143,7 +143,7 @@ export default function GeneratePage() {
                 setCompanyName(e.target.value)
                 setError('')
               }}
-              placeholder="e.g., Brandstory"
+              placeholder="e.g., BrandStory"
               className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
               disabled={isGenerating}
             />
