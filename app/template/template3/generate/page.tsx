@@ -96,7 +96,7 @@ export default function GenerateTemplate3() {
                 setError('')
               }}
               placeholder="Enter your content here... (e.g., 'Ecommerce website development in Bangalore', 'PPC management services', etc.)"
-              className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white resize-none"
+              className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 resize-none"
               rows={10}
               disabled={isGenerating}
             />

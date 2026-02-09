@@ -186,7 +186,7 @@ export default function GenerateDynamic() {
                   setError('')
                 }}
                 placeholder="Paste a full HTML document here (starting with <!doctype html> or <html> ...)"
-                className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white resize-none font-mono text-xs"
+                className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 resize-none font-mono text-xs"
                 rows={12}
                 disabled={isGenerating}
               />
@@ -211,7 +211,7 @@ export default function GenerateDynamic() {
                 setError('')
               }}
               placeholder="Example: 'Landing page for a dental clinic in Bangalore. Services: implants, braces. Tone: friendly, trustworthy. Add strong CTAs, FAQs, and detailed benefit copy.'"
-              className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white resize-none"
+              className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 resize-none"
               rows={6}
               disabled={isGenerating}
             />
@@ -238,7 +238,7 @@ export default function GenerateDynamic() {
                     setError('')
                   }}
                   placeholder="Example: BrandStory"
-                  className="w-full px-4 py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
+                  className="w-full px-4 py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
                   disabled={isGenerating}
                 />
               </div>
@@ -258,7 +258,7 @@ export default function GenerateDynamic() {
                     setError('')
                   }}
                   placeholder="Example: https://example.com/contact"
-                  className="w-full px-4 py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
+                  className="w-full px-4 py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
                   disabled={isGenerating}
                 />
                 <p className="mt-2 text-xs text-gray-500 dark:text-gray-400">
@@ -281,7 +281,7 @@ export default function GenerateDynamic() {
                     setError('')
                   }}
                   placeholder="Example: confident, friendly, premium"
-                  className="w-full px-4 py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
+                  className="w-full px-4 py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
                   disabled={isGenerating}
                 />
               </div>
@@ -301,7 +301,7 @@ export default function GenerateDynamic() {
                     setError('')
                   }}
                   placeholder="Example: Bangalore"
-                  className="w-full px-4 py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
+                  className="w-full px-4 py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
                   disabled={isGenerating}
                 />
               </div>

@@ -26,5 +26,26 @@ body {
   :root {
     --foreground-rgb: 255, 255, 255;
   }
+  /* Ensure input/textarea text and placeholder are visible in dark mode */
+  input,
+  textarea,
+  select {
+    color: #f3f4f6;
+  }
+  input::placeholder,
+  textarea::placeholder {
+    color: #9ca3af;
+  }
+}
+
+/* When dark class is on html (e.g. theme toggle), same fix for form controls */
+html.dark input,
+html.dark textarea,
+html.dark select {
+  color: #f3f4f6;
+}
+html.dark input::placeholder,
+html.dark textarea::placeholder {
+  color: #9ca3af;
 }
 

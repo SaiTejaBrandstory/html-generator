@@ -284,14 +284,6 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Invalid mode. Use "zip" or "html".' }, { status: 400 })
     }
 
-    // Safety limit to reduce prompt blowups
-    if (templateHtml.length > 220_000) {
-      return NextResponse.json(
-        { error: 'Template HTML is too large. Please use a smaller template or remove unused content.' },
-        { status: 413 }
-      )
-    }
-
     // Capture doctype (cheerio doesn't reliably preserve it)
     const doctypeMatch = templateHtml.match(/<!doctype[^>]*>/i)
     const doctype = doctypeMatch?.[0] || ''

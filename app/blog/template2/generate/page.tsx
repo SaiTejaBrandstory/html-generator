@@ -109,7 +109,7 @@ export default function GenerateBlogPage() {
                 setError('')
               }}
               placeholder="Enter your blog topic here... (e.g., 'The Future of Web Design in 2025', 'Digital Marketing Strategies', etc.)"
-              className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white resize-none"
+              className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 resize-none"
               rows={10}
               disabled={isGenerating}
             />
@@ -149,7 +149,7 @@ export default function GenerateBlogPage() {
               min="500"
               max="4000"
               step="100"
-              className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white ${
+              className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 ${
                 wordCountError 
                   ? 'border-red-500 dark:border-red-500' 
                   : 'border-gray-300 dark:border-gray-600'
