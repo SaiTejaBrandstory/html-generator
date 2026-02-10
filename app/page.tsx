@@ -23,8 +23,16 @@ export default function Home() {
                 </a>
               </nav>
               <a
+                href="https://design-to-code-nu.vercel.app/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-5 py-2.5 rounded-lg bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-700 hover:to-cyan-600 text-white font-semibold transition-all duration-300 shadow-md hover:shadow-lg hover:scale-[1.02] cursor-pointer"
+              >
+                D2C
+              </a>
+              <a
                 href="/generate"
-                className="px-5 py-2.5 rounded-lg bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-semibold transition-all duration-300 shadow-md hover:shadow-lg hover:scale-[1.02]"
+                className="px-5 py-2.5 rounded-lg bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-semibold transition-all duration-300 shadow-md hover:shadow-lg hover:scale-[1.02] cursor-pointer"
               >
                 Generate
               </a>
