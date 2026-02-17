@@ -210,7 +210,7 @@ function generateBlogHTML(content: any): string {
 
 export async function POST(request: NextRequest) {
   try {
-    const { userInput } = await request.json()
+  const { userInput, wordCount } = await request.json()
 
     if (!userInput || !userInput.trim()) {
       return NextResponse.json(
@@ -225,6 +225,20 @@ export async function POST(request: NextRequest) {
         { status: 500 }
       )
     }
+
+    // Determine and validate target word count
+    const targetWordCount = parseInt(wordCount) || 3000
+    if (targetWordCount < 500 || targetWordCount > 4000) {
+      return NextResponse.json(
+        { error: 'Word count must be between 500 and 4,000' },
+        { status: 400 }
+      )
+    }
+
+    const minWordCount = Math.max(500, Math.floor(targetWordCount * 0.9))
+    const maxWordCount = Math.min(4000, Math.floor(targetWordCount * 1.1))
+
+    console.warn(`Target word count: ${targetWordCount}`)
 
     // Create prompt for blog content generation
     const prompt = `You are writing as a senior practitioner with real delivery experience.
@@ -261,7 +275,7 @@ If a sentence feels like marketing, rewrite it like advice.
 CRITICAL REQUIREMENTS:
 - Focus ONLY on the topic: "${userInput}". All content must be directly related to this topic.
 - Write accurate, factual content. Do not make up specific statistics, company names, or claims unless they are general knowledge.
-- Write 3000-5000 words with Flesch-Kincaid readability 60-70 and Surfer SEO score 90+.
+- Write approximately ${targetWordCount} words (between ${minWordCount} and ${maxWordCount} words) with Flesch-Kincaid readability 60-70 and Surfer SEO score 90+.
 - Generate 15-20 sections, each with 6-10 detailed paragraphs (4-6 sentences each, 80-120 words per paragraph).
 - Based on the topic, determine the appropriate category (e.g., Guide, Blog, Tutorial, Tips, etc.) and topic/category name.
 - All headings, content, and examples must be relevant to "${userInput}" only.
