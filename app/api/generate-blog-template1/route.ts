@@ -99,7 +99,7 @@ function generateBlogHTML(content: any): string {
                   return `
                 <div id="${sectionId}" class="mb-50">
                     <h2 class="text-vilot mb-30">${escapeHtml(section.heading || '')}</h2>
-                    ${sectionImage ? `<img class="w-100 mb-50" src="${escapeHtml(sectionImage)}" alt="${escapeHtml(section.heading || '')}">` : ''}
+                    ${sectionImage ? `<img class="w-100 mb-50 rounded-3" src="${escapeHtml(sectionImage)}" alt="${escapeHtml(section.heading || '')}">` : ''}
                     ${(section.subsections || []).map((subsection: any) => {
                       let html = ''
                       if (subsection.type === 'heading') {
