@@ -63,7 +63,7 @@ function generateBlogHTML(content: any): string {
     </div>
 </section>
 <section class="d-flex align-items-center justify-content-center">
-    <img id="image" src="https://brandstory.in/blogs/assets/images/linkedIn-recruiting/linkedIn-recruiting-mastery-2025.png" class="w-100" alt="${escapeHtml(content.banner?.title || '')}">
+    <img id="image" src="https://cdn.searchenginejournal.com/wp-content/uploads/2020/10/5-fundamental-shifts-that-are-shaping-search-digital-marketing-5f7f23593ac21-1280x720.png" class="w-100" alt="${escapeHtml(content.banner?.title || '')}">
 </section>
 
 <section class="blog-content sp-50">
@@ -83,16 +83,16 @@ function generateBlogHTML(content: any): string {
                   const sectionId = `sec${String(index + 1).padStart(2, '0')}`
                   // Use images from the original template and additional images for all sections
                   const sectionImages = [
-                    'https://brandstory.in/blogs/assets/images/linkedIn-recruiting/linkedIn-recruiting-mastery-2025.png', // sec01 - Introduction
+                    'https://cdn.searchenginejournal.com/wp-content/uploads/2020/10/5-fundamental-shifts-that-are-shaping-search-digital-marketing-5f7f23593ac21-1280x720.png', // sec01 - Introduction
                     'https://brandstory.in/blogs/assets/images/linkedIn-recruiting/evolution-of-linkedin.png', // sec02
-                    'https://brandstory.in/blogs/assets/images/linkedIn-recruiting/building-high-impact.png', // sec03
-                    'https://brandstory.in/blogs/assets/images/linkedIn-recruiting/linkedin-adv.png', // sec04
+                    'https://themexriver.com/wp/gesto/wp-content/uploads/2023/10/img_01-1.jpg', // sec03
+                    'https://thumbs.dreamstime.com/b/businessman-holding-global-network-connection-big-data-analytics-business-intelligence-concept-world-map-point-line-comp-183397623.jpg', // sec04
                     'https://brandstory.in/blogs/assets/images/linkedIn-recruiting/leveraging.png', // sec05
                     'https://brandstory.in/blogs/assets/images/linkedIn-recruiting/measuring-the-sucess.png', // sec06
-                    'https://brandstory.in/blogs/assets/images/linkedIn-recruiting/linkedIn-recruiting-mastery-2025.png', // sec07 - Conclusion
+                    'https://cdn.searchenginejournal.com/wp-content/uploads/2020/10/5-fundamental-shifts-that-are-shaping-search-digital-marketing-5f7f23593ac21-1280x720.png', // sec07 - Conclusion
                     'https://brandstory.in/blogs/assets/images/linkedIn-recruiting/evolution-of-linkedin.png', // sec08 - Additional sections
-                    'https://brandstory.in/blogs/assets/images/linkedIn-recruiting/building-high-impact.png', // sec09
-                    'https://brandstory.in/blogs/assets/images/linkedIn-recruiting/linkedin-adv.png', // sec10
+                    'https://themexriver.com/wp/gesto/wp-content/uploads/2023/10/img_01-1.jpg', // sec09
+                    'https://thumbs.dreamstime.com/b/businessman-holding-global-network-connection-big-data-analytics-business-intelligence-concept-world-map-point-line-comp-183397623.jpg', // sec10
                   ]
                   // Use image from array, or from section data, or fallback to first available image
                   const sectionImage = sectionImages[index] || sectionImages[index % sectionImages.length] || section.image || sectionImages[0]
