@@ -184,7 +184,6 @@ async function humanizeContent(content: any): Promise<any> {
   if (humanized.faqs?.faqs_list) {
     for (const faq of humanized.faqs.faqs_list) {
       if (faq.question) faq.question = await humanizeText(faq.question)
-      if (faq.answer) faq.answer = await humanizeText(faq.answer)
     }
   }
 
