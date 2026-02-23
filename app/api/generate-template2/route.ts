@@ -317,28 +317,7 @@ function generateHTMLPage(content: any): string {
         </div>
     </section>
 
-    <!-- Why GEO Essential -->
-    <section class="py-12 sm:py-16 md:py-20 bg-[#050505]">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col lg:flex-row gap-8 sm:gap-12 md:gap-16">
-            <div class="lg:w-1/2">
-                <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 sm:mb-6 md:mb-8">${escapeHtml(content.why_essential?.heading || 'Why This Is Essential')}</h2>
-                <p class="font-medium mb-4 sm:mb-6 text-gray-400" style="font-size: clamp(16px, 3vw, 20px);">
-                    ${escapeHtml(content.why_essential?.description || '')}
-                </p>
-            </div>
-            <div class="lg:w-1/2">
-                <ul class="space-y-4 sm:space-y-6">
-                    ${(content.why_essential?.points || []).map((point: string) => `
-                    <li class="flex items-start gap-3">
-                        <div class="w-1.5 h-1.5 rounded-full bg-white mt-2.5 flex-shrink-0"></div>
-                        <p class="font-medium text-gray-300" style="font-size: clamp(16px, 3vw, 20px);">${escapeHtml(point)}</p>
-                    </li>
-                    `).join('')}
-                </ul>
-            </div>
-        </div>
-    </section>
-
+    
     <!-- Why GEO Essential with Accordion -->
     <section class="py-12 sm:py-16 md:py-20 bg-[#0a0a1a]">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col lg:flex-row gap-8 sm:gap-12 md:gap-16">
