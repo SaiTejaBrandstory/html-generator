@@ -6,20 +6,26 @@ import { useRouter } from 'next/navigation'
 export default function GenerateTemplate2() {
   const [content, setContent] = useState('')
   const [isGenerating, setIsGenerating] = useState(false)
+  const [isHumanizing, setIsHumanizing] = useState(false)
   const [error, setError] = useState('')
   const router = useRouter()
 
-  const handleGenerate = async () => {
+  const handleGenerate = async (humanize = false) => {
     if (!content.trim()) {
       setError('Please enter some content')
       return
     }
 
-    setIsGenerating(true)
+    if (humanize) {
+      setIsHumanizing(true)
+    } else {
+      setIsGenerating(true)
+    }
     setError('')
 
     try {
-      const response = await fetch('/api/generate-template2', {
+      const endpoint = humanize ? '/api/generate-template2-humanizer' : '/api/generate-template2'
+      const response = await fetch(endpoint, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -46,12 +52,16 @@ export default function GenerateTemplate2() {
       URL.revokeObjectURL(url)
 
       // Show success message
-      alert('HTML file with assets generated and downloaded successfully!')
+      alert(humanize ? 'HTML file with humanized content and assets generated and downloaded successfully!' : 'HTML file with assets generated and downloaded successfully!')
     } catch (err: any) {
       setError(err.message || 'An error occurred while generating the content')
       console.error('Generation error:', err)
     } finally {
-      setIsGenerating(false)
+      if (humanize) {
+        setIsHumanizing(false)
+      } else {
+        setIsGenerating(false)
+      }
     }
   }
 
@@ -105,17 +115,24 @@ export default function GenerateTemplate2() {
             )}
           </div>
 
-          <div className="flex gap-4">
+          <div className="flex gap-4 flex-wrap">
             <button
-              onClick={handleGenerate}
-              disabled={isGenerating || !content.trim()}
+              onClick={() => handleGenerate(false)}
+              disabled={isGenerating || isHumanizing || !content.trim()}
               className="px-6 py-3 bg-purple-600 hover:bg-purple-700 disabled:bg-gray-400 disabled:cursor-not-allowed text-white font-medium rounded-lg transition-colors shadow-md hover:shadow-lg"
             >
               {isGenerating ? 'Generating...' : 'Generate'}
             </button>
             <button
+              onClick={() => handleGenerate(true)}
+              disabled={isGenerating || isHumanizing || !content.trim()}
+              className="px-6 py-3 bg-gradient-to-r from-fuchsia-600 to-purple-600 hover:from-fuchsia-700 hover:to-purple-700 disabled:bg-gray-400 disabled:cursor-not-allowed text-white font-medium rounded-lg transition-colors shadow-md hover:shadow-lg"
+            >
+              {isHumanizing ? 'Generating & Humanizing...' : 'Generate + Humanize'}
+            </button>
+            <button
               onClick={() => router.push('/template/template2')}
-              disabled={isGenerating}
+              disabled={isGenerating || isHumanizing}
               className="px-6 py-3 bg-gray-500 hover:bg-gray-600 disabled:bg-gray-400 disabled:cursor-not-allowed text-white font-medium rounded-lg transition-colors shadow-md hover:shadow-lg"
             >
               Cancel
