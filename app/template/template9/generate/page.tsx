@@ -124,7 +124,7 @@ export default function GeneratePage() {
               disabled={isGenerating}
             />
             <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
-              This will replace "Relgrow" throughout the generated content
+              This will replace &quot;Relgrow&quot; throughout the generated content
             </p>
           </div>
 
@@ -145,7 +145,7 @@ export default function GeneratePage() {
               disabled={isGenerating}
             />
             <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
-              This will replace all "#" links in buttons and CTAs
+              This will replace all &quot;#&quot; links in buttons and CTAs
             </p>
           </div>
 
