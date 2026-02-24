@@ -41,7 +41,7 @@ export default function GeneratePage() {
       // Create a temporary anchor element and trigger download
       const a = document.createElement('a')
       a.href = url
-      a.download = `generated-interior-design-${Date.now()}.zip`
+      a.download = `template9-${Date.now()}.zip`
       document.body.appendChild(a)
       a.click()
       document.body.removeChild(a)
