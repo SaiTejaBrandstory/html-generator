@@ -69,31 +69,20 @@ async function humanizeText(text: string): Promise<string> {
 async function humanizeContent(content: any): Promise<any> {
   const humanized = JSON.parse(JSON.stringify(content)) // Deep clone
 
-  // Humanize main text fields
+  // Humanize main text fields (only descriptions, not headings)
   const textFields = [
     'page_title',
-    'hero.title',
     'hero.cta_text',
     'hero.trusted_text',
     'intro.paragraph_1',
     'intro.paragraph_2',
-    'reviews.heading',
     'reviews.description',
-    'track_record.heading',
-    'key_benefits.heading',
-    'services.heading',
     'services.description',
-    'process.heading',
     'process.description',
-    'white_cta.heading',
     'white_cta.description',
     'white_cta.cta_text',
-    'why_essential.heading',
     'why_essential.description',
-    'why_essential_accordion.heading',
     'why_essential_accordion.description',
-    'testimonials.heading',
-    'faqs.heading',
   ]
 
   // Collect all texts for batch humanization
@@ -139,22 +128,18 @@ async function humanizeContent(content: any): Promise<any> {
 
   if (humanized.key_benefits?.benefits) {
     for (const benefit of humanized.key_benefits.benefits) {
-      if (benefit.title) benefit.title = await humanizeText(benefit.title)
       if (benefit.description) benefit.description = await humanizeText(benefit.description)
     }
   }
 
   if (humanized.services?.services_list) {
     for (const service of humanized.services.services_list) {
-      if (service.title) service.title = await humanizeText(service.title)
       if (service.description) service.description = await humanizeText(service.description)
     }
   }
 
   if (humanized.process?.steps) {
     for (const step of humanized.process.steps) {
-      if (step.title) step.title = await humanizeText(step.title)
-      if (step.subtitle) step.subtitle = await humanizeText(step.subtitle)
       if (step.description) step.description = await humanizeText(step.description)
     }
   }
@@ -169,7 +154,6 @@ async function humanizeContent(content: any): Promise<any> {
 
   if (humanized.why_essential_accordion?.items) {
     for (const item of humanized.why_essential_accordion.items) {
-      if (item.title) item.title = await humanizeText(item.title)
       if (item.content) item.content = await humanizeText(item.content)
     }
   }
@@ -177,13 +161,12 @@ async function humanizeContent(content: any): Promise<any> {
   if (humanized.testimonials?.testimonials_list) {
     for (const testimonial of humanized.testimonials.testimonials_list) {
       if (testimonial.quote) testimonial.quote = await humanizeText(testimonial.quote)
-      if (testimonial.author) testimonial.author = await humanizeText(testimonial.author)
     }
   }
 
   if (humanized.faqs?.faqs_list) {
     for (const faq of humanized.faqs.faqs_list) {
-      if (faq.question) faq.question = await humanizeText(faq.question)
+      if (faq.answer) faq.answer = await humanizeText(faq.answer)
     }
   }
 
