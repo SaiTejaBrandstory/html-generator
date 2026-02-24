@@ -1,0 +1,369 @@
+/* Responsive Styles */
+@media (max-width: 1200px) {
+    .containerf {
+        width: 100%;
+        padding: 0 20px;
+    }
+}
+
+@media (max-width: 991px) {
+    .success-layout {
+        flex-direction: column;
+    }
+
+    .success-main-img {
+        order: -1;
+        height: 400px;
+    }
+
+    .success-column {
+        text-align: center;
+        width: 100%;
+    }
+
+    .benefits-layout {
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .benefits-left {
+        max-width: 100%;
+        text-align: left;
+    }
+
+    .benefits-left h2 {
+        text-align: left;
+    }
+
+    .tools-layout {
+        flex-direction: column;
+    }
+
+    .tools-image {
+        width: 100%;
+        min-height: 400px;
+    }
+
+    .tools-image img {
+        height: 500px;
+    }
+}
+
+@media (max-width: 768px) {
+    section {
+        padding: 0 0 60px;
+    }
+
+    h2 {
+        font-size: 28px !important;
+    }
+
+    p {
+        font-size: 16px;
+    }
+
+    section,
+    .containerf,
+    h2,
+    p,
+    .about,
+    .truested,
+    .success,
+    .review,
+    .gallery-section,
+    .testimonials,
+    .industries,
+    .design-tools,
+    .faq-section,
+    .cta-section,
+    .why-choose,
+    .process,
+    .pro-header,
+    .success-card {
+        text-align: center;
+    }
+
+    /* Banner */
+    .banner h1 {
+        font-size: 32px;
+    }
+
+    .fixedbtn {
+        font-size: 18px;
+        width: 100%;
+        text-align: left;
+    }
+
+    /* Gallery */
+    .gallery-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .gallery-item {
+        height: 300px;
+    }
+
+    .gallery-tabs {
+        gap: 10px;
+    }
+
+    .tab-btn {
+        padding: 8px 16px;
+        font-size: 14px;
+    }
+
+    /* Review Section - Floating Layout */
+    .review-visual {
+        height: 480px;
+        display: flex;
+        justify-content: center;
+        align-items: flex-end;
+        position: relative;
+        overflow: visible;
+        margin-top: 30px;
+        background-color: #fff;
+        border-radius: 20px;
+    }
+
+    .review {
+        background-color: transparent;
+    }
+
+    .visual-bg {
+        /* width: 150% !important; */
+        max-width: none !important;
+        height: auto;
+        opacity: 0.15;
+        top: 40%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 1;
+        position: absolute;
+        display: block !important;
+        pointer-events: none;
+    }
+
+    .woman-wrapper {
+        width: 250px;
+        margin-bottom: 0;
+        z-index: 2;
+    }
+
+    .badge {
+        position: absolute !important;
+        z-index: 3;
+        background: #fff;
+        padding: 6px 12px;
+        border-radius: 10px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid #f0f0f0;
+    }
+
+    .badge img {
+        height: 22px;
+        width: auto;
+        max-width: 85px;
+    }
+
+    /* Positioning badges around the woman */
+    .badge.trustpilot {
+        top: 20px;
+        left: 50%;
+        transform: translateX(-50%) !important;
+    }
+
+    .badge.g2 {
+        top: 100px;
+        left: 5%;
+    }
+
+    .badge.google {
+        top: 100px;
+        right: 5%;
+    }
+
+    .badge.clutch {
+        top: 280px;
+        left: 12px;
+    }
+
+    .badge.goodfirms {
+        top: 280px;
+        right: 12px;
+    }
+
+    /* Success Section */
+    .success-card {
+        width: 100%;
+        height: 250px;
+    }
+
+    .success-card h3 {
+        font-size: 48px;
+    }
+
+    .success-card h4 {
+        font-size: 20px;
+    }
+
+    /* Services Overview */
+    .services-flex {
+        flex-direction: column;
+    }
+
+    .services-content {
+        position: static;
+        margin-bottom: 40px;
+    }
+
+    .services-content h2 {
+        text-align: left;
+    }
+
+    /* General Mobile Alignment */
+    section,
+    .containerf,
+    h2,
+    p,
+    .about,
+    .truested,
+    .success,
+    .gallery-section,
+    .testimonials,
+    .industries,
+    .design-tools,
+    .faq-section,
+    .cta-section,
+    .why-choose,
+    .process,
+    .pro-header,
+    .success-card {
+        text-align: left !important;
+    }
+
+    .success-card {
+        align-items: center !important;
+    }
+
+    .gallery-tabs {
+        justify-content: flex-start !important;
+    }
+
+    .cta-content {
+        align-items: flex-start !important;
+    }
+
+    /* Why Choose */
+    .why-choose {
+        padding: 0px 0px 40px !important;
+        margin-bottom: 0px;
+    }
+
+    .why-choose-cards {
+        grid-template-columns: 1fr;
+    }
+
+    .why-card {
+        padding: 24px;
+    }
+
+    /* Process */
+    .process {
+        padding: 60px 0 !important;
+    }
+
+    .process-item {
+        flex-direction: column;
+        gap: 20px;
+        padding: 30px;
+    }
+
+    .process-num {
+        font-size: 48px;
+    }
+
+    .process-title {
+        max-width: 100%;
+        font-size: 20px;
+    }
+
+    /* Trust & Professional Section */
+    .trust-flex,
+    .pro-flex {
+        flex-direction: column;
+        gap: 30px;
+    }
+
+    .pro-image img {
+        height: auto;
+    }
+
+    .pro-header p {
+        margin: 20px auto;
+    }
+
+    /* Benefits */
+    .benefits-right {
+        grid-template-columns: 1fr;
+    }
+
+    /* Industries */
+    .industries-grid {
+        grid-template-columns: 1fr;
+    }
+
+    /* Design Tools */
+    .tools-image img {
+        height: 400px;
+    }
+
+    /* FAQ */
+    .faq-header {
+        padding: 20px;
+    }
+
+    .faq-header h3 {
+        font-size: 18px;
+    }
+
+    /* SEO Links */
+    .seo-links-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 480px) {
+    .banner h1 {
+        font-size: 28px;
+    }
+
+    .seo-links-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .cta-content {
+        padding: 60px 20px;
+    }
+
+    .cta-button {
+        padding: 15px 24px;
+        font-size: 18px;
+        width: 100%;
+        text-align: left;
+    }
+
+    .success-card {
+        height: 200px;
+    }
+
+    .banner {
+        height: 60vh;
+    }
+
+    .testimonials-swiper {
+        padding-bottom: 0px !important;
+    }
+}

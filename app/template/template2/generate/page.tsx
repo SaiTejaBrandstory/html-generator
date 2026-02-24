@@ -131,7 +131,7 @@ export default function GenerateTemplate2() {
               {isHumanizing ? 'Generating & Humanizing...' : 'Generate + Humanize'}
             </button>
             <button
-              onClick={() => router.push('/template/template2')}
+              onClick={() => router.push('/')}
               disabled={isGenerating || isHumanizing}
               className="px-6 py-3 bg-gray-500 hover:bg-gray-600 disabled:bg-gray-400 disabled:cursor-not-allowed text-white font-medium rounded-lg transition-colors shadow-md hover:shadow-lg"
             >
