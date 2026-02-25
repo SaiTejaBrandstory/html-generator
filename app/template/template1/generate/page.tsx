@@ -6,20 +6,26 @@ import { useRouter } from 'next/navigation'
 export default function GeneratePage() {
   const [content, setContent] = useState('')
   const [isGenerating, setIsGenerating] = useState(false)
+  const [isHumanizing, setIsHumanizing] = useState(false)
   const [error, setError] = useState('')
   const router = useRouter()
 
-  const handleGenerate = async () => {
+  const handleGenerate = async (humanize = false) => {
     if (!content.trim()) {
       setError('Please enter some content')
       return
     }
 
-    setIsGenerating(true)
+    if (humanize) {
+      setIsHumanizing(true)
+    } else {
+      setIsGenerating(true)
+    }
     setError('')
 
     try {
-      const response = await fetch('/api/generate-template1', {
+      const endpoint = humanize ? '/api/generate-template1-humanizer' : '/api/generate-template1'
+      const response = await fetch(endpoint, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -46,12 +52,16 @@ export default function GeneratePage() {
       URL.revokeObjectURL(url)
 
       // Show success message
-      alert('HTML file with assets generated and downloaded successfully!')
+      alert(humanize ? 'HTML file with humanized content and assets generated and downloaded successfully!' : 'HTML file with assets generated and downloaded successfully!')
     } catch (err: any) {
       setError(err.message || 'An error occurred while generating the content')
       console.error('Generation error:', err)
     } finally {
-      setIsGenerating(false)
+      if (humanize) {
+        setIsHumanizing(false)
+      } else {
+        setIsGenerating(false)
+      }
     }
   }
 
@@ -62,7 +72,7 @@ export default function GeneratePage() {
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center">
               <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                HTML Generator
+                Template 1 Generator
               </h1>
             </div>
             <button
@@ -78,7 +88,7 @@ export default function GeneratePage() {
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8">
           <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">
-            Generate Content
+            Generate Template 1 Content
           </h2>
           
           <div className="mb-6">
@@ -86,7 +96,7 @@ export default function GeneratePage() {
               htmlFor="content-input" 
               className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
             >
-              Enter the content
+              Enter the content/topic
             </label>
             <textarea
               id="content-input"
@@ -98,24 +108,31 @@ export default function GeneratePage() {
               placeholder="Enter your content here... (e.g., topic, keywords, or description for the page)"
               className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 resize-none"
               rows={10}
-              disabled={isGenerating}
+              disabled={isGenerating || isHumanizing}
             />
             {error && (
               <p className="mt-2 text-sm text-red-600 dark:text-red-400">{error}</p>
             )}
           </div>
 
-          <div className="flex gap-4">
+          <div className="flex gap-4 flex-wrap">
             <button
-              onClick={handleGenerate}
-              disabled={isGenerating || !content.trim()}
+              onClick={() => handleGenerate(false)}
+              disabled={isGenerating || isHumanizing || !content.trim()}
               className="px-6 py-3 bg-purple-600 hover:bg-purple-700 disabled:bg-gray-400 disabled:cursor-not-allowed text-white font-medium rounded-lg transition-colors shadow-md hover:shadow-lg"
             >
               {isGenerating ? 'Generating...' : 'Generate'}
             </button>
             <button
+              onClick={() => handleGenerate(true)}
+              disabled={isGenerating || isHumanizing || !content.trim()}
+              className="px-6 py-3 bg-gradient-to-r from-fuchsia-600 to-purple-600 hover:from-fuchsia-700 hover:to-purple-700 disabled:bg-gray-400 disabled:cursor-not-allowed text-white font-medium rounded-lg transition-colors shadow-md hover:shadow-lg"
+            >
+              {isHumanizing ? 'Generating & Humanizing...' : 'Generate + Humanize'}
+            </button>
+            <button
               onClick={() => router.push('/')}
-              disabled={isGenerating}
+              disabled={isGenerating || isHumanizing}
               className="px-6 py-3 bg-gray-500 hover:bg-gray-600 disabled:bg-gray-400 disabled:cursor-not-allowed text-white font-medium rounded-lg transition-colors shadow-md hover:shadow-lg"
             >
               Cancel

@@ -565,7 +565,33 @@ function addDirectoryToZip(archive: archiver.Archiver, dirPath: string, zipPath:
 
 export async function POST(request: NextRequest) {
   try {
-    const { userInput } = await request.json()
+    const body = await request.json()
+
+    // If contentData is provided (e.g. from humanizer), skip OpenAI and build ZIP only
+    if (body.contentData && typeof body.contentData === 'object') {
+      const contentData = body.contentData
+      const htmlContent = generateHTMLPage(contentData)
+      const archive = archiver('zip', { zlib: { level: 9 } })
+      const chunks: Buffer[] = []
+      archive.on('data', (chunk: Buffer) => { chunks.push(chunk) })
+      archive.append(htmlContent, { name: 'index.html' })
+      const assetsPath = join(process.cwd(), 'public', 'assets')
+      addDirectoryToZip(archive, assetsPath, 'assets')
+      await new Promise<void>((resolve, reject) => {
+        archive.on('end', () => resolve())
+        archive.on('error', (err) => reject(err))
+        archive.finalize()
+      })
+      const zipBuffer = Buffer.concat(chunks)
+      return new NextResponse(zipBuffer, {
+        headers: {
+          'Content-Type': 'application/zip',
+          'Content-Disposition': `attachment; filename="generated-page-${Date.now()}.zip"`,
+        },
+      })
+    }
+
+    const { userInput, returnJson } = body
 
     if (!userInput || !userInput.trim()) {
       return NextResponse.json(
@@ -1531,6 +1557,11 @@ CRITICAL REQUIREMENTS:
           faqs_list: []
         }
       }
+    }
+
+    // If humanizer requested JSON only, return contentData
+    if (returnJson) {
+      return NextResponse.json(contentData)
     }
 
     // Generate HTML
