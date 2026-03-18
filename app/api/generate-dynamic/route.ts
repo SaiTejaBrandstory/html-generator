@@ -420,7 +420,9 @@ export async function POST(request: NextRequest) {
       })
     }
 
-    const MAX_GROUPS = 2500
+    // Safety guard: very large templates can cause huge API cost/time. We still allow
+    // pages larger than the previous 2,500 cap by relying on batching below.
+    const MAX_GROUPS = 8000
     if (rawGroups.length > MAX_GROUPS) {
       return NextResponse.json(
         {
@@ -627,7 +629,8 @@ Return JSON only:
     const shortGroups = rewriteGroups.filter((t) => !isLongRewrite(t.hint, t.original))
 
     const BATCH_LONG = 30
-    const BATCH_SHORT = 120
+    // Keep short batches smaller to reduce the chance of JSON truncation on big pages.
+    const BATCH_SHORT = 80
 
     for (let i = 0; i < longGroups.length; i += BATCH_LONG) {
       await applyBatch(longGroups.slice(i, i + BATCH_LONG), 14000)
